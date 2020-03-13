@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.villagemanage.dao.TeamMemberDao">
+	<resultMap type="TeamMember" id="teamMemberResultMap">
+		<id property="id" column="id" />
+		<result property="teamId" column="teamId" />
+		<result property="name" column="name" />
+		<result property="tpyCompany" column="tpy_company" />
+		<result property="tpyTitle" column="tpy_title" />
+		<result property="tpyMajor" column="tpy_major" /> 
+		<result property="mobile" column="mobile" /> 
+		<result property="email" column="email" /> 
+		<result property="memberType" column="memberType" /> 
+		<result property="createBy.id" column="createBy.id" />
+		<result property="createDate" column="create_date" />
+		<result property="updateBy.id" column="updateBy.id" />
+		<result property="updateDate" column="update_date" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+		<result property="userId" column="userId" />
+	</resultMap>
+	<sql id="teamMemberColumns">
+	id,
+	teamId,
+	name,
+	tpy_company,
+	tpy_title,
+	tpy_major,
+	mobile,
+	email,
+	memberType,
+	create_by,
+	create_date,
+	update_by,
+	update_date,
+	del_flag,
+	remarks,
+	userId
+	</sql>
+	
+	<sql id="teamMemberColumns1">
+	a.id,
+	a.teamId,
+	a.name,
+	a.tpy_company AS "tpyCompany",
+	a.tpy_title AS "tpyTitle",
+	a.tpy_major AS "tpyMajor",
+	a.mobile,
+	a.email,
+	a.memberType,
+	a.create_by AS "createBy",
+	a.create_date AS "createDate",
+	a.update_by AS "updateBy",
+	a.update_date AS "updateDate",
+	a.del_flag AS "delFlag",
+	a.remarks,
+	a.userId,
+	a.teamprotocol,
+	a.teamprotocolFlag,
+	a.memberprotocol,
+	a.memberprotocolFlag,
+	a.checkPerson,
+	a.checkTime,
+	a.checkOpinion,
+	a.checkPerson1,
+	a.checkTime1,
+	a.checkOpinion1,
+	b.villageId,
+	b.teamname,
+	b.teamarea,
+	b.startTime,
+	b.endTime,
+	c.villageName,
+	c.secretaryName,
+	c.secretaryPhone,
+	c.deputy,
+	c.deputyPhone,
+	c.scienceNeed
+	</sql>
+	
+	<sql id="teamMemberJoins">	
+		INNER JOIN tpy_serviceteam b ON a.teamId = b.id
+		INNER JOIN vil_info c ON b.villageId = c.id
+    </sql>
+    
+	<insert id="insert">
+	insert into tpy_teammember (
+	id,
+	teamId,
+	name,
+	tpy_company,
+	tpy_title,
+	tpy_major,
+	mobile,
+	email,
+	memberType,
+	create_by,
+	create_date,
+	update_by,
+	update_date,
+	del_flag,
+	remarks,
+	userId,
+	memberprotocol,
+	teamprotocol
+	) values(
+	#{id},
+	#{teamId},
+	#{name},
+	#{tpyCompany},
+	#{tpyTitle},
+	#{tpyMajor},
+	#{mobile},
+	#{email},
+	#{memberType},
+	#{createBy.id},
+	#{createDate},
+	#{updateBy.id},
+	#{updateDate},
+	#{delFlag},
+	#{remarks},
+	#{userId},
+	'null',
+	'null'
+	)
+	</insert>
+	
+	<select id="findTeamMember"  resultType="TeamMember">
+	select 
+	<include refid="teamMemberColumns"></include>
+	from tpy_teammember 
+	where del_flag ='0'
+	<if test="_parameter!=null and _parameter!=''">
+			AND teamId=#{_parameter}
+	</if>
+	</select>
+	<select id="get" resultType="TeamMember">
+	select 
+	<include refid="teamMemberColumns"></include>
+	from tpy_teammember 
+	where id = #{id}
+	</select>
+	
+	<update id="update">
+	update tpy_teammember 
+	set del_flag=#{delFlag}
+	where id=#{id}
+	</update>
+	
+	<update id="updateTeamprotocol">
+		update tpy_teammember set 
+		teamprotocol = #{teamprotocol},
+		teamprotocolFlag = #{teamprotocolFlag}		
+		where id=#{id}
+	</update>
+	
+	<update id="updateMemberprotocol">
+		update tpy_teammember set 
+		memberprotocol = #{memberprotocol},
+		memberprotocolFlag = #{memberprotocolFlag}		
+		where id=#{id}
+	</update>
+	
+	<update id="changeMember">
+		update tpy_teammember set 
+		memberprotocolFlag = #{memberprotocolFlag},
+		checkPerson1 = #{checkPerson1},
+		checkTime1 = #{checkTime1},
+		checkOpinion1 = #{checkOpinion1}	
+		where id=#{id}
+	</update>
+	
+	<update id="changeTeam">
+		update tpy_teammember set 
+		teamprotocolFlag = #{teamprotocolFlag},
+		checkPerson = #{checkPerson},
+		checkTime = #{checkTime},
+		checkOpinion = #{checkOpinion}	
+		where id=#{id}
+	</update>
+	
+	<select id="findDscxyByTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.teamprotocol = 'null'
+		AND a.memberType = '团长'
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findYscxyByTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.teamprotocol != 'null'
+		AND a.memberType = '团长'
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>	
+	
+	<select id="findDscxyByMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.memberprotocol = 'null'
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findYscxyByMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.memberprotocol != 'null'
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="vilfwxyDshlistByMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE c.zoneId = #{zoneId}
+		AND a.memberprotocolFlag = #{memberprotocolFlag}
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="vilfwxyDshlistByTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE c.zoneId = #{zoneId}
+		AND a.teamprotocolFlag = #{teamprotocolFlag}
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="vilfwxyDshlistByTeamByApp" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+			
+			INNER JOIN sys_user u ON u.id = a.userId
+			LEFT JOIN sys_office d ON d.id = u.company_id
+			LEFT JOIN sys_area ca ON ca.id  = d.area_id
+			LEFT JOIN sys_office o ON o.id = u.office_id
+			LEFT JOIN sys_area oa ON oa.id = o.area_id
+			LEFT JOIN sys_user cu ON cu.id = d.primary_person
+			LEFT JOIN sys_user cu2 ON cu2.id = d.deputy_person
+			LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+			LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		
+		WHERE a.teamprotocolFlag in (1, 2, 3) AND a.del_flag = '0' AND c.zoneId = #{zoneId}
+		<if test="villageName != null and villageName != ''">
+			AND c.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+		</if>
+		<if test="teamName != null and teamName != ''">
+			AND b.teamname like 
+					<if test="dbName == 'oracle'">'%'||#{teamname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{teamname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{teamname}, '%')</if>
+		</if>
+		<if test="teamprotocolFlag != null and teamprotocolFlag != ''">
+			AND a.teamprotocolFlag = ${teamprotocolFlag}
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="vilfwxyYshlistByMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE c.zoneId = #{zoneId}
+		AND (a.memberprotocolFlag = '2' OR a.memberprotocolFlag = '3')
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="vilfwxyYshlistByMemberByApp" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+			
+			INNER JOIN sys_user u ON u.id = a.userId
+			LEFT JOIN sys_office d ON d.id = u.company_id
+			LEFT JOIN sys_area ca ON ca.id  = d.area_id
+			LEFT JOIN sys_office o ON o.id = u.office_id
+			LEFT JOIN sys_area oa ON oa.id = o.area_id
+			LEFT JOIN sys_user cu ON cu.id = d.primary_person
+			LEFT JOIN sys_user cu2 ON cu2.id = d.deputy_person
+			LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+			LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+ 
+		WHERE a.memberprotocolFlag in (1, 2, 3) AND a.del_flag = '0' AND c.zoneId = #{zoneId}
+		<if test="name != null and name != ''">
+			AND a.name like 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="villageName != null and villageName != ''">
+			AND c.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+		</if>
+		<if test="teamName != null and teamName != ''">
+			AND b.teamname like 
+					<if test="dbName == 'oracle'">'%'||#{teamname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{teamname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{teamname}, '%')</if>
+		</if>
+		<if test="memberprotocolFlag != null and memberprotocolFlag != ''">
+			AND a.memberprotocolFlag = ${memberprotocolFlag}
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="vilfwxyYshlistByTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE c.zoneId = #{zoneId}
+		AND (a.teamprotocolFlag = '2' OR a.teamprotocolFlag = '3')
+		AND a.del_flag = '0'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="getTeamMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.teamId = #{teamId}
+		AND b.villageId = #{villageId}
+		<if test="memberType != null and memberType !=''">
+		AND a.memberType = #{memberType}
+		</if>
+		AND a.del_flag = '0'
+	</select>
+	
+	<select id="getMemberInfo" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.id = #{id}
+		AND a.del_flag = '0'
+	</select>
+	
+	<select id="getVillageByTeamId" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.teamId = #{teamId}
+		AND a.del_flag = '0'
+	</select>
+	
+	<select id="getTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns1"/>
+		FROM tpy_teammember a
+			<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{userId}
+		AND a.del_flag = '0'
+		<!-- 2018-11-13加条件-->
+		AND b.del_flag = '0'
+	</select>
+	<sql id="teamMemberColumns2">
+	b.id,
+	b.teamId,
+	b.name,
+	b.tpy_company AS "tpyCompany",
+	b.tpy_title AS "tpyTitle",
+	b.tpy_major AS "tpyMajor",
+	b.mobile,
+	b.email,
+	b.memberType,
+	b.create_by AS "createBy",
+	b.create_date AS "createDate",
+	b.update_by AS "updateBy",
+	b.update_date AS "updateDate",
+	b.del_flag AS "delFlag",
+	b.remarks,
+	b.userId,
+	b.teamprotocol,
+	b.teamprotocolFlag,
+	b.memberprotocol,
+	b.memberprotocolFlag,
+	b.checkPerson,
+	b.checkTime,
+	b.checkOpinion,
+	b.checkPerson1,
+	b.checkTime1,
+	b.checkOpinion1,
+	t.villageId,
+	t.teamname,
+	t.teamarea,
+	t.startTime,
+	t.endTime,
+	v.villageName,
+	v.secretaryName,
+	v.secretaryPhone,
+	v.deputy,
+	v.deputyPhone,
+	v.scienceNeed,
+	o.name AS 'office.name'
+	</sql>
+	 <sql id="villageJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN tpy_teammember b ON a.id = b.create_by
+		INNER JOIN tpy_serviceteam t ON b.teamId = t.id
+		INNER JOIN vil_info v ON t.villageId = v.id
+    </sql>
+	<!-- 信息查询 ——(贫困村团队)服务协议列表 -->
+	<select id="villagelistByTeam" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns2"/>
+		FROM sys_user a
+			<include refid="villageJoins"/>
+		WHERE t.del_flag = #{DEL_FLAG_NORMAL}
+		AND (b.teamprotocolFlag = '2' OR b.teamprotocolFlag = '3')
+		<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,',#{office.id},',%'))</if>
+		</if>
+		<if test="teamName != null and teamName != ''">
+			AND t.teamname like 
+					<if test="dbName == 'oracle'">'%'||#{teamName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{teamName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{teamName}, '%')</if>
+		</if>
+		<if test="villageName != null and villageName != ''">
+			AND v.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+		</if>	
+		${sqlMap.dsf}	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 信息查询 ——(贫困村个人)服务协议列表 -->
+	<select id="villagelistByMember" resultType="TeamMember">
+		SELECT
+			<include refid="teamMemberColumns2"/>
+		FROM  sys_user a
+			<include refid="villageJoins"/>
+		WHERE  t.del_flag = #{DEL_FLAG_NORMAL}
+		AND (b.memberprotocolFlag = '2' OR b.memberprotocolFlag = '3')
+		<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,',#{office.id},',%'))</if>
+		</if>	
+		<if test="teamName != null and teamName != ''">
+			AND t.teamname like 
+					<if test="dbName == 'oracle'">'%'||#{teamName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{teamName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{teamName}, '%')</if>
+		</if>
+		<if test="villageName != null and villageName != ''">
+			AND v.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+		</if>
+	
+		${sqlMap.dsf}	
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

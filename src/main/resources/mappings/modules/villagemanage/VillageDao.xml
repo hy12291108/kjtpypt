@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.villagemanage.dao.VillageDao">
+	
+	<resultMap id="villageResult" type="Village">
+		<id property="id" column="id" />
+		<result property="villageName" column="villageName" />
+		<result property="secretaryName" column="secretaryName" />
+		<result property="secretaryPhone" column="secretaryPhone" />
+		<result property="deputy" column="deputy" />
+		<result property="deputyPhone" column="deputyPhone" />
+		<result property="houseNumber" column="houseNumber" />
+		<result property="population" column="population" />
+		<result property="poorNumber" column="poorNumber" />
+		<result property="poorPopulation" column="poorPopulation" />
+		<result property="estateInfo" column="estateInfo" />
+		<result property="scienceNeed" column="scienceNeed" />
+		<result property="zoneId" column="zoneId" />
+		<result property="createBy.id" column="createBy.id" />
+		<result property="createDate" column="create_date" />
+		<result property="updateBy.id" column="updateBy.id" />
+		<result property="updateDate" column="update_date" />
+		<result property="delFlag" column="del_flag" />
+		<collection property="serviceTeam" ofType="com.thinkgem.jeesite.modules.villagemanage.entity.ServiceTeam">
+		<id property="id" column="serviceTeam.id" />
+		<result property="villageId" column="villageId"/>
+		<result property="teamName" column="teamName"></result>
+		<result property="teamArea" column="teamArea"></result>
+		<result property="serviceCyfx" column="service_Cyfx"></result>
+		<result property="startTime" column="startTime"></result>
+		<result property="endTime" column="endTime"></result>
+ 		<result property="createBy.id" column="serviceTeam.createBy" />
+		<result property="createDate" column="serviceTeam.createDate" />
+		<result property="updateBy.id" column="serviceTeam.updateBy" />
+		<result property="updateDate" column="serviceTeam.updateDate" />
+		<result property="delFlag" column="serviceTeam.delFlag" />
+		<result property="remarks" column="serviceTeam.remarks" />
+		<collection property="teamMember" ofType="com.thinkgem.jeesite.modules.villagemanage.entity.TeamMember">
+			<id property="id" column="teamMember.id" />
+			<result property="teamId" column="teamMember.teamId" />
+			<result property="name" column="teamMember.name" />
+			<result property="tpyCompany" column="teamMember.tpyCompany" />
+			<result property="tpyTitle" column="teamMember.tpyTitle" />
+			<result property="tpyMajor" column="teamMember.tpyMajor" /> 
+			<result property="mobile" column="teamMember.mobile" /> 
+			<result property="email" column="teamMember.email" /> 
+			<result property="memberType" column="teamMember.memberType" /> 
+		</collection>
+		</collection>
+	</resultMap>
+	
+  <sql id="villageColumns">
+    		a.id, 
+			villageName, 
+			secretaryName, 
+			secretaryPhone, 
+			deputy, 
+			deputyPhone, 
+			houseNumber, 
+			population, 
+			poorNumber, 
+			poorPopulation, 
+			estateInfo, 
+			scienceNeed,
+			zoneId,
+			a.create_by, 
+			a.create_date, 
+			a.update_by, 
+			a.update_date, 
+			a.del_flag,
+			c.id as "serviceTeam.id",
+			c.villageId,
+			c.teamName,
+			c.teamArea,
+			c.service_cyfx,
+			c.startTime,
+			c.endTime,
+			c.create_by as "serviceTeam.createBy",
+			c.create_date as "serviceTeam.createDate",
+			c.update_by as "serviceTeam.updateBy",
+			c.update_date as "serviceTeam.updateDate",
+			c.del_flag as "serviceTeam.delFlag",
+			c.remarks as "serviceTeam.remarks",
+			d.id as "teamMember.id",
+			d.teamId as "teamMember.teamId",
+			d.name as "teamMember.name",
+			d.tpy_Company as  "teamMember.tpyCompany",
+			d.tpy_Title as "teamMember.teamMember",
+			d.tpy_Major as "teamMember.tpyMajor",
+			d.mobile as "teamMember.mobile",
+			d.email as "teamMember.email",
+			d.memberType as "teamMember.memberType"
+			
+  </sql>
+      <sql id="selectJoins">
+		LEFT JOIN tpy_serviceTeam c ON c.villageId = a.id
+		LEFT JOIN tpy_teamMember d ON d.teamId = c.id
+    </sql>
+	
+	<!-- 插入贫困村基本信息 -->
+	<insert id="insert">
+		INSERT INTO vil_info(
+			id, 
+			villageName, 
+			secretaryName, 
+			secretaryPhone, 
+			deputy, 
+			deputyPhone, 
+			houseNumber, 
+			population, 
+			poorNumber, 
+			poorPopulation, 
+			estateInfo, 
+			scienceNeed,
+			zoneId,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			del_flag
+		) VALUES (
+			#{id}, 
+			#{villageName}, 
+			#{secretaryName}, 
+			#{secretaryPhone}, 
+			#{deputy}, 
+			#{deputyPhone}, 
+			#{houseNumber}, 
+			#{population}, 
+			#{poorNumber}, 
+			#{poorPopulation}, 
+			#{estateInfo}, 
+			#{scienceNeed},
+			#{zoneId},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{delFlag}
+		)
+	</insert>
+<!-- 	
+	<select id="findList" resultType="Village" >
+	SELECT
+		<include refid="villageColumns"/>
+	from vil_info a 
+		<include refid="selectJoins"/>
+	where a.del_flag =#{DEL_FLAG_NORMAL}
+	<if test="zoneId !=null and zoneId!=''">
+		and a.zoneId =#{zoneId}
+	</if>
+	<if test="villageName != null and villageName != ''">
+			AND a.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+	</if>
+	<if test="secretaryName != null and secretaryName != ''">
+			AND a.secretaryName like 
+					<if test="dbName == 'oracle'">'%'||#{secretaryName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{secretaryName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{secretaryName}, '%')</if>
+	</if>
+	<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+	</choose>
+	</select> -->
+	
+	
+	<!--查询贫困村列表 resultMap="villageResult" -->
+	<select id="findList" resultType="Village" >
+	SELECT
+			id, 
+			villageName, 
+			secretaryName, 
+			secretaryPhone, 
+			deputy, 
+			deputyPhone, 
+			houseNumber, 
+			population, 
+			poorNumber, 
+			poorPopulation, 
+			estateInfo, 
+			scienceNeed,
+			zoneId
+	from vil_info a 
+	where a.del_flag =#{DEL_FLAG_NORMAL}
+	<if test="zoneId !=null and zoneId!=''">
+		and a.zoneId =#{zoneId}
+	</if>
+	<if test="villageName != null and villageName != ''">
+			AND a.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+	</if>
+	<if test="secretaryName != null and secretaryName != ''">
+			AND a.secretaryName like 
+					<if test="dbName == 'oracle'">'%'||#{secretaryName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{secretaryName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{secretaryName}, '%')</if>
+	</if>
+	<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+	</choose>
+	</select>
+	
+	 <sql id="villageJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN vil_info b ON a.id = b.create_by
+    </sql>
+	<!--查询贫困村列表 resultMap="villageResult" -->
+	<select id="findVillagelist" resultType="Village" >
+	SELECT
+			b.id, 
+			b.villageName, 
+			b.secretaryName, 
+			b.secretaryPhone, 
+			b.deputy, 
+			b.deputyPhone, 
+			b.houseNumber, 
+			b.population, 
+			b.poorNumber, 
+			b.poorPopulation, 
+			b.estateInfo, 
+			b.scienceNeed,
+			b.zoneId,
+			o.name AS 'office.name'
+	from sys_user a
+	<include refid="villageJoins"/>
+	where b.del_flag =#{DEL_FLAG_NORMAL}
+	<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
+		</if>
+	<if test="villageName != null and villageName != ''">
+			AND a.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+	</if>
+	<if test="secretaryName != null and secretaryName != ''">
+			AND a.secretaryName like 
+					<if test="dbName == 'oracle'">'%'||#{secretaryName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{secretaryName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{secretaryName}, '%')</if>
+	</if>
+	${sqlMap.dsf}
+	<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+	</choose>
+	</select>
+	
+	<!--查询贫困村列表  -->
+	<select id="findDetailList"   resultMap="villageResult">
+	SELECT
+		<include refid="villageColumns"/>
+	from vil_info a 
+		<include refid="selectJoins"/>
+		
+	where a.del_flag =#{DEL_FLAG_NORMAL}
+	<if test="zoneId !=null and zoneId!=''">
+		and a.zoneId =#{zoneId}
+	</if>
+	<if test="villageName != null and villageName != ''">
+			AND a.villageName like 
+					<if test="dbName == 'oracle'">'%'||#{villageName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{villageName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{villageName}, '%')</if>
+	</if>
+	<if test="secretaryName != null and secretaryName != ''">
+			AND a.secretaryName like 
+					<if test="dbName == 'oracle'">'%'||#{secretaryName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{secretaryName}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{secretaryName}, '%')</if>
+	</if>
+	<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+	</choose>
+	</select>
+	
+	
+	<!-- 根据编号获得村信息-->
+	<select id="get" resultMap="villageResult">
+		SELECT
+		<include refid="villageColumns"/>
+		FROM vil_info a
+		<include refid="selectJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<!-- 修改贫困村信息-->
+	<update id="update" >
+		UPDATE vil_info SET 
+			villageName = #{villageName}, 
+			secretaryName = #{secretaryName}, 
+			secretaryPhone = #{secretaryPhone}, 
+			deputy = #{deputy}, 
+			deputyPhone = #{deputyPhone}, 
+			houseNumber = #{houseNumber}, 
+			population = #{population}, 
+			poorNumber = #{poorNumber}, 
+			poorPopulation = #{poorPopulation}, 
+			estateInfo = #{estateInfo}, 
+			scienceNeed = #{scienceNeed},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	<!-- 删除贫困村信息 -->
+	<update id="delete">
+		UPDATE vil_info set
+		del_flag = #{DEL_FLAG_DELETE}
+		where id = #{id}
+	</update>
+	
+	 <!-- 分页查询用户信息 -->
+	<select id="findUserList" resultType="User">
+		SELECT
+			a.id,
+			a.name,
+			a.email,
+			a.tpy_Company,
+			a.tpy_Title,
+			a.tpy_Major,
+			a.mobile,
+			a.office_id
+		FROM sys_user a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		AND (a.person_flag='0' or a.person_flag ='2')
+		<if test="checkFlag !=null and checkFlag!=''">
+			AND a.check_flag=#{checkFlag}
+		</if>
+		<!-- 县级管理部门给贫困村组团时可以选全省特派员 -->
+		<!--  <if test="office != null and office.id != null and office.id != ''">
+			and a.tpyXpFlag = #{office.id}
+		</if>-->
+		<if test="name != null and name != ''">
+			AND a.name like 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="tpyMajor != null and tpyMajor != ''">
+			AND a.tpy_Major like 
+					<if test="dbName == 'oracle'">'%'||#{tpyMajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyMajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyMajor}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY  a.name,a.tpy_Major
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

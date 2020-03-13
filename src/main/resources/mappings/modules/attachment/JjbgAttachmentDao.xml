@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.attachment.dao.JjbgAttachmentDao">
+    
+	<sql id="jjbgattachmentColumns">
+		a.id AS "id",
+		a.AHT_YWLX AS "ahtYwlx",
+		a.AHT_YWLX_NAME AS "ahtYwlxName",
+		a.AHT_OPER_ID AS "ahtOperId",
+		a.AHT_NAME AS "ahtName",
+		a.AHT_FILENAME AS "ahtFilename",
+		a.AHTSIZE AS "ahtsize",
+		a.AHTTYPE AS "ahttype",
+		a.AHTDATE AS "ahtdate",
+		a.AHTPATH AS "ahtpath",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag"
+	</sql>
+	
+	<insert id="insert">
+		INSERT INTO SXBSH_ATTACHMENT(
+			id,
+			aht_ywlx,
+			aht_ywlx_name,
+			aht_oper_id,
+			aht_name,
+			aht_filename,
+			ahtsize,
+			ahttype,
+			ahtdate,
+			ahtpath,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{ahtYwlx},
+			#{ahtYwlxName},
+			#{ahtOperId},
+			#{ahtName},
+			#{ahtFilename},
+			#{ahtsize},
+			#{ahttype},
+			#{ahtdate},
+			#{ahtpath},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE SXBSH_ATTACHMENT SET
+			AHT_YWLX = #{ahtYwlx},
+			AHT_YWLX_NAME = #{ahtYwlxName},
+			AHT_OPER_ID = #{ahtOperId},
+			AHT_NAME = #{ahtName},
+			AHT_FILENAME = #{ahtFilename},
+			AHTSIZE = #{ahtsize},
+			AHTTYPE = #{ahttype},
+			AHTDATE = #{ahtdate},
+			AHTPATH = #{ahtpath},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE SXBSH_ATTACHMENT SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<sql id="jjbgattachmentJoins">
+	</sql>
+    
+	<select id="get" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findObjectByPath" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		WHERE a.AHTPATH = #{path}
+	</select>
+	
+	<select id="findObjectByAhtOperId" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		WHERE a.AHT_OPER_ID = #{operId}
+	</select>
+	
+	<select id="findListBy" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} 
+			
+			<if test="ahtOperId != null and ahtOperId != ''">
+				  AND  a.AHT_OPER_ID=#{ahtOperId}
+			</if>
+			
+			
+				  AND  a.create_by =#{createBy.id}
+		
+			 
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+		<select id="findByPath" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}  and  a.AHT_OPER_ID = #{ahtOperId}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findList" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		   AND  a.AHT_OPER_ID=#{ahtOperId}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findListByGW" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		<where>
+			a.del_flag = 0 AND a.AHT_OPER_ID = #{ahtOperId}
+			<!-- <if test="ahtOperId != null and ahtOperId != ''">
+				  AND  a.AHT_OPER_ID=#{ahtOperId}
+			</if>  -->
+		</where>
+		<!-- <choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose> -->
+	</select>
+	
+	<select id="findattachByahtOperId" parameterType="Jjbgattachment" resultType="Jjbgattachment">
+		SELECT 
+			<include refid="jjbgattachmentColumns"/>
+		FROM SXBSH_ATTACHMENT a
+		<include refid="jjbgattachmentJoins"/>
+		<where>
+			a.AHT_OPER_ID = #{ahtOperId} and 
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+			ORDER BY a.update_date DESC
+	</select>
+	
+	<select id="getFilePath" resultType="String">
+		SELECT 
+			a.ahtpath
+		FROM SXBSH_ATTACHMENT a
+	
+		<where>
+			a.AHT_OPER_ID = #{attachmentId} and 
+			a.del_flag = '0'
+		</where>		
+			ORDER BY a.create_date DESC
+	</select>
+	
+</mapper>

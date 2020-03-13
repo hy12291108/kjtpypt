@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dailywork.dao.tpy.TpyDailyrecordDao">
+    
+	<sql id="tpyDailyrecordColumns">
+		a.id AS "id",
+		a.rec_tpyid AS "recTpyid",
+		a.rec_tpyLocation AS "recTpyLocation",
+		a.rec_helpobjid AS "recHelpobjid",
+		a.rec_helpobjtype AS "recHelpobjtype",
+		a.rec_helpstatus AS "recHelpstatus",
+		a.rec_status AS "recStatus",
+		a.rec_approperson AS "recApproperson",
+		a.rec_approtime AS "recApprotime",
+		a.rec_approopinion AS "recApproopinion",
+		a.rec_helpContent AS "recHelpContent",
+		a.rec_startTime AS "recStartTime",
+		a.rec_endTime AS "recEndTime",
+		a.rec_writtenTime AS "recWrittenTime",
+		a.rec_writer AS "recWriter",
+		a.rec_helpObj AS "recHelpObj",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.jtjjzc,
+		a.kjfwts,
+		a.yjtgxpzxcp,
+		a.tgxjs,
+		a.jjjsnt,
+		a.pxnm,
+		a.cbqyhzs,
+		a.ddjyrc,
+		a.fwnchzzz,
+		a.jlkjsfjd,
+		a.pykjsfh,
+		a.jbpxb,
+		a.pxry,
+		a.pxpkqz,
+		a.sxcz,
+		a.ddzs,
+		a.cls,
+		a.bfpkc,
+		a.pkh,
+		a.ddtp,			
+		a.pkrk,
+		a.fwdxpjState,
+		a.fwdxpjr,
+		a.fwdxpjTime,
+		a.fwdxpjYj,
+		a.drTableImage,
+		a.Year,
+		a.IsThreeArea,
+		a.teamId,
+		a.teamName,
+		a.teamMemberType,
+		a.dailyRecordType,
+		b.person_flag AS "recTpyuser.personFlag"
+	</sql>
+	
+	<sql id="tpyDailyrecordColumnsForWithinPower">
+		b.id AS "id",
+		b.rec_tpyid AS "recTpyid",
+		b.rec_tpyLocation AS "recTpyLocation",
+		b.rec_helpobjid AS "recHelpobjid",
+		b.rec_helpobjtype AS "recHelpobjtype",
+	<!-- 	b.rec_stime AS "recStime",
+		b.rec_etime AS "recEtime", -->
+		b.rec_helpstatus AS "recHelpstatus",
+		b.rec_status AS "recStatus",
+		b.rec_approperson AS "recApproperson",
+		b.rec_approtime AS "recApprotime",
+		b.rec_approopinion AS "recApproopinion",
+		b.rec_helpContent AS "recHelpContent",
+		b.rec_startTime AS "recStartTime",
+		b.rec_endTime AS "recEndTime",
+		b.rec_writtenTime AS "recWrittenTime",
+		b.rec_writer AS "recWriter",
+		b.rec_helpObj AS "recHelpObj",
+		b.create_by AS "createBy.id",
+		b.create_date AS "createDate",
+		b.update_by AS "updateBy.id",
+		b.update_date AS "updateDate",
+		b.remarks AS "remarks",
+		b.del_flag AS "delFlag",
+		b.jtjjzc,
+		b.yjtgxpzxcp,
+		b.tgxjs,
+		b.jjjsnt,
+		b.pxnm,
+		b.cbqyhzs,
+		b.ddjyrc,
+		b.fwnchzzz,
+		b.jlkjsfjd,
+		b.pykjsfh,
+		b.jbpxb,
+		b.pxry,
+		b.pxpkqz,
+		b.sxcz,
+		b.ddzs,
+		b.cls,
+		b.bfpkc,
+		b.pkh,
+		b.ddtp,			
+		b.pkrk,
+		b.kjfwts
+	</sql>
+	
+	 <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN tpy_dailyrecord b ON a.id = b.rec_tpyid
+    </sql>
+	
+	
+	<sql id="tpyDailyrecordJoins">
+		INNER JOIN sys_user b ON b.id = a.rec_tpyid
+	</sql>
+    
+	<select id="get" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="recTpyid != null and recTpyid != ''">
+				AND a.rec_tpyid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recTpyid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recTpyid}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recTpyid},'%')</if>
+			</if>
+			 <if test="recWriter != null and recWriter != ''">
+				AND a.rec_writer LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWriter}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWriter}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWriter},'%')</if>
+			</if>
+			<if test="recHelpobjid != null and recHelpobjid != ''">
+				AND a.rec_helpobjid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpobjid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpobjid}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpobjid},'%')</if>
+			</if>
+			<if test="recHelpobjid != null and recHelpobjid != ''">
+				AND a.rec_helpobjid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpobjid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpobjid}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpobjid},'%')</if>
+			</if>
+			<if test="recHelpobjtype != null and recHelpobjtype != ''">
+				AND a.rec_helpobjtype LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpobjtype}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpobjtype}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpobjtype},'%')</if>
+			</if>
+			<if test="recHelpstatus != null and recHelpstatus != ''">
+				AND a.rec_helpstatus LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpstatus}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpstatus}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpstatus},'%')</if>
+			</if>
+			<if test='recStatus == "inProcess" or recStatus == "no"'>
+				AND (a.rec_status ='inProcess' or a.rec_status ='no') 
+			</if>
+			<if test='recStatus == "pass" or recStatus == "return"'>
+				AND (a.rec_status ='pass' or a.rec_status ='return') 
+			</if>
+			<if test="recApproperson != null and recApproperson != ''">
+				AND a.rec_approperson LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recApproperson}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recApproperson}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recApproperson},'%')</if>
+			</if>
+			<if test="recWrittenTime != null and recWrittenTime != ''">
+				AND a.rec_writtenTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWrittenTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWrittenTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWrittenTime},'%')</if>
+			</if>
+			<if test="recStartTime != null and recStartTime != ''">
+				AND a.rec_startTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recStartTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recStartTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recStartTime},'%')</if>
+			</if>
+			<if test="recEndTime != null and recEndTime != ''">
+				AND a.rec_endTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recEndTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recEndTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recEndTime},'%')</if>
+			</if>
+			<if test="recHelpObj != null and recHelpObj != ''">
+				AND a.rec_helpObj LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpObj}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpObj}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpObj},'%')</if>
+			</if>
+			<if test="recTpyLocation != null and recTpyLocation != ''">
+				AND a.rec_tpyLocation LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recTpyLocation}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recTpyLocation}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recTpyLocation},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC,a.rec_writer,a.rec_helpObj,a.rec_startTime,a.rec_endTime,a.rec_writtenTime,a.rec_status
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="xqdwckPage" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		<where>
+			<if test="office != null and office != ''">
+				b.office_id = #{office.id} 
+			</if>
+			
+			<if test="fwdxpjState != null and fwdxpjState != ''">
+				AND a.fwdxpjState = #{fwdxpjState} 
+			</if>		
+		 <if test="recWriter != null and recWriter != ''">
+				AND a.rec_writer LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWriter}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWriter}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWriter},'%')</if>
+			</if>
+			
+			<if test="recStartTime != null and recStartTime != ''">
+				AND a.rec_startTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recStartTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recStartTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recStartTime},'%')</if>
+			</if>
+			<if test="recEndTime != null and recEndTime != ''">
+				AND a.rec_endTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recEndTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recEndTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recEndTime},'%')</if>
+			</if>
+			<if test="recHelpstatus != null and recHelpstatus != ''">
+				AND a.rec_helpstatus LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpstatus}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpstatus}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpstatus},'%')</if>
+			</if>
+			<if test='recStatus == "inProcess" or recStatus == "no"'>
+				AND (a.rec_status ='inProcess' or a.rec_status ='no') 
+			</if>
+			<if test='recStatus == "pass"'>
+				AND (a.rec_status ='pass') 
+			</if>
+			<if test="recApproperson != null and recApproperson != ''">
+				AND a.rec_approperson LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recApproperson}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recApproperson}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recApproperson},'%')</if>
+			</if>
+			<if test="recWrittenTime != null and recWrittenTime != ''">
+				AND a.rec_writtenTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWrittenTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWrittenTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWrittenTime},'%')</if>
+			</if>
+			<if test="recTpyLocation != null and recTpyLocation != ''">
+				AND a.rec_tpyLocation LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recTpyLocation}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recTpyLocation}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recTpyLocation},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rec_writer,a.rec_helpObj,a.rec_startTime,a.rec_endTime,a.rec_writtenTime,a.rec_status,a.fwdxpjState
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="recWriter != null and recWriter != ''">
+				AND a.rec_writer LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWriter}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWriter}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWriter},'%')</if>
+			</if>
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllByApp" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		INNER JOIN sys_user b ON b.id = a.rec_tpyid		
+		LEFT JOIN sys_office c ON c.id = b.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = b.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.rec_status in('inProcess', 'pass', 'return')
+			<if test="office != null and office != ''">
+				AND b.office_id = #{office.id} 
+			</if>
+			<if test="recWriter != null and recWriter != ''">
+				AND a.rec_writer LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recWriter}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWriter}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recWriter},'%')</if>
+			</if>
+			<!-- 填写人 -->
+			<if test="recTpyuser!= null and recTpyuser.name != null and recTpyuser.name != ''">
+				AND b.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recTpyuser.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recTpyuser.name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recTpyuser.name},'%')</if>
+			</if>
+			<if test="recHelpObj != null and recHelpObj != ''">
+				AND a.rec_helpObj LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recHelpObj}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpObj}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recHelpObj},'%')</if>
+			</if>
+			<if test="recStartTime != null and recStartTime != ''">
+				AND a.rec_startTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recStartTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recStartTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recStartTime},'%')</if>
+			</if>
+			<if test="recEndTime != null and recEndTime != ''">
+				AND a.rec_endTime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{recEndTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recEndTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{recEndTime},'%')</if>
+			</if>
+			<if test="recStatus != null and recStatus != ''">
+				AND a.rec_status = '${recStatus}'
+			</if>
+		</where>
+		ORDER BY ${page.orderBy}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tpy_dailyrecord(
+			id,
+			rec_tpyid,
+			rec_tpyLocation,
+			rec_helpobjid,
+			rec_helpobjtype,
+			rec_helpstatus,
+			rec_status,
+			rec_approperson,
+			rec_approtime,
+			rec_approopinion,
+			rec_helpContent,
+			rec_startTime,
+			rec_endTime,
+			rec_writtenTime,
+			rec_writer,
+			rec_helpObj,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			jtjjzc,
+			yjtgxpzxcp,
+			tgxjs,
+			jjjsnt,
+			pxnm,
+			cbqyhzs,
+			ddjyrc,
+			fwnchzzz,
+			jlkjsfjd,
+			pykjsfh,
+			jbpxb,
+			pxry,
+			pxpkqz,
+			sxcz,
+			ddzs,
+			cls,
+			bfpkc,
+			pkh,
+			ddtp,			
+			pkrk,
+			kjfwts,
+			drTableImage,
+			Year,
+			IsThreeArea	,
+			teamId,
+			teamName,
+			teamMemberType,
+			dailyRecordType	
+		) VALUES (
+			#{id},
+			#{recTpyid},
+			#{recTpyLocation},
+			#{recHelpobjid},
+			#{recHelpobjtype},
+			#{recHelpstatus},
+			#{recStatus},
+			#{recApproperson},
+			#{recApprotime},
+			#{recApproopinion},
+			#{recHelpContent},
+			#{recStartTime},
+			#{recEndTime},
+			#{recWrittenTime},
+			#{recWriter},
+			#{recHelpObj},	
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{jtjjzc},
+			#{yjtgxpzxcp},
+			#{tgxjs},
+			#{jjjsnt},
+			#{pxnm},
+			#{cbqyhzs},
+			#{ddjyrc},
+			#{fwnchzzz},
+			#{jlkjsfjd},
+			#{pykjsfh},
+			#{jbpxb},
+			#{pxry},
+			#{pxpkqz},
+			#{sxcz},
+			#{ddzs},
+			#{cls},
+			#{bfpkc},
+			#{pkh},
+			#{ddtp},			
+			#{pkrk},
+			#{kjfwts},
+			#{drTableImage},
+			#{Year},
+			#{IsThreeArea},
+			#{teamId},
+			#{teamName},
+			#{teamMemberType},
+			#{dailyRecordType}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tpy_dailyrecord SET 	
+			rec_tpyid = #{recTpyid},
+			rec_tpyLocation = #{recTpyLocation},
+			rec_helpobjid = #{recHelpobjid},
+			rec_helpobjtype = #{recHelpobjtype},
+			<!-- rec_stime = #{recStime},
+			rec_etime = #{recEtime}, -->
+			rec_helpstatus = #{recHelpstatus},
+			rec_status = #{recStatus},
+			rec_approperson = #{recApproperson},
+			rec_approtime = #{recApprotime},
+			rec_approopinion = #{recApproopinion},
+			rec_helpContent =#{recHelpContent},
+			rec_startTime= #{recStartTime},
+			rec_endTime= #{recEndTime},
+			rec_writtenTime= #{recWrittenTime},
+			rec_writer= #{recWriter},
+			rec_helpObj= #{recHelpObj},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tpy_dailyrecord SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id = "findListWithinPower" resultType="TpyDailyrecord">
+		SELECT
+			<include refid="tpyDailyrecordColumnsForWithinPower"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.del_flag = '0'
+		<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{office.id}, ',%'))</if>
+		</if>
+		<if test="recWriter != null and recWriter != ''">
+			AND b.rec_writer like 
+					<if test="dbName == 'oracle'">'%'||#{recWriter}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recWriter}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{recWriter}, '%')</if>
+		</if>
+		<if test="recHelpObj != null and recHelpObj != ''">
+			AND b.rec_helpObj like 
+					<if test="dbName == 'oracle'">'%'||#{recHelpObj}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{recHelpObj}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{recHelpObj}, '%')</if>
+		</if>
+		${sqlMap.dsf}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.update_date DESC
+			</otherwise>
+		</choose>		
+	</select>
+	<!-- 根据编号获得审核信息 -->
+	<select id="getFwdxList" resultType="Sqtpy">
+		SELECT
+			DISTINCT(a.xqdwname),
+			a.xqdwid
+		FROM tpy_xqdwsqtpy a
+		WHERE a.tpyid = #{tpyid}
+	</select>
+	<sql id="teamMemberJoins">	
+		INNER JOIN tpy_serviceteam b ON a.teamId = b.id
+		INNER JOIN vil_info c ON b.villageId = c.id
+    </sql>
+	<select id="getVilList" resultType="Sqtpy">
+		SELECT
+			DISTINCT(c.villageName) AS "xqdwname",
+			c.id AS "xqdwid"
+		FROM tpy_teammember a
+		<include refid="teamMemberJoins"/>
+		WHERE a.userId = #{tpyId}
+	</select>
+	
+	<select id="findAllByRecTpyId" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		WHERE a.rec_tpyId = #{recTpyId}
+	</select>
+	
+	<select id="findAllByRecTpyIdApp" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		WHERE a.rec_tpyId = #{recTpyid}
+		ORDER BY ${page.orderBy}
+	</select>
+	
+	<select id="getVerifyInfo" resultType="TpyDailyrecord">
+		SELECT 
+			<include refid="tpyDailyrecordColumns"/>
+		FROM tpy_dailyrecord a
+		<include refid="tpyDailyrecordJoins"/>
+		WHERE a.id = #{0}
+	</select>
+	
+	<update id="change">
+		UPDATE tpy_dailyrecord SET 	
+			rec_status = #{recStatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="savepj">
+		UPDATE tpy_dailyrecord SET 	
+		    fwdxpjState = #{fwdxpjState},
+			fwdxpjr = #{fwdxpjr},
+			fwdxpjTime = #{fwdxpjTime},
+			fwdxpjYj = #{fwdxpjYj}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<update id="changetpyDailyrecord">
+		UPDATE tpy_dailyrecord SET 	
+			rec_status = #{recStatus},				
+			rec_helpobjtype = #{recHelpobjtype},
+			rec_startTime = #{recStartTime},
+			rec_endTime = #{recEndTime},
+			rec_writtenTime = #{recWrittenTime},
+			rec_helpContent = #{recHelpContent},
+			jtjjzc = #{jtjjzc},
+			yjtgxpzxcp = #{yjtgxpzxcp},
+			tgxjs = #{tgxjs},
+			jjjsnt = #{jjjsnt},
+			pxnm = #{pxnm},
+			cbqyhzs = #{cbqyhzs},
+			ddjyrc = #{ddjyrc},
+			fwnchzzz = #{fwnchzzz},
+			jlkjsfjd = #{jlkjsfjd},
+			pykjsfh = #{pykjsfh},
+			jbpxb = #{jbpxb},
+			pxry = #{pxry},
+			pxpkqz = #{pxpkqz},
+			sxcz = #{sxcz},
+			ddzs = #{ddzs},
+			cls = #{cls},
+			bfpkc = #{bfpkc},
+			pkh = #{pkh},
+			ddtp = #{ddtp},			
+			pkrk = #{pkrk},
+			kjfwts = #{kjfwts},
+			drTableImage = #{drTableImage},
+			Year = #{Year},
+			IsThreeArea = #{IsThreeArea}	,
+			teamId = #{teamId},
+			teamName = #{teamName},
+			teamMemberType = #{teamMemberType},
+			dailyRecordType = #{dailyRecordType}	
+		WHERE id = #{id}
+	</update>
+	<select id="CheckIsThreeAreaByYear" resultType="TpyDailyrecord">
+		SELECT 
+			a.year AS "Year"
+		FROM tpy_threearea a
+		WHERE a.year = #{Year}
+		AND a.tpyId = #{recTpyid} 
+	</select>
+	
+	<select id="getTeamName" resultType="String">
+		SELECT 
+			teamName
+		FROM tpy_serviceteam
+		WHERE id = #{0}
+	</select>
+	
+	<select id="getVillageName" resultType="String">
+		SELECT 
+			villageName
+		FROM vil_info 
+		WHERE id = #{0} 
+	</select>
+	
+	<select id="getFwdxName" resultType="String">
+		SELECT 
+			name
+		FROM sys_user 
+		WHERE id = #{0} 
+	</select>
+	<!-- 根据teamId查询团队所在区域 -->
+	<select id="getTeamarea" resultType="String">
+		SELECT 
+			teamarea
+		FROM tpy_serviceteam
+		WHERE id = #{0}
+	</select>
+</mapper>

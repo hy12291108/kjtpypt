@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dailywork.dao.village.VilProtocolDao">
+    
+	<sql id="vilProtocolColumns">
+		a.id AS "id",
+		a.vil_id AS "vilId",
+		a.vil_name AS "vilName",
+		a.vil_location AS "vilLocation",
+		a.vil_contact AS "vilContact",
+		a.vil_tpyid AS "vilTpyid",
+		a.vil_tpyname AS "vilTpyname",
+		a.vil_needs AS "vilNeeds",
+		a.vil_attach AS "vilAttach",
+		a.vil_createRole AS "vilCreateRole",
+		a.helpRelationid AS "helpRelationid",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="vilProtocolJoins">
+	<!-- JOIN sys_attachment o ON o.att_recordid = a.id -->
+	</sql>
+    
+	<select id="get" resultType="VilProtocol">
+		SELECT 
+			<include refid="vilProtocolColumns"/>
+		FROM vil_protocol a
+		<include refid="vilProtocolJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="VilProtocol">
+		SELECT 
+			<include refid="vilProtocolColumns"/>
+		FROM vil_protocol a
+		<!-- <include refid="vilProtocolJoins"/> -->
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="vilId != null and vilId != ''">
+				AND a.vil_id = #{vilId}
+			</if>
+			<if test="vilName != null and vilName != ''">
+				AND a.vil_name = #{vilName}
+			</if>
+			<if test="vilLocation != null and vilLocation != ''">
+				AND a.vil_location = #{vilLocation}
+			</if>
+			<if test="vilContact != null and vilContact != ''">
+				AND a.vil_contact = #{vilContact}
+			</if>
+			<if test="vilTpyid != null and vilTpyid != ''">
+				AND a.vil_tpyid = #{vilTpyid}
+			</if>
+			<if test="vilTpyname != null and vilTpyname != ''">
+				AND a.vil_tpyname = #{vilTpyname}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="VilProtocol">
+		SELECT 
+			<include refid="vilProtocolColumns"/>
+		FROM vil_protocol a
+		<include refid="vilProtocolJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO vil_protocol(
+			id,
+			vil_id,
+			vil_name,
+			vil_location,
+			vil_contact,
+			vil_tpyid,
+			vil_tpyname,
+			vil_needs,
+			vil_attach,
+			vil_createRole,
+			helpRelationid,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			dd_id,
+			stateflag
+		) VALUES (
+			#{id},
+			#{vilId},
+			#{vilName},
+			#{vilLocation},
+			#{vilContact},
+			#{vilTpyid},
+			#{vilTpyname},
+			#{vilNeeds},
+			#{vilAttach},
+			#{vilCreateRole},
+			#{helpRelationid},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{ddId},
+			#{stateflag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE vil_protocol SET 	
+			vil_id = #{vilId},
+			vil_name = #{vilName},
+			vil_location = #{vilLocation},
+			vil_contact = #{vilContact},
+			vil_tpyid = #{vilTpyid},
+			vil_tpyname = #{vilTpyname},
+			vil_needs = #{vilNeeds},
+			vil_attach = #{vilAttach},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	<!-- 审核 -->
+	<update id="savefwxyopinion">
+		UPDATE vil_protocol SET 	
+			stateflag = #{stateflag},
+			fwxyopinion = #{fwxyopinion}
+		WHERE dd_id = #{ddId}
+	</update>
+	<update id="savefwxy2">
+		UPDATE tpy_xqdwsqtpy SET 	
+			fwxystateflag = #{fwxystateflag},
+			fwxyopinion = #{fwxyopinion},
+			fwxyzpr = #{fwxyzpr},
+			fwxyzpTime = #{fwxyzpTime}
+		WHERE id = #{id}
+	</update>
+	<update id="delete">
+		UPDATE vil_protocol SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

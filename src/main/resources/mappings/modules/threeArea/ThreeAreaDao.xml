@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.threearea.dao.ThreeAreaDao">
+	<!-- <resultMap  type="ServiceTeam" id="serviceTeamResultMap">
+		<id property="id" column="id" />
+		<result property="teamName" column="teamName"></result>
+		<result property="teamArea" column="teamArea"></result>
+		<result property="serviceCyfx" column="serviceCyfx"></result>
+		<result property="villageId" column="villageId"></result>
+		<result property="startTime" column="startTime"></result>
+		<result property="endTime" column="endTime"></result>
+ 		<result property="createBy.id" column="createBy.id" />
+		<result property="createDate" column="create_date" />
+		<result property="updateBy.id" column="updateBy.id" />
+		<result property="updateDate" column="update_date" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+		<collection property="teamMember" ofType="TeamMember">
+			<id property="id" column="teamMember.id" />
+			<result property="teamId" column="teamMember.teamId" />
+			<result property="name" column="teamMember.name" />
+			<result property="tpyCompany" column="teamMember.tpy_company" />
+			<result property="tpyTitle" column="teamMember.tpy_title" />
+			<result property="tpyMajor" column="teamMember.tpy_major" /> 
+			<result property="mobile" column="teamMember.mobile" /> 
+			<result property="email" column="teamMember.email" /> 
+			<result property="memberType" column="teamMember.memberType" /> 
+		</collection>
+	</resultMap> -->
+	<sql id="threeAreaColumns">
+		id,
+		zoneId,
+		zoneName,
+		zoneParentId,
+		xpId,
+		xpParentId,
+		tpyId,
+		name,
+		email,
+		sex,
+		tpyBirthDate,
+		mobile,
+		tpyQulification,
+		tpyMajor,
+		tpySpecial,
+		personalInfo,
+		tpyNation,
+		tpyPoliticalStatus,
+		status,
+		year,
+		checkPersonC,
+ 		checkTimeC,
+ 		checkAdviceC,
+		checkPersonP,
+		checkTimeP,
+		checkAdviceP,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		del_flag,
+		xpZone,
+		xpZoneName,
+		xpTime,
+		xpStartTime,
+		xpEndTime,
+		xpPerson,
+		xpYear
+	</sql>
+	<insert id="insert"  parameterType="ThreeArea">
+	insert into tpy_threeArea(
+		id,
+		zoneId,
+		zoneName,
+		zoneParentId,
+		xpId,
+		xpParentId,
+	 	tpyId,
+		name,
+		email,
+		sex,
+		tpyBirthDate,
+		mobile,
+		tpyQulification,
+		tpyMajor,
+		tpySpecial,
+		personalInfo,
+		tpyNation,
+		tpyPoliticalStatus,
+		status,
+		sqTime,
+		year,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		del_flag
+	) VALUES (
+		#{id},
+		#{zoneId},
+		#{zoneName},
+		#{zoneParentId},
+		#{xpId},
+		#{xpParentId},
+	 	#{tpyId},
+		#{name},
+		#{email},
+		#{sex},
+		#{tpyBirthDate},
+		#{mobile},
+		#{tpyQulification},
+		#{tpyMajor},
+		#{tpySpecial},
+		#{personalInfo},
+		#{tpyNation},
+		#{tpyPoliticalStatus},
+		#{status},
+		#{sqTime},
+		#{year},
+		#{createBy.id}, 
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{delFlag}
+	)
+</insert>
+<select id="get" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where id=#{id}
+</select>
+<!-- 获取省的申请列表 -->
+<!-- <select id="getThreeAreaP" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} and year=#{year}
+	order by year desc
+</select> -->
+<select id="getThreeAreaP" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status}
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+	order by year desc
+</select>
+<!-- 获取市的申请列表 -->
+<!-- <select id="getThreeAreaC" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status='1'and (xpId=#{0} or xpParentId=#{0})
+	and year=#{1}
+	order by year desc
+</select> -->
+<select id="getThreeAreaC" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status='1'and (xpId=#{0} or xpParentId=#{0})
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+	order by year desc
+</select>
+<select id="getThreeAreaC1" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status='1'and (xpId=#{xpId} or xpParentId=#{xpId})
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+	order by year desc
+</select>
+<!-- 更新审核结果 -->
+<update id="update">
+	update tpy_threeArea set status=#{status}
+	<if test="checkPersonC !=null and checkPersonC!=''">
+			, checkPersonC=#{checkPersonC}
+	</if>
+	<if test="checkTimeC !=null and checkTimeC!=''">
+			, checkTimeC=#{checkTimeC}
+	</if>
+	<if test="checkAdviceC !=null and checkAdviceC!=''">
+			, checkAdviceC=#{checkAdviceC}
+	</if>
+	<if test="checkPersonP !=null and checkPersonP!=''">
+			, checkPersonP=#{checkPersonP}
+	</if>
+	<if test="checkTimeP !=null and checkTimeP!=''">
+			, checkTimeP=#{checkTimeP}
+	</if>
+	<if test="checkAdviceP !=null and checkAdviceP!=''">
+			, checkAdviceP=#{checkAdviceP}
+	</if>
+	where id=#{id}
+</update>
+<!-- <select id="getPassTalent" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} and xpZone is null 
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+</select> -->
+ <select id="getXpList" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} and xpZone is null 
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+</select>
+<select id="getPassTalent" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} 
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+</select>
+<select id="getPassTalent1" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} and (xpId=#{xpId} or xpParentId=#{xpId})
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+</select>
+<select id="getFailTalent" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where (status='3' or status='5') 
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+</select>
+<select id="getFailTalent1" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where (status='3' or status='5') and (xpId=#{xpId} or xpParentId=#{xpId})
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+	<if test="name !=null and name!=''">
+		AND name=#{name}
+	</if>
+</select>
+<select id="getSqResult" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where tpyId = #{tpyId} and year=#{year}
+</select>
+<select id="getShResult" resultType="ThreeArea">
+SELECT
+	<include refid="threeAreaColumns"></include>
+FROM
+	tpy_threearea
+WHERE
+	tpyId = #{tpyId} order by year desc
+</select>
+
+ <select id="findXpZonePerson" resultType="ThreeArea">
+	select <include refid="threeAreaColumns"></include>
+	from tpy_threeArea where status=#{status} and xpZone is not null 
+	<if test="year!=null and year!=''">
+	and year = #{year}
+	</if>
+	<if test="xpZone!=null and xpZone!=''">
+	and xpZone = #{xpZone}
+	</if>
+	<if test="name != null and name != ''">
+			AND name like 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+	</if>
+	<if test="tpyMajor != null and tpyMajor != ''">
+			AND tpyMajor like 
+					<if test="dbName == 'oracle'">'%'||#{tpyMajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyMajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyMajor}, '%')</if>
+	</if>
+</select>
+<update id="updateXpInfo">
+	update tpy_threeArea set 
+		xpZone=#{xpZone},
+		xpZoneName=#{xpZoneName},
+		xpTime=#{xpTime},
+		xpStartTime=#{xpStartTime},
+		xpEndTime=#{xpEndTime},
+		xpPerson=#{xpPerson},
+		xpYear=#{xpYear}
+		where id=#{id}
+</update>
+<!-- 修改三区人才信息 -->
+<update id="tpyThreeAreaupdate">
+	update tpy_threeArea set status='1'
+	<if test="personalInfo !=null and personalInfo!=''">
+			, personalInfo=#{personalInfo}
+	</if>
+	<if test="tpySpecial !=null and tpySpecial!=''">
+			, tpySpecial=#{tpySpecial}
+	</if>
+	where id=#{id}
+</update>
+</mapper>

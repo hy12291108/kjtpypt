@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.TpyInfoDao">
+		<resultMap id="TpyInfoResult" type="TpyInfo">
+		<id property="id" column="id" />
+		<result property="tpyNation" column="tpyNation" />
+		<result property="tpyPoliticalStatus" column="tpyPoliticalStatus" />
+		<result property="tpyHealthCondition" column="tpyHealthCondition" />
+		<result property="tpyMaritalStatus" column="tpyMaritalStatus" />
+		<result property="tpyGraduateSchool" column="tpyGraduateSchool" />
+		<result property="tpyIsDeploy" column="tpyIsDeploy" />
+		<result property="tpySource" column="tpySource" />
+		<result property="tpyServiceSite" column="tpyServiceSite" />
+		<result property="tpyServiceContent" column="tpyServiceContent" />
+		<result property="tpyRewardStatus" column="tpyRewardStatus" />
+		<result property="tpyId" column="tpyId" />
+		<result property="tpySW" column="tpySW" />
+		<result property="tpySD" column="tpySD" />
+		<result property="createBy.id" column="createBy.id" />
+		<result property="createDate" column="create_date" />
+		<result property="updateBy.id" column="updateBy.id" />
+		<result property="updateDate" column="update_date" />
+		<result property="remarks" column="remarks" />
+		<collection property="tpyWorkExperience" ofType="TpyWorkExperience">
+			<id property="id" column="tpyWorkExperience.id" />
+			<result property="tpyCorpName" column="tpyWorkExperience.tpyCorpName" />
+			<result property="tpyWorkDate" column="tpyWorkExperience.tpyWorkDate" />
+			<result property="tpyLeaveDate" column="tpyWorkExperience.tpyLeaveDate" />
+			<result property="tpyWork" column="tpyWorkExperience.tpyWork" />
+			<result property="tpyInfoId" column="tpyWorkExperience.tpyInfoId" /> 
+		</collection>
+	</resultMap>
+	<!-- 插入特派员基本信息 -->
+	<sql id="tpyInfoColumns">
+	a.id,
+	tpyNation,
+	tpyPoliticalStatus,
+	tpyHealthCondition,
+	tpyMaritalStatus,
+	tpyGraduateSchool,
+	tpyIsDeploy,
+	tpySource,
+	tpyServiceSite,
+	tpyServiceContent,
+	tpyRewardStatus,
+	tpyId,
+	tpySW,
+	tpySD,
+	a.create_by, 
+	a.create_date, 
+	a.update_by, 
+	a.update_date, 
+	a.remarks,
+	b.id,
+	b.tpyCorpName as "tpyWorkExperience.tpyCorpName",
+	b.tpyWorkDate as "tpyWorkExperience.tpyWorkDate",
+	b.tpyLeaveDate as "tpyWorkExperience.tpyLeaveDate",
+	b.tpyWork as "tpyWorkExperience.tpyWork",
+	b.tpyInfoId as "tpyWorkExperience.tpyInfoId"
+	</sql>
+	<sql id="selectJoins">
+		LEFT JOIN tpy_workexperience b ON b.tpyInfoId = a.id
+    </sql>
+	<insert id="insert">
+		INSERT INTO tpy_info(
+			id, 
+			tpyNation, 
+			tpyPoliticalStatus, 
+			tpyHealthCondition, 
+			tpyMaritalStatus, 
+			tpyGraduateSchool, 
+			tpyIsDeploy, 
+			tpySource, 
+			tpyServiceSite, 
+			tpyServiceContent, 
+			tpyRewardStatus, 
+			tpyId,
+			tpySW,
+			tpySD,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			remarks
+		) VALUES (
+			#{id}, 
+			#{tpyNation}, 
+			#{tpyPoliticalStatus}, 
+			#{tpyHealthCondition}, 
+			#{tpyMaritalStatus}, 
+			#{tpyGraduateSchool}, 
+			#{tpyIsDeploy}, 
+			#{tpySource}, 
+			#{tpyServiceSite}, 
+			#{tpyServiceContent}, 
+			#{tpyRewardStatus}, 
+			#{tpyId},
+			#{tpySW},
+			#{tpySD},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}
+		)
+	</insert>
+	<!-- resultMap="TpyInfoResult"  根据特派员ID获取特派员基本信息 20170908-->
+	<select id="get" resultType="TpyInfo" >
+	select 
+	id,
+	tpyNation,
+	tpyPoliticalStatus,
+	tpyHealthCondition,
+	tpyMaritalStatus,
+	tpyGraduateSchool,
+	tpyIsDeploy,
+	tpySource,
+	tpyServiceSite,
+	tpyServiceContent,
+	tpyRewardStatus,
+	tpyId,
+	tpySW,
+	tpySD
+	from  tpy_info a
+	where tpyId = #{tpyId}
+	</select>
+	
+	<select id="getInfo" resultType="TpyInfo" >
+	select 
+	id,
+	tpyNation,
+	tpyPoliticalStatus,
+	tpyHealthCondition,
+	tpyMaritalStatus,
+	tpyGraduateSchool,
+	tpyIsDeploy,
+	tpySource,
+	tpyServiceSite,
+	tpyServiceContent,
+	tpyRewardStatus,
+	tpyId,
+	tpySW,
+	tpySD
+	from  tpy_info a
+	where id = #{id}
+	</select>
+	
+	
+	<update id="updateBaseInfo">
+	update tpy_info set
+			tpyNation= #{tpyNation},
+			tpyPoliticalStatus= #{tpyPoliticalStatus},
+			tpyHealthCondition= #{tpyHealthCondition},
+			tpyMaritalStatus= #{tpyMaritalStatus}, 
+			tpyGraduateSchool= #{tpyGraduateSchool}, 
+			tpyIsDeploy = #{tpyIsDeploy}, 
+			tpySource = #{tpySource}, 
+			tpyServiceSite = #{tpyServiceSite}, 
+			tpyServiceContent= #{tpyServiceContent},
+			tpyRewardStatus = #{tpyRewardStatus},
+			tpyId = #{tpyId},
+			tpySW = #{tpySW},
+			tpySD = #{tpySD},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}
+			where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.threearea.dao.ThreeAreaBaseDataDao">
+	<sql id="threeAreaBaseDataColumns">
+		id,
+		year,
+		startTime,
+		endTime,
+		yearStartTime,
+		yearEndTime,
+		update_by,
+		update_date
+	</sql>
+	<insert id="insert">
+	insert into tpy_threeAreaBaseData(
+		id,
+		year,
+		startTime,
+		endTime,
+		yearStartTime,
+		yearEndTime,
+		update_by,
+		update_date,
+	) VALUES (
+		#{id},
+		#{year},
+		#{startTime},
+		#{endTime},
+		#{yearStartTime},
+		#{yearEndTime},
+		#{updateBy.id},
+		#{updateDate}
+	)
+</insert>
+<!-- <select id="getSqParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData a where 
+			 a.startTime &lt;= #{currentTime}
+			AND a.endTime &gt;= #{currentTime}		
+</select> -->
+<select id="getSqParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData a where 
+			 a.startTime &lt;= #{currentTime}
+			AND a.yearEndTime &gt;= #{currentTime}	order by year desc	
+</select>
+
+
+<select id="getParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData a  where
+			 a.yearStartTime &lt;= #{currentTime}
+			AND a.yearEndTime &gt;= #{currentTime}		
+</select>
+
+
+
+<!-- <select id="getShParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData a where
+			 a.endTime &lt;= #{currentTime}	
+			AND a.yearStartTime &gt;= #{currentTime}			
+</select> -->
+
+
+<select id="getShParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData <!-- a where
+			 a.endTime &lt;= #{currentTime}	
+			AND a.yearStartTime &gt;= #{currentTime}	 -->	
+			where startTime=(select max(startTime) from tpy_threeAreaBaseData)
+</select>
+
+
+
+<select id="getPassParameter" resultType="ThreeAreaBaseData">
+	select <include refid="threeAreaBaseDataColumns"></include>
+	from tpy_threeAreaBaseData a where
+			 a.endTime &lt;= #{currentTime}	
+			AND a.yearEndTime &gt;= #{currentTime}			
+</select>
+
+<update id="update">
+update tpy_threeAreaBaseData set 
+year =#{year},
+startTime = #{startTime},
+endTime = #{endTime},
+yearStartTime = #{yearStartTime},
+yearEndTime = #{yearEndTime},
+update_by = #{updateBy.id}, 
+update_date = #{updateDate}
+where id =#{id}
+</update>
+</mapper>

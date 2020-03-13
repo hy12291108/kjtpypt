@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sqtpy.dao.TpyShDao">	
+	<sql id="sqtpyColumns">
+			b.id, 
+			b.xqdwid, 
+			b.xqdwname, 
+			b.tpyid, 
+			b.tpyname, 
+			b.zc, 
+			b.zy, 
+			b.tech_special, 
+			b.company, 
+			b.mobile,
+			b.starTime, 
+			b.endTime, 
+			b.state,
+			b.zpr,
+			b.zpryj,
+			b.fwxy,
+			b.fwxyorg,
+			b.xqdwphone,
+			b.xqdwsqReason,
+			b.ismajor,
+			b.zpTime,
+			b.fwxystateflag,
+			b.fwxystateflag1,
+			b.fwxyopinion,
+			b.fwxyopinion1,
+			b.person_flag,
+			b.update_date,
+			b.create_date,				
+			a.corp_corName AS "corpcorName",			
+			a.company_id AS "company.id",
+			a.office_id AS "office.id",
+    		o.name AS "office.name"
+	</sql>
+	<sql id="sqtpyColumns1">
+			b.id, 
+			b.xqdwid, 
+			b.xqdwname, 
+			b.tpyid, 
+			b.tpyname, 
+			b.zc, 
+			b.zy, 
+			b.tech_special, 
+			b.company, 
+			b.mobile,
+			b.starTime, 
+			b.endTime, 
+			b.state,
+			b.zpr,
+			b.zpryj,
+			b.fwxy,
+			b.fwxyorg,
+			b.xqdwsqReason,
+			b.ismajor,
+			b.zpTime,
+			a.corp_corName AS corpcorName,
+			b.xqdwphone,
+            b.fwxystateflag,
+            b.fwxystateflag1,
+            b.update_date,
+			b.create_date,
+            b.person_flag
+	</sql>
+	<sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person
+		INNER JOIN tpy_xqdwsqtpy b ON a.id = b.xqdwid
+    </sql>
+    <sql id="sqtpyJoins">
+    	INNER JOIN sys_user a ON a.id = b.xqdwid
+		INNER JOIN vil_protocol c ON c.id = b.fwxy
+    </sql>
+	<!-- 查看未审核信息列表（陕西可以看全部，西安可以看本身及以下，周至只能看本身）-->
+	<select id = "findShList" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.state = '1'
+		${sqlMap.dsf}
+		ORDER BY b.starTime DESC
+	</select>
+	<!-- 查看对应未审核信息列表-->
+	<select id = "findDyShList" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.state = '1'
+		AND a.office_id = #{office.id}	
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname like 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{xqdwname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND b.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND b.endTime like 
+					<if test="dbName == 'oracle'">'%'||#{endTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{endTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{endTime}, '%')</if>
+		</if>
+		<if test="ismajor != null and ismajor !=''">
+			AND b.ismajor like 
+					<if test="dbName == 'oracle'">'%'||#{ismajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{ismajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{ismajor}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.xqdwname,b.starTime,b.endTime,b.ismajor,b.state,b.person_flag
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 查看对应信息列表app专用-->
+	<select id = "findListbyApp" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.state in (1, 2, 3) 
+		<if test="office != null and office != ''">
+			AND a.office_id = #{office.id} 
+		</if>
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname like 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{xqdwname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND b.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND b.endTime like 
+					<if test="dbName == 'oracle'">'%'||#{endTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{endTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{endTime}, '%')</if>
+		</if>
+		<if test="ismajor != null and ismajor !=''">
+			AND b.ismajor like 
+					<if test="dbName == 'oracle'">'%'||#{ismajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{ismajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{ismajor}, '%')</if>
+		</if>
+		<if test="state != null and state != ''">
+			AND b.state = #{state} 
+		</if>
+		ORDER BY b.state , b.xqdwname,b.starTime,b.endTime,b.ismajor,b.state,b.person_flag
+	</select>
+	
+	<!-- APP 服务协议查询审核  -->
+	<select id="findAllFwxyFromApp" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.state = '2' 
+		AND b.fwxy != 'null' 
+		AND b.fwxy IS NOT NULL 
+		<!-- AND a.office_id = #{officeid}  -->
+		<if test="tpyname != null and tpyname != ''">
+			AND b.tpyname like 
+					<if test="dbName == 'oracle'">'%'||#{tpyname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyname}, '%')</if>
+		</if>
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname like 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{xqdwname}, '%')</if>
+		</if>
+		<if test="office != null and office.id != null and office.id != ''">
+			AND o.id = #{office.id}
+		</if>
+		<if test="fwxystateflag != null and fwxystateflag != ''">
+			AND b.fwxystateflag = #{fwxystateflag} 
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.fwxystateflag ASC, b.zpTime DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 查看已审核信息列表（陕西可以看全部，西安可以看本身及以下，周至只能看本身）-->
+	<select id = "findShList1" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.state != '0'
+		AND b.state !='1'
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname like 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{xqdwname}, '%')</if>
+		</if>
+		<if test="tpyname != null and tpyname != ''">
+			AND b.tpyname like 
+					<if test="dbName == 'oracle'">'%'||#{tpyname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND b.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		${sqlMap.dsf}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 查看对应已审核信息列表-->
+	<select id = "findDyShList1" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE b.state != '0'
+		AND b.state !='1'
+		AND a.office_id = #{office.id}
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname like 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{xqdwname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND b.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND b.endTime like 
+					<if test="dbName == 'oracle'">'%'||#{endTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{endTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{endTime}, '%')</if>
+		</if>
+		<if test="ismajor != null and ismajor !=''">
+			AND b.ismajor like 
+					<if test="dbName == 'oracle'">'%'||#{ismajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{ismajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{ismajor}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.xqdwname,b.starTime,b.endTime,b.ismajor,b.state,b.person_flag,b.create_date
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 插入申请 -->
+	<insert id="insert">
+		INSERT INTO tpy_xqdwsqtpy(
+			id, 
+			xqdwid, 
+			xqdwname, 
+			tpyid, 
+			tpyname, 
+			zc, 
+			zy, 
+			tech_special, 
+			company, 
+			mobile,
+			starTime, 
+			endTime, 
+			state,
+			zpr,
+			zpryj,
+			xqdwsqReason,
+			ismajor		
+		) VALUES (
+			#{id},
+			#{xqdwid}, 
+			#{xqdwname}, 
+			#{tpyid}, 
+			#{tpyname}, 
+			#{zc}, 
+			#{zy}, 
+			#{tech_special}, 
+			#{company}, 
+			#{mobile},
+			#{starTime}, 
+			#{endTime}, 
+			#{state},
+			#{zpr},
+			#{zpryj},
+			#{xqdwsqReason},
+			#{ismajor}
+		)
+	</insert>
+	<!-- 更新申请特派员信息  -->
+	<update id="updateTpySqInfo">
+		UPDATE tpy_xqdwsqtpy SET 
+			state = #{1}
+		WHERE id = #{0}
+	</update>
+	<!-- 删除未审核的申请 -->
+	<delete id="deleteTpySqInfo">
+		DELETE FROM tpy_xqdwsqtpy WHERE id = #{id}
+	</delete>
+	<!-- 根据编号获得审核信息 -->
+	<select id="get" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+		FROM sys_user a
+		<include refid="userJoins"/><!-- 
+		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
+		WHERE b.id = #{id}
+	</select>
+	
+	
+	<select id="findDscxy" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.fwxy = 'null'
+		AND b.tpyid = #{tpyid}
+		AND b.state = '2'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.xqdwname,b.starTime,b.endTime,b.ismajor,b.state,b.person_flag,b.create_date
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="fwxyshlist" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.state = '2'
+		AND a.office_id = #{office.id}
+		AND b.fwxy != 'null'
+		AND !(b.fwxystateflag = '1' OR b.fwxystateflag = '2')
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="fwxyyshlist" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.state = '2'
+		AND a.office_id = #{office.id}
+		AND b.fwxy != 'null'
+		AND !(b.fwxystateflag = '0' OR b.fwxystateflag = '3')
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findDscxybyxqdw" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.fwxyorg = 'null'
+		AND b.xqdwid = #{xqdwid}
+		AND b.state = '2'
+		ORDER BY b.zpTime DESC
+	</select>	
+	<select id="findYscxy" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns1"/>
+		FROM tpy_xqdwsqtpy b
+			<include refid="sqtpyJoins"/>
+		WHERE b.fwxy != 'null'
+		AND b.tpyid = #{tpyid}
+		AND b.state = '2'
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.xqdwname,b.starTime,b.endTime,b.ismajor,b.state,b.person_flag,b.create_date
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findYscxybyxqdw" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns1"/>
+		FROM tpy_xqdwsqtpy b
+			<include refid="sqtpyJoins"/>
+		WHERE b.fwxyorg != 'null'
+		AND b.xqdwid = #{xqdwid}
+		AND b.state = '2'
+		ORDER BY b.zpTime DESC
+	</select>
+	<!-- 信息查询 ——(服务对象)服务协议列表 -->
+	<select id="fwdxxylist" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM sys_user a
+			<include refid="userJoins"/>
+		WHERE b.state = '2'
+		AND b.fwxy != 'null'
+		AND !(b.fwxystateflag = '0' OR b.fwxystateflag = '3')
+		<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,',#{office.id},',%'))</if>
+		</if>
+		<if test="xqdwname != null and xqdwname != ''">
+			AND b.xqdwname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{xqdwname}||'%')</if>
+					<if test="dbName == 'mssql'">'%'+#{xqdwname}+'%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%',#{xqdwname},'%')</if>
+		</if>	
+		<if test="tpyname != null and tpyname != ''">
+			AND b.tpyname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{tpyname}||'%')</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyname}+'%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%',#{tpyname},'%')</if>
+		</if>	
+		${sqlMap.dsf}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date desc
+			</otherwise>
+		</choose>
+	</select>
+	
+
+</mapper>

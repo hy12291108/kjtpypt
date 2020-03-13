@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sqtpy.dao.SqtpyDao">	
+	<sql id="sqtpyColumns">
+			a.id, 
+			a.xqdwid, 
+			a.xqdwname, 
+			a.tpyid, 
+			a.tpyname, 
+			a.zc, 
+			a.zy, 
+			a.tech_special, 
+			a.company, 
+			a.mobile,
+			a.starTime, 
+			a.endTime, 
+			a.state,
+			a.zpr,
+			a.zpryj,
+			a.xqdwsqReason,
+			a.ismajor,
+			a.fwxystateflag,
+			a.fwxyopinion,
+			a.fwxystateflag1,
+			a.fwxyopinion1,
+			a.xqdwphone,
+			a.person_flag,
+			a.create_date,
+			a.update_date,
+			a.fwxy
+	</sql>
+	<sql id="sqtpyColumns1">
+			a.id, 
+			a.xqdwid, 
+			a.xqdwname, 
+			a.tpyid, 
+			a.tpyname, 
+			a.zc, 
+			a.zy, 
+			a.tech_special, 
+			a.company, 
+			a.mobile,
+			a.starTime, 
+			a.endTime, 
+			a.state,
+			a.zpr,
+			a.zpryj,
+			a.xqdwsqReason,
+			a.ismajor,
+			a.fwxystateflag,
+			a.fwxyopinion,
+			a.fwxystateflag1,
+			a.fwxyopinion1,
+			a.xqdwphone,
+			a.fwxyzpr,
+			a.fwxyzpTime,
+			a.create_date,
+			a.update_date,
+			b.corp_corName AS "corpcorName"
+	</sql>
+	<sql id="sqtpyJoins">
+    	INNER JOIN sys_user b ON b.id = a.xqdwid
+    </sql>
+	<!-- 查看需求单位申请特派员列表-->
+	<select id = "selectsqtpylist" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM tpy_xqdwsqtpy a
+		WHERE a.xqdwid = #{xqdwid}
+		<if test="state != '2' and state != '3' "> 
+			AND (a.state = '0' or a.state = '1') 
+		</if>
+		<if test="tpyname != null and tpyname != ''">
+			AND a.tpyname like 
+					<if test="dbName == 'oracle'">'%'||#{tpyname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND a.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND a.endTime like 
+					<if test="dbName == 'oracle'">'%'||#{endTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{endTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{endTime}, '%')</if>
+		</if>
+		<if test="ismajor != null and ismajor !=''">
+			AND a.ismajor like 
+					<if test="dbName == 'oracle'">'%'||#{ismajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{ismajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{ismajor}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.tpyname,a.starTime,a.endTime,a.ismajor,a.state,a.person_flag,a.create_date
+			</otherwise>
+		</choose>
+	</select>
+	<select id = "selectsqtpylistYsh" resultType="Sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM tpy_xqdwsqtpy a
+		WHERE a.xqdwid = #{xqdwid}
+		<if test="state != '0' and state != '1' "> 
+			AND (a.state = '2' or a.state = '3') 
+		</if>
+		<if test="tpyname != null and tpyname != ''">
+			AND a.tpyname like 
+					<if test="dbName == 'oracle'">'%'||#{tpyname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyname}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyname}, '%')</if>
+		</if>
+		<if test="starTime != null and starTime != ''">
+			AND a.starTime like 
+					<if test="dbName == 'oracle'">'%'||#{starTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{starTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{starTime}, '%')</if>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND a.endTime like 
+					<if test="dbName == 'oracle'">'%'||#{endTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{endTime}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{endTime}, '%')</if>
+		</if>
+		<if test="ismajor != null and ismajor !=''">
+			AND a.ismajor like 
+					<if test="dbName == 'oracle'">'%'||#{ismajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{ismajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{ismajor}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.tpyname,a.starTime,a.endTime,a.ismajor ,a.state
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 通过特派员id查询服务协议（需求单位）列表，用于APP日志填报-->
+	<select id = "findAllByTpyidApp" resultType="Sqtpy">
+		SELECT 
+			a.xqdwid, a.xqdwname, count(DISTINCT a.xqdwname)
+		FROM
+			tpy_xqdwsqtpy a
+		WHERE
+			a.tpyid = #{tpyid}
+		GROUP BY
+			a.xqdwname
+		ORDER BY
+			a.xqdwname
+	</select>
+	<!-- 插入申请 -->
+	<insert id="insert">
+		INSERT INTO tpy_xqdwsqtpy(
+			id, 
+			xqdwid, 
+			xqdwname, 
+			tpyid, 
+			tpyname, 
+			zc, 
+			zy, 
+			tech_special, 
+			company, 
+			mobile,
+			starTime, 
+			endTime, 
+			state,
+			zpr,
+			zpryj,
+			fwxy,
+			fwxyorg,
+			xqdwsqReason,
+			ismajor,
+			xqdwphone,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			remarks, 
+			del_flag,
+			person_flag		
+		) VALUES (
+			#{id},
+			#{xqdwid}, 
+			#{xqdwname}, 
+			#{tpyid}, 
+			#{tpyname}, 
+			#{zc}, 
+			#{zy}, 
+			#{techspecial}, 
+			#{company}, 
+			#{mobile},
+			#{starTime}, 
+			#{endTime}, 
+			#{state},
+			#{zpr},
+			#{zpryj},
+			#{fwxy},
+			#{fwxyorg},
+			#{xqdwsqReason},
+			#{ismajor},
+			#{xqdwphone},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}, 
+			#{delFlag},
+			#{personFlag}
+		)
+	</insert>
+	<select id="get" resultType="sqtpy">
+		SELECT
+			<include refid="sqtpyColumns"/>
+		FROM tpy_xqdwsqtpy a WHERE a.id = #{id}
+	</select>
+	<!-- 更新申请特派员信息  -->
+	<update id="updateTpySqInfo">
+		UPDATE tpy_xqdwsqtpy SET 
+			state = #{state},
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	<!-- 更新申请特派员信息1  -->
+	<update id="updateTpySqInfo1">
+		UPDATE tpy_xqdwsqtpy SET 
+			tpyid = #{tpyid},
+			tpyname = #{tpyname},
+			zc = #{zc}, 
+			zy = #{zy}, 
+			tech_special = #{techspecial}, 
+			company = #{company}, 
+			mobile = #{mobile},
+			state = #{state},
+			zpr = #{zpr},
+			zpryj = #{zpryj},
+			zpTime = #{zpTime}				
+		WHERE id = #{id}
+	</update>
+	<update id="updateTpySqInfo2">
+		UPDATE tpy_xqdwsqtpy SET 
+			tpyid = #{tpyid},
+			tpyname = #{tpyname},
+			zc = #{zc}, 
+			zy = #{zy}, 
+			tech_special = #{techspecial}, 
+			company = #{company}, 
+			mobile = #{mobile},
+			state = #{state},
+			zpr = #{zpr},
+			zpryj = #{zpryj},
+			zpTime = #{zpTime}				
+		WHERE id = #{id}
+	</update>
+	<update id="updateTpySqInfo3">
+		UPDATE tpy_xqdwsqtpy SET 
+			state = #{state},
+			zpr = #{zpr},
+			zpryj = #{zpryj},
+			zpTime = #{zpTime}				
+		WHERE id = #{id}
+	</update>
+	
+	<update id="changeTpy">
+		UPDATE tpy_xqdwsqtpy SET 
+			state = #{state},
+			starTime = #{starTime},
+			endTime = #{endTime},
+			xqdwsqReason = #{xqdwsqReason}				
+		WHERE id = #{id}
+	</update>
+	<!-- 删除未审核的申请 -->
+	<delete id="deleteTpySqInfo">
+		DELETE FROM tpy_xqdwsqtpy WHERE id = #{id}
+	</delete>
+	<select id="findList" resultType="sqtpy">
+		SELECT 
+			 <include refid="sqtpyColumns1"/> 
+		FROM tpy_xqdwsqtpy a
+		<!-- <include refid="vilProtocolJoins"/> -->
+		<include refid="sqtpyJoins"/>
+		<where>
+			<!-- a.del_flag = #{DEL_FLAG_NORMAL} -->
+			 <if test="xqdwid != null and xqdwid != ''">
+				AND a.xqdwid = #{xqdwid}
+			</if>
+			<if test="tpyid != null and tpyid != ''">
+				AND a.tpyid = #{tpyid}
+			</if>
+			 <if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="fwxy != null and fwxy != ''">
+				AND a.fwxy = #{fwxy}
+			</if>
+			<if test="fwxyorg != null and fwxyorg != ''">
+				AND a.fwxyorg = #{fwxyorg}
+			</if> 
+			<!--<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if> -->
+		</where> 
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+		<update id="updatexqdwsqtpyFwxyForAttch">
+		UPDATE tpy_xqdwsqtpy SET 
+			fwxy = #{fwxy},
+			fwxystateflag = #{fwxystateflag}				
+		WHERE id = #{id}
+	</update>
+	<update id="updatexqdwsqtpyFwxyForAttchbyxqdw">
+		UPDATE tpy_xqdwsqtpy SET 
+			fwxyorg = #{fwxyorg},
+			fwxystateflag1 = #{fwxystateflag1}				
+		WHERE id = #{id}
+	</update>
+	<select id="selectbfgx" resultType="sqtpy">
+		SELECT 
+			 a.id 
+		FROM tpy_xqdwsqtpy a 
+		<where>
+			a.tpyid= #{0}
+			AND a.xqdwid = #{1}
+			AND a.endtime >= #{2}
+		</where>
+	</select>
+</mapper>

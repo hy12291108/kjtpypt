@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dailywork.dao.tpy.TpyProtocolDao">
+    
+	<sql id="tpyProtocolColumns">
+		a.id AS "id",
+		a.pro_tpyid AS "proTpyid",
+		a.pro_type AS "proType",
+		a.pro_attach AS "proAttach",
+		a.pro_status AS "proStatus",
+		a.pro_approperson AS "proApproperson",
+		a.pro_approtime AS "proApprotime",
+		a.pro_approopinion AS "proApproopinion",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tpyProtocolJoins">
+	</sql>
+    
+	<select id="get" resultType="TpyProtocol">
+		SELECT 
+			<include refid="tpyProtocolColumns"/>
+		FROM tpy_protocol a
+		<include refid="tpyProtocolJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TpyProtocol">
+		SELECT 
+			<include refid="tpyProtocolColumns"/>
+		FROM tpy_protocol a
+		<include refid="tpyProtocolJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="proTpyid != null and proTpyid != ''">
+				AND a.pro_tpyid = #{proTpyid}
+			</if>
+			<if test="proStatus != null and proStatus != ''">
+				AND a.pro_status = #{proStatus}
+			</if>
+			<if test="proApproperson != null and proApproperson != ''">
+				AND a.pro_approperson = #{proApproperson}
+			</if>
+			<if test="proApprotime != null and proApprotime != ''">
+				AND a.pro_approtime = #{proApprotime}
+			</if>
+			<if test="proApproopinion != null and proApproopinion != ''">
+				AND a.pro_approopinion = #{proApproopinion}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TpyProtocol">
+		SELECT 
+			<include refid="tpyProtocolColumns"/>
+		FROM tpy_protocol a
+		<include refid="tpyProtocolJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tpy_protocol(
+			id,
+			pro_tpyid,
+			pro_type,
+			pro_attach,
+			pro_status,
+			pro_approperson,
+			pro_approtime,
+			pro_approopinion,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{proTpyid},
+			#{proType},
+			#{proAttach},
+			#{proStatus},
+			#{proApproperson},
+			#{proApprotime},
+			#{proApproopinion},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tpy_protocol SET 	
+			pro_tpyid = #{proTpyid},
+			pro_type = #{proType},
+			pro_attach = #{proAttach},
+			pro_status = #{proStatus},
+			pro_approperson = #{proApproperson},
+			pro_approtime = #{proApprotime},
+			pro_approopinion = #{proApproopinion},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tpy_protocol SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

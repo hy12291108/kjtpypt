@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dailywork.dao.tpy.TpyAnnualreportDao">
+    
+	<sql id="tpyAnnualreportColumns">
+		a.id AS "id",
+		a.rep_tpyid AS "repTpyid",
+		a.rep_tpyLocation AS "repTpyLocation",
+		a.rep_time AS "repTime",
+		a.rep_imptech AS "repImptech",
+		a.rep_spreadtech AS "repSpreadtech",
+		a.rep_solveproblem AS "repSolveproblem",
+		a.rep_trainfarmer AS "repTrainfarmer",
+		a.rep_foundorg AS "repFoundorg",
+		a.rep_jobopt AS "repJobopt",
+		a.rep_outputvalue AS "repOutputvalue",
+		a.rep_tax AS "repTax",
+		a.rep_yearsummary AS "repYearsummary",
+		a.rep_level AS "repLevel",
+		a.rep_status AS "repStatus",
+		a.rep_approperson AS "repApproperson",
+		a.rep_approtime AS "repApprotime",
+		a.rep_approopinion AS "repApproopinion",
+		a.tpy_name AS "repTpyuser.name",
+		a.rep_writentime AS "repWritenTime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.jtjjzc,
+		a.yjtgxpzxcp,
+		a.tgxjs,
+		a.jjjsnt,
+		a.pxnm,
+		a.cbqyhzs,
+		a.ddjyrc,
+		a.fwnchzzz,
+		a.jlkjsfjd,
+		a.pykjsfh,
+		a.jbpxb,
+		a.pxry,
+		a.pxpkqz,
+		a.sxcz,
+		a.ddzs,
+		a.cls,
+		a.bfpkc,
+		a.pkh,
+		a.ddtp,			
+		a.pkrk,
+		a.kjfwts
+	</sql>
+	
+	<sql id="tpyAnnualreportColumns1">
+		a.id AS "id",
+		a.rep_tpyid AS "repTpyid",
+		a.rep_tpyLocation AS "repTpyLocation",
+		a.rep_time AS "repTime",
+		a.rep_imptech AS "repImptech",
+		a.rep_spreadtech AS "repSpreadtech",
+		a.rep_solveproblem AS "repSolveproblem",
+		a.rep_trainfarmer AS "repTrainfarmer",
+		a.rep_foundorg AS "repFoundorg",
+		a.rep_jobopt AS "repJobopt",
+		a.rep_outputvalue AS "repOutputvalue",
+		a.rep_tax AS "repTax",
+		a.rep_yearsummary AS "repYearsummary",
+		a.rep_level AS "repLevel",
+		a.rep_status AS "repStatus",
+		a.rep_approperson AS "repApproperson",
+		a.rep_approtime AS "repApprotime",
+		a.rep_approopinion AS "repApproopinion",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tpyAnnualreportColumnsWithinPower">
+		b.id AS "id",
+		b.rep_tpyid AS "repTpyid",
+		b.rep_tpyLocation AS "repTpyLocation",
+		b.rep_time AS "repTime",
+		b.rep_imptech AS "repImptech",
+		b.rep_spreadtech AS "repSpreadtech",
+		b.rep_solveproblem AS "repSolveproblem",
+		b.rep_trainfarmer AS "repTrainfarmer",
+		b.rep_foundorg AS "repFoundorg",
+		b.rep_jobopt AS "repJobopt",
+		b.rep_outputvalue AS "repOutputvalue",
+		b.rep_tax AS "repTax",
+		b.rep_yearsummary AS "repYearsummary",
+		b.rep_level AS "repLevel",
+		b.rep_status AS "repStatus",
+		b.rep_approperson AS "repApproperson",
+		b.rep_approtime AS "repApprotime",
+		b.rep_approopinion AS "repApproopinion",
+		b.create_by AS "createBy.id",
+		b.create_date AS "createDate",
+		b.update_by AS "updateBy.id",
+		b.update_date AS "updateDate",
+		b.remarks AS "remarks",
+		b.del_flag AS "delFlag",
+		b.jtjjzc,
+		b.yjtgxpzxcp,
+		b.tgxjs,
+		b.jjjsnt,
+		b.pxnm,
+		b.cbqyhzs,
+		b.ddjyrc,
+		b.fwnchzzz,
+		b.jlkjsfjd,
+		b.pykjsfh,
+		b.jbpxb,
+		b.pxry,
+		b.pxpkqz,
+		b.sxcz,
+		b.ddzs,
+		b.cls,
+		b.bfpkc,
+		b.pkh,
+		b.ddtp,			
+		b.pkrk,
+		o.name AS 'office.name',
+		a.name AS 'repTpyuser.name'
+	</sql>
+	
+	 <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN tpy_annualreport b ON a.id = b.rep_tpyid
+    </sql>
+	
+	<sql id="tpyAnnualreportJoins">
+	</sql>
+    
+	<select id="get" resultType="TpyAnnualreport">
+		SELECT 
+			<include refid="tpyAnnualreportColumns"/>
+		FROM tpy_annualreport a
+		<include refid="tpyAnnualreportJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TpyAnnualreport">
+		SELECT 
+			<include refid="tpyAnnualreportColumns"/>
+		FROM tpy_annualreport a
+		<include refid="tpyAnnualreportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="repTpyid != null and repTpyid != ''">
+				AND a.rep_tpyid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repTpyid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTpyid}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repTpyid},'%')</if>
+			</if>
+			<if test="repTime != null and repTime != ''">
+				AND a.rep_time LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repTime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repTime},'%')</if>
+			</if>
+			<if test="repImptech != null and repImptech != ''">
+				AND a.rep_imptech LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repImptech}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repImptech}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repImptech},'%')</if>
+			</if>
+			<if test="repSpreadtech != null and repSpreadtech != ''">
+				AND a.rep_spreadtech LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repSpreadtech}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repSpreadtech}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repSpreadtech},'%')</if>
+			</if>
+			<if test="repSolveproblem != null and repSolveproblem != ''">
+				AND a.rep_solveproblem LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repSolveproblem}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repSolveproblem}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repSolveproblem},'%')</if>
+			</if>
+			<if test="repTrainfarmer != null and repTrainfarmer != ''">
+				AND a.rep_trainfarmer LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repTrainfarmer}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTrainfarmer}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repTrainfarmer},'%')</if>
+			</if>
+			<if test="repFoundorg != null and repFoundorg != ''">
+				AND a.rep_foundorg LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repFoundorg}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repFoundorg}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repFoundorg},'%')</if>
+			</if>
+			<if test="repJobopt != null and repJobopt != ''">
+				AND a.rep_jobopt LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repJobopt}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repJobopt}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repJobopt},'%')</if>
+			</if>
+			<if test="repOutputvalue != null and repOutputvalue != ''">
+				AND a.rep_outputvalue LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repOutputvalue}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repOutputvalue}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repOutputvalue},'%')</if>
+			</if>
+			<if test="repTax != null and repTax != ''">
+				AND a.rep_tax LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repTax}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTax}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repTax},'%')</if>
+			</if>
+			<if test="repYearsummary != null and repYearsummary != ''">
+				AND a.rep_yearsummary LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repYearsummary}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repYearsummary}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repYearsummary},'%')</if>
+			</if>
+			<if test='repStatus == "inProcess" or repStatus == "no"'>
+				AND (a.rep_status ='inProcess' or a.rep_status ='no') 
+			</if>
+			<if test='repStatus == "pass" or repStatus == "return"'>
+				AND (a.rep_status ='pass' or a.rep_status ='return') 
+			</if>
+			<if test="repApproperson != null and repApproperson != ''">
+				AND a.rep_approperson LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repApproperson}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repApproperson}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repApproperson},'%')</if>
+			</if>
+			<if test="repApprotime != null and repApprotime != ''">
+				AND a.rep_approtime LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repApprotime}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repApprotime}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repApprotime},'%')</if>
+			</if>
+			<if test="repApproopinion != null and repApproopinion != ''">
+				AND a.rep_approopinion LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repApproopinion}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repApproopinion}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repApproopinion},'%')</if>
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date LIKE 
+					<if test="dbName == 'oracle'">'%'||#{createDate}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{createDate}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{createDate},'%')</if>
+			</if>
+			<if test="repTpyLocation != null and repTpyLocation != ''">
+				AND a.rep_tpyLocation LIKE 
+					<if test="dbName == 'oracle'">'%'||#{repTpyLocation}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTpyLocation}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{repTpyLocation},'%')</if>
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				AND a.update_date = #{updateDate}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks = #{remarks}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.rep_time,a.rep_writenTime,a.rep_approperson,a.rep_status,a.rep_approtime
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getTpyAnnualreport" resultType="TpyAnnualreport">
+		SELECT 
+			<include refid="tpyAnnualreportColumns"/>
+		FROM tpy_annualreport a		
+		WHERE a.rep_tpyId = #{repTpyid}
+		AND a.rep_time = #{repTime}
+	</select>
+	
+	
+	
+	<select id="findAllList" resultType="TpyAnnualreport">
+		SELECT 
+			<include refid="tpyAnnualreportColumns"/>
+		FROM tpy_annualreport a
+		<include refid="tpyAnnualreportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tpy_annualreport(
+			id,
+			rep_tpyid,
+			rep_tpyLocation,
+			rep_time,
+			rep_imptech,
+			rep_spreadtech,
+			rep_solveproblem,
+			rep_trainfarmer,
+			rep_foundorg,
+			rep_jobopt,
+			rep_outputvalue,
+			rep_tax,
+			rep_yearsummary,
+			rep_level,
+			rep_status,
+			rep_approperson,
+			rep_approtime,
+			rep_approopinion,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			kjfwts,
+			jtjjzc,
+			yjtgxpzxcp,
+			tgxjs,
+			jjjsnt,
+			pxnm,
+			cbqyhzs,
+			ddjyrc,
+			fwnchzzz,
+			jlkjsfjd,
+			pykjsfh,
+			jbpxb,
+			pxry,
+			pxpkqz,
+			sxcz,
+			ddzs,
+			cls,
+			bfpkc,
+			pkh,
+			ddtp,			
+			pkrk,
+			rep_writentime,
+			tpy_name
+		) VALUES (
+			#{id},
+			#{repTpyid},
+			#{repTpyLocation},
+			#{repTime},
+			#{repImptech},
+			#{repSpreadtech},
+			#{repSolveproblem},
+			#{repTrainfarmer},
+			#{repFoundorg},
+			#{repJobopt},
+			#{repOutputvalue},
+			#{repTax},
+			#{repYearsummary},
+			#{repLevel},
+			#{repStatus},
+			#{repApproperson},
+			#{repApprotime},
+			#{repApproopinion},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{kjfwts},
+			#{jtjjzc},
+			#{yjtgxpzxcp},
+			#{tgxjs},
+			#{jjjsnt},
+			#{pxnm},
+			#{cbqyhzs},
+			#{ddjyrc},
+			#{fwnchzzz},
+			#{jlkjsfjd},
+			#{pykjsfh},
+			#{jbpxb},
+			#{pxry},
+			#{pxpkqz},
+			#{sxcz},
+			#{ddzs},
+			#{cls},
+			#{bfpkc},
+			#{pkh},
+			#{ddtp},			
+			#{pkrk},
+			#{repWritenTime},
+			#{repTpyuser.name}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tpy_annualreport SET 	
+			rep_tpyid = #{repTpyid},
+			rep_tpyLocation = #{repTpyLocation},
+			rep_time = #{repTime},
+			rep_imptech = #{repImptech},
+			rep_spreadtech = #{repSpreadtech},
+			rep_solveproblem = #{repSolveproblem},
+			rep_trainfarmer = #{repTrainfarmer},
+			rep_foundorg = #{repFoundorg},
+			rep_jobopt = #{repJobopt},
+			rep_outputvalue = #{repOutputvalue},
+			rep_tax = #{repTax},
+			rep_yearsummary = #{repYearsummary},
+			rep_level= #{repLevel},
+			rep_status = #{repStatus},
+			rep_approperson = #{repApproperson},
+			rep_approtime = #{repApprotime},
+			rep_approopinion = #{repApproopinion},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+		<update id="change">
+		UPDATE tpy_annualreport SET 	
+			rep_status = #{repStatus}
+		WHERE id = #{id}
+	</update>
+	<update id="delete">
+		UPDATE tpy_annualreport SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	<update id="updateTpyAnnualreport">
+		UPDATE tpy_annualreport SET 
+		rep_status	 = #{repStatus},
+		rep_approPerson = #{repApproperson},
+		rep_approPersonId = #{repAppropersonid},
+		rep_approopinion = #{repApproopinion},
+		rep_approtime = #{repApprotime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="UpdateInfo">
+		UPDATE tpy_annualreport SET 
+		rep_tpyid= #{repTpyid},	
+		rep_time= #{repTime},
+		rep_yearsummary= #{repYearsummary},
+		rep_status= #{repStatus},
+		kjfwts= #{kjfwts},
+		jtjjzc= #{jtjjzc},
+		yjtgxpzxcp= #{yjtgxpzxcp},
+		tgxjs= #{tgxjs},
+		jjjsnt= #{jjjsnt},
+		pxnm= #{pxnm},
+		cbqyhzs= #{cbqyhzs},
+		ddjyrc= #{ddjyrc},
+		fwnchzzz= #{fwnchzzz},
+		jlkjsfjd= #{jlkjsfjd},
+		pykjsfh= #{pykjsfh},
+		jbpxb= #{jbpxb},
+		pxry= #{pxry},
+		pxpkqz= #{pxpkqz},
+		sxcz= #{sxcz},
+		ddzs= #{ddzs},
+		cls= #{cls},
+		bfpkc= #{bfpkc},
+		pkh= #{pkh},
+		ddtp= #{ddtp},		
+		pkrk= #{pkrk},
+		rep_writentime= #{repWritenTime},
+		tpy_name = #{repTpyuser.name}		
+		WHERE id = #{id}
+	</update>
+	<!-- 信息查询 年度总结查询 -->
+	<select id = "findListWithinPower" resultType="TpyAnnualreport">
+		SELECT
+		<include refid="tpyAnnualreportColumnsWithinPower"/>
+		FROM sys_user a 
+		<include refid="userJoins"/>
+		WHERE a.del_flag = '0'
+			<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,',#{office.id},',%'))</if>
+		</if>	
+		<if test="repTpyuser != null and repTpyuser.name != null and repTpyuser.name != ''">
+			AND a.name like 
+					<if test="dbName == 'oracle'">'%'||#{repTpyuser.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{repTpyuser.name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{repTpyuser.name}, '%')</if>
+		</if>
+		${sqlMap.dsf}
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY b.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id = "getTpyReportByYear" resultType="TpyAnnualreport">
+		SELECT
+			SUM(b.kjfwts) AS "kjfwts",
+			SUM(b.jtjjzc) AS "jtjjzc",
+			SUM(b.yjtgxpzxcp) AS "yjtgxpzxcp",
+			SUM(b.tgxjs) AS "tgxjs",
+			SUM(b.jjjsnt) AS "jjjsnt",
+			SUM(b.pxnm) AS "pxnm",
+			SUM(b.cbqyhzs) AS "cbqyhzs",
+			SUM(b.ddjyrc) AS "ddjyrc",
+			SUM(b.fwnchzzz) AS "fwnchzzz",
+			SUM(b.jlkjsfjd) AS "jlkjsfjd",
+			SUM(b.pykjsfh) AS "pykjsfh",
+			SUM(b.jbpxb) AS "jbpxb",
+			SUM(b.pxry) AS "pxry",
+			SUM(b.pxpkqz) AS "pxpkqz",
+			SUM(b.sxcz) AS "sxcz",
+			SUM(b.ddzs) AS "ddzs",
+			SUM(b.cls) AS "cls",
+			SUM(b.bfpkc) AS "bfpkc",
+			SUM(b.pkh) AS "pkh",		
+			SUM(b.ddtp) AS "ddtp",
+			SUM(b.pkrk) AS "pkrk"
+		FROM tpy_dailyrecord b 
+		WHERE b.rec_tpyid = #{1}
+		AND b.rec_writtenTime LIKE concat('%',#{0},'%')				
+	</select>
+	<select id="getAnnualreportInfo" resultType="TpyAnnualreport">
+		SELECT 
+			<include refid="tpyAnnualreportColumns"/>
+		FROM tpy_annualreport a
+		<include refid="tpyAnnualreportJoins"/>
+		WHERE a.id = #{id}
+	</select>
+</mapper>

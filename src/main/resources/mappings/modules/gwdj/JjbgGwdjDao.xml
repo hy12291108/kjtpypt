@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.gwdj.dao.JjbgGwdjDao">
+    
+	<sql id="jjbgGwdjColumns">
+		a.id AS "id",
+		a.is_dept AS "isDept",
+		a.drafter AS "drafter",
+		a.fwzh AS "fwzh",
+		a.title AS "title",
+		a.zs_unit AS "zsUnit",
+		a.cs_unit AS "csUnit"
+	</sql>
+	
+	<sql id="jjbgGwdjJoins">
+	</sql>
+    
+	<select id="get" resultType="JjbgGwdj">
+		SELECT 
+			<include refid="jjbgGwdjColumns"/>
+		FROM jjbg_gwdj a
+		<include refid="jjbgGwdjJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="JjbgGwdj">
+		SELECT 
+			<include refid="jjbgGwdjColumns"/>
+		FROM jjbg_gwdj a
+		<include refid="jjbgGwdjJoins"/>
+		<where>
+			
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="JjbgGwdj">
+		SELECT 
+			<include refid="jjbgGwdjColumns"/>
+		FROM jjbg_gwdj a
+		<include refid="jjbgGwdjJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jjbg_gwdj(
+			id,
+			is_dept,
+			drafter,
+			fwzh,
+			title,
+			zs_unit,
+			cs_unit
+		) VALUES (
+			#{id},
+			#{isDept},
+			#{drafter},
+			#{fwzh},
+			#{title},
+			#{zsUnit},
+			#{csUnit}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jjbg_gwdj SET 	
+			is_dept = #{isDept},
+			drafter = #{drafter},
+			fwzh = #{fwzh},
+			title = #{title},
+			zs_unit = #{zsUnit},
+			cs_unit = #{csUnit}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jjbg_gwdj
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

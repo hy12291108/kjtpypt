@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.MajorMenuDao">
+	<sql id="menuColumns">
+		a.id,	
+		a.name,
+		a.menuFlag,
+		a.menuParentId,
+		a.menuParentName,
+		a.remarks,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag
+	</sql>
+	<select id="get" resultType="MajorMenu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_majorMenu a
+		WHERE a.id = #{id}
+	</select>
+	<select id="findAllMajorMenu" resultType="MajorMenu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_majorMenu a
+		WHERE a.del_flag = '0' AND a.menuFlag='0'
+		ORDER BY a.update_date
+	</select>
+	<select id="findMajorMenu" resultType="MajorMenu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_majorMenu a
+		WHERE a.del_flag = '0'
+		ORDER BY a.update_date
+	</select>
+	
+	
+	
+	<select id="findMajorMenuSecond" resultType="MajorMenu">
+		SELECT
+			<include refid="menuColumns"/>
+		FROM sys_majorMenu a
+		WHERE a.menuParentId=#{id} and a.del_flag = '0'
+		ORDER BY a.update_date
+	</select>
+	<insert id="insert">
+		INSERT INTO sys_majorMenu(
+			id, 
+			name, 
+			menuFlag,
+			menuParentId,
+			menuParentName,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			remarks, 
+			del_flag
+		) VALUES (
+			#{id}, 
+			#{name}, 
+			#{menuFlag},
+			#{menuParentId},
+			#{menuParentName},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}, 
+			#{delFlag}
+		)
+	</insert>
+<!-- 	<delete id="delete">
+	delete from sys_majorMenu
+	where id = #{id}
+	</delete>
+	<delete id="deleteCascade">
+	delete from sys_majorMenu
+	where menuParentId = #{id}
+	</delete> -->
+	
+	<update id="delete">
+		UPDATE sys_majorMenu SET 
+			del_flag = '1'
+		WHERE id = #{id} OR menuParentId=#{id}
+	</update>
+	
+</mapper>

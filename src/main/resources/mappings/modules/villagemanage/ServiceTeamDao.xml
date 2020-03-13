@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.villagemanage.dao.ServiceTeamDao">
+	<resultMap  type="ServiceTeam" id="serviceTeamResultMap">
+		<id property="id" column="id" />
+		<result property="teamName" column="teamName"></result>
+		<result property="teamArea" column="teamArea"></result>
+		<result property="serviceCyfx" column="serviceCyfx"></result>
+		<result property="villageId" column="villageId"></result>
+		<result property="startTime" column="startTime"></result>
+		<result property="endTime" column="endTime"></result>
+ 		<result property="createBy.id" column="createBy.id" />
+		<result property="createDate" column="create_date" />
+		<result property="updateBy.id" column="updateBy.id" />
+		<result property="updateDate" column="update_date" />
+		<result property="delFlag" column="del_flag" />
+		<result property="remarks" column="remarks" />
+		<collection property="teamMember" ofType="TeamMember">
+			<id property="id" column="teamMember.id" />
+			<result property="teamId" column="teamMember.teamId" />
+			<result property="name" column="teamMember.name" />
+			<result property="tpyCompany" column="teamMember.tpy_company" />
+			<result property="tpyTitle" column="teamMember.tpy_title" />
+			<result property="tpyMajor" column="teamMember.tpy_major" /> 
+			<result property="mobile" column="teamMember.mobile" /> 
+			<result property="email" column="teamMember.email" /> 
+			<result property="memberType" column="teamMember.memberType" /> 
+		</collection>
+	</resultMap>
+	<sql id="serviceTeamColumns">
+	id,
+	teamName,
+	teamArea,
+	service_cyfx,
+	villageId,
+	startTime,
+	endTime,
+	create_by,
+	create_date,
+	update_by,
+	update_date,
+	del_flag,
+	remarks
+	</sql>
+	<insert id="insert"  parameterType="ServiceTeam">
+	insert into tpy_serviceteam(
+		id,
+		teamName,
+		teamArea,
+		service_cyfx,
+		villageId,
+		startTime,
+		endTime,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		del_flag,
+		remarks
+	) VALUES (
+		#{id},
+		#{teamName},
+		#{teamArea},
+		#{serviceCyfx},
+		#{villageId},
+		#{startTime},
+		#{endTime},
+		#{createBy.id}, 
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{delFlag},
+		#{remarks}
+	)
+</insert>
+<update id="update">
+	update tpy_serviceteam 
+	set del_flag = #{delFlag}
+	where id = #{id}
+</update>
+ <sql id="serviceteamJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN tpy_serviceteam b ON a.id = b.create_by
+		INNER JOIN vil_info v ON b.villageId = v.id
+    </sql>
+<select id="getServiceTeamList" resultType="ServiceTeam" >
+SELECT
+	b.id,
+	b.teamName,
+	b.teamArea,
+	b.service_cyfx,
+	b.villageId,
+	b.startTime,
+	b.endTime,
+	b.create_by,
+	b.create_date,
+	b.update_by,
+	b.update_date,
+	b.del_flag,
+	b.remarks,
+	o.name AS 'office.name',
+	v.villageName AS 'village.villageName'
+	FROM sys_user a
+	<include refid="serviceteamJoins"/>
+	WHERE b.del_flag =#{DEL_FLAG_NORMAL}
+	<if test="office != null and office.id != null and office.id != ''">
+			AND (o.id = #{office.id} OR o.parent_ids LIKE 
+					<if test="dbName == 'oracle'">'%,'||#{office.id}||',%')</if>
+					<if test="dbName == 'mssql'">'%,'+#{office.id}+',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,',#{office.id},',%'))</if>
+	</if>
+	<if test="village != null and village.villageName != null and village.villageName != ''">
+			AND v.villageName LIKE 
+					<if test="dbName == 'oracle'">'%'||#{village.villageName}||'%')</if>
+					<if test="dbName == 'mssql'">'%'+#{village.villageName}+'%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{village.villageName}, '%')</if>
+	</if>
+	<if test="teamName != null and teamName != ''">
+			AND b.teamName LIKE 
+					<if test="dbName == 'oracle'">'%'||#{teamName}||'%')</if>
+					<if test="dbName == 'mssql'">'%'+#{teamName}+'%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%',#{teamName},'%')</if>
+	</if>	
+	${sqlMap.dsf}
+	<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY a.${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date desc
+			</otherwise>
+	</choose> 
+	</select>
+</mapper>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sqtpy.dao.TpyUserDao">
+    <sql id="userColumns">
+    	a.id,
+    	a.company_id AS "company.id",
+    	a.office_id AS "office.id",
+    	a.login_name,
+    	a.password,
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type,
+		a.login_ip,
+		a.login_date,
+		a.remarks,
+		a.login_flag,
+		a.photo,
+		a.check_flag,
+		a.person_flag,
+		a.check_person,
+		a.check_Time,
+		a.check_Advice,
+		a.bank_open,
+		a.sex,
+		a.tpy_Idcard,
+		a.tpy_birthDate,
+		a.tpy_title,
+		a.tpy_qulification,
+		a.tpy_company,
+		a.tpy_dept,
+		a.tpy_position,
+		a.tpy_BeginWorkDate,
+		a.tpy_special,
+		a.tpy_postCode,
+		a.tpy_address,
+		a.tpy_location,
+		a.bank_account,
+		a.bank_name,
+		a.corp_type,
+		a.corp_orgCode,
+		a.corp_zczb,
+		a.corp_estDate,
+		a.corp_legRepName,
+		a.corp_corName,
+		a.corp_CorPhone,
+		a.corp_exIncome,
+		a.corp_invest,
+		a.corp_numWorker,
+		a.corp_major,
+		a.corp_scale,
+		a.corp_needs,
+		a.corp_dwyyzzhfrdmfyj,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.tpy_major  AS "tpyMajor",
+		a.tpy_company  AS "tpyCompany",
+		a.person_flag  AS "personFlag",
+    	c.name AS "company.name",
+    	c.parent_id AS "company.parent.id",
+    	c.parent_ids AS "company.parentIds",
+    	ca.id AS "company.area.id",
+    	ca.name AS "company.area.name",
+    	ca.parent_id AS "company.area.parent.id",
+    	ca.parent_ids AS "company.area.parentIds",
+    	o.name AS "office.name",
+    	o.parent_id AS "office.parent.id",
+    	o.parent_ids AS "office.parentIds",
+    	oa.id AS "office.area.id",
+    	oa.name AS "office.area.name",
+    	oa.parent_id AS "office.area.parent.id",
+    	oa.parent_ids AS "office.area.parentIds",
+    	cu.id AS "company.primaryPerson.id",
+    	cu.name AS "company.primaryPerson.name",
+    	cu2.id AS "company.deputyPerson.id",
+    	cu2.name AS "company.deputyPerson.name",
+    	ou.id AS "office.primaryPerson.id",
+    	ou.name AS "office.primaryPerson.name",
+    	ou2.id AS "office.deputyPerson.id",
+    	ou2.name AS "office.deputyPerson.name"<!-- ,
+        r.id AS "roleList.id",
+        r.office_id AS "roleList.office.id",
+        r.name AS "roleList.name",
+        r.enname AS "roleList.enname",
+        r.role_type AS "roleList.roleType",
+        r.data_scope AS "roleList.dataScope" -->
+    </sql>
+    
+    <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person<!-- 
+		LEFT JOIN sys_user_role ur ON ur.user_id = a.id
+        LEFT JOIN sys_role r ON r.id = ur.role_id -->
+    </sql>
+	
+	<!-- 分页查询用户信息 -->
+	<select id="findList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.tpyXpFlag = #{office.id}
+		AND a.person_flag = #{personFlag}	
+		AND a.check_flag = '2'	
+		<if test="name != null and name != ''">
+			AND a.name like 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="tpyMajor != null and tpyMajor != ''">
+			AND a.tpy_major like 
+					<if test="dbName == 'oracle'">'%'||#{tpyMajor}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyMajor}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyMajor}, '%')</if>
+		</if>
+		<if test="tpySpecial != null and tpySpecial != ''">
+			AND a.tpy_special like 
+					<if test="dbName == 'oracle'">'%'||#{tpySpecial}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpySpecial}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpySpecial}, '%')</if>
+		</if>
+		<if test="tpyCompany != null and tpyCompany != ''">
+			AND a.tpy_company like 
+					<if test="dbName == 'oracle'">'%'||#{tpyCompany}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyCompany}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyCompany}, '%')</if>
+		</if>
+		<if test="tpyQulification != null and tpyQulification != ''">
+			AND a.tpy_qulification like 
+					<if test="dbName == 'oracle'">'%'||#{tpyQulification}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyQulification}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyQulification}, '%')</if>
+		</if>
+		<if test="tpyTitle != null and tpyTitle != ''">
+			AND a.tpy_title like 
+					<if test="dbName == 'oracle'">'%'||#{tpyTitle}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{tpyTitle}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{tpyTitle}, '%')</if>
+		</if>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.name,a.corp_legRepName,a.corp_corName,a.tpy_major,a.tpy_special,a.tpy_company,a.tpy_qulification,a.tpy_title
+			</otherwise>
+		</choose>
+	</select>
+	<!-- 根据编号获得用户 -->
+	<select id="get" resultType="User">
+		SELECT
+			<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<!-- 根据编号获得用户 -->
+	<select id="getmajorlist" resultType="java.lang.String">
+		SELECT
+			DISTINCT(a.tpy_major)
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.tpy_major is not null
+		AND a.office_id = #{officeid}
+		AND (a.person_flag = '0' OR a.person_flag = '2')
+		AND a.check_flag = '2'
+	</select>
+	<!-- 根据特派员Id获得用户 -->
+	<select id="getTpybyId" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.id = #{0}
+	</select>
+	<!-- 根据编号获得审核信息 -->
+	<select id="getTpyListbyMajor" resultType="User">
+		SELECT
+			a.id,
+    	a.company_id AS "company.id",
+    	a.office_id AS "office.id",
+    	a.login_name,
+    	a.password,
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type,
+		a.login_ip,
+		a.login_date,
+		a.remarks,
+		a.login_flag,
+		a.photo,
+		a.check_flag,
+		a.person_flag,
+		a.check_person,
+		a.check_Time,
+		a.check_Advice,
+		a.bank_open,
+		a.sex,
+		a.tpy_Idcard,
+		a.tpy_birthDate,
+		a.tpy_title,
+		a.tpy_qulification,
+		a.tpy_company,
+		a.tpy_dept,
+		a.tpy_position,
+		a.tpy_BeginWorkDate,
+		a.tpy_special,
+		a.tpy_postCode,
+		a.tpy_address,
+		a.tpy_location,
+		a.bank_account,
+		a.bank_name,
+		a.corp_type,
+		a.corp_orgCode,
+		a.corp_zczb,
+		a.corp_estDate,
+		a.corp_legRepName,
+		a.corp_corName,
+		a.corp_CorPhone,
+		a.corp_exIncome,
+		a.corp_invest,
+		a.corp_numWorker,
+		a.corp_major,
+		a.corp_scale,
+		a.corp_needs,
+		a.corp_dwyyzzhfrdmfyj,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.tpy_major  AS "tpyMajor",
+		a.tpy_company  AS "tpyCompany",
+		a.person_flag  AS "personFlag"
+		FROM sys_user a
+		WHERE a.office_id = #{0}
+		AND a.tpy_major = #{1}
+		AND a.person_flag = '0'
+		AND a.check_flag = '2'
+	</select>
+	
+	<!-- 分页查询需求单位列表信息 -->
+	<select id="getXqdwList" resultType="User">
+		SELECT
+		<include refid="userColumns"/>
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.tpyXpFlag = #{office.id}
+		AND a.person_flag = '1'	
+		AND a.check_flag = '2'		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.name,a.corp_legRepName,a.corp_corName,a.tpy_major,a.tpy_special,a.tpy_company,a.tpy_qulification,a.tpy_title
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

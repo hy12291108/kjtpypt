@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.queryinfo.dao.QueryInfoCountDao">   
+	<!--特派员工作单位的特派员数量 -->
+	 <sql id="userJoins">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id = o.deputy_person<!-- 
+		LEFT JOIN sys_user_role ur ON ur.user_id = a.id
+        LEFT JOIN sys_role r ON r.id = ur.role_id -->
+    </sql>
+	<select id="getQureyInfoCount" resultType="QueryInfoCount">
+		SELECT
+		COUNT(case when a.person_flag ='0' then a.person_flag end) AS "zrrTpyNum",
+    	COUNT(case when a.person_flag ='2' then a.person_flag end) AS "frTpyNum"
+		FROM sys_user a
+		<include refid="userJoins"/>
+		WHERE a.del_flag = '0'
+		AND a.check_flag = '2'
+		AND a.create_date <![CDATA[<=(#{year})]]> 
+		${sqlMap.dsf}
+	</select>
+	<!-- 日志条件权限 -->
+	 <sql id="userJoinsByDr">
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id  = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_user cu ON cu.id = c.primary_person
+		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
+		LEFT JOIN sys_user ou ON ou.id  = o.primary_person
+		LEFT JOIN sys_user ou2 ON ou2.id  = o.deputy_person
+		INNER JOIN tpy_dailyrecord b ON a.id = b.rec_tpyid
+    </sql>
+	<!-- 获得推广新技术数量 -->
+	<select id="getTgxjsNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.tgxjs ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.tgxjs ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.tgxjs ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.tgxjs ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.tgxjs ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.tgxjs ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.tgxjs ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.tgxjs ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.tgxjs ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.tgxjs ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.tgxjs ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.tgxjs ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.tgxjs ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得培训农民数量 -->
+	<select id="getPxnmNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pxnm ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pxnm ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pxnm ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pxnm ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pxnm ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pxnm ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pxnm ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pxnm ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pxnm ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pxnm ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pxnm ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pxnm ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pxnm ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得解决技术难题(个）数量 -->
+	<select id="getJjjsntNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.jjjsnt ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.jjjsnt ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.jjjsnt ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.jjjsnt ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.jjjsnt ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.jjjsnt ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.jjjsnt ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.jjjsnt ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.jjjsnt ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.jjjsnt ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.jjjsnt ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.jjjsnt ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.jjjsnt ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得引进推广新品种新产品（个）数量 -->
+	<select id="getYjtgxpzxcpNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.yjtgxpzxcp ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得创办领办培育企业或合作社（个）数量 -->
+	<select id="getCbqyhzsNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.cbqyhzs ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.cbqyhzs ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.cbqyhzs ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.cbqyhzs ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.cbqyhzs ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.cbqyhzs ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.cbqyhzs ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.cbqyhzs ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.cbqyhzs ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.cbqyhzs ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.cbqyhzs ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.cbqyhzs ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.cbqyhzs ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得带动就业人次数量 -->
+	<select id="getDdjyrcNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.ddjyrc ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.ddjyrc ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.ddjyrc ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.ddjyrc ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.ddjyrc ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.ddjyrc ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.ddjyrc ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.ddjyrc ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.ddjyrc ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.ddjyrc ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.ddjyrc ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.ddjyrc ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.ddjyrc ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得服务农村合作组织数量 -->
+	<select id="getFwnchzzzNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.fwnchzzz ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.fwnchzzz ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.fwnchzzz ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.fwnchzzz ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.fwnchzzz ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.fwnchzzz ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.fwnchzzz ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.fwnchzzz ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.fwnchzzz ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.fwnchzzz ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.fwnchzzz ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.fwnchzzz ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.fwnchzzz ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得建立科技示范基地数量 -->
+	<select id="getJlkjsfjdNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.jlkjsfjd ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.jlkjsfjd ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.jlkjsfjd ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.jlkjsfjd ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.jlkjsfjd ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.jlkjsfjd ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.jlkjsfjd ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.jlkjsfjd ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.jlkjsfjd ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.jlkjsfjd ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.jlkjsfjd ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.jlkjsfjd ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.jlkjsfjd ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得培育科技示范户数量 -->
+	<select id="getPykjsfhNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pykjsfh ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pykjsfh ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pykjsfh ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pykjsfh ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pykjsfh ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pykjsfh ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pykjsfh ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pykjsfh ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pykjsfh ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pykjsfh ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pykjsfh ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pykjsfh ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pykjsfh ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得举办培训班（场次）数量 -->
+	<select id="getJbpxbNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.jbpxb ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.jbpxb ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.jbpxb ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.jbpxb ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.jbpxb ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.jbpxb ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.jbpxb ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.jbpxb ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.jbpxb ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.jbpxb ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.jbpxb ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.jbpxb ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.jbpxb ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得培训人员（人次）数量 -->
+	<select id="getPxryNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pxry ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pxry ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pxry ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pxry ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pxry ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pxry ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pxry ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pxry ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pxry ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pxry ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pxry ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pxry ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pxry ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	
+	<!-- 获得培训贫困群众（人次）数量 -->
+	<select id="getPxpkqzNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pxpkqz ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pxpkqz ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pxpkqz ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pxpkqz ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pxpkqz ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pxpkqz ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pxpkqz ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pxpkqz ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pxpkqz ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pxpkqz ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pxpkqz ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pxpkqz ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pxpkqz ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+		
+	<!-- 获得贫困户（户）数量 -->
+	<select id="getPkhNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pkh ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pkh ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pkh ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pkh ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pkh ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pkh ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pkh ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pkh ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pkh ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pkh ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pkh ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pkh ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pkh ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得带动脱贫（户）数量 -->
+	<select id="getDdtpNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.ddtp ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.ddtp ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.ddtp ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.ddtp ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.ddtp ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.ddtp ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.ddtp ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.ddtp ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.ddtp ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.ddtp ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.ddtp ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.ddtp ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.ddtp ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得贫困人口（个）数量 -->
+	<select id="getPkrkNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.pkrk ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.pkrk ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.pkrk ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.pkrk ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.pkrk ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.pkrk ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.pkrk ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.pkrk ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.pkrk ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.pkrk ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.pkrk ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.pkrk ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.pkrk ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得科技服务天数（天）数量 -->
+	<select id="getKjfwtsNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.kjfwts ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.kjfwts ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.kjfwts ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.kjfwts ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.kjfwts ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.kjfwts ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.kjfwts ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.kjfwts ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.kjfwts ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.kjfwts ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.kjfwts ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.kjfwts ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.kjfwts ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得帮扶贫困村数量 -->
+	<select id="getBfpkcNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.bfpkc ELSE 0 END) AS 'january',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.bfpkc ELSE 0 END) AS 'february',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.bfpkc ELSE 0 END) AS 'march',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.bfpkc ELSE 0 END) AS 'april',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.bfpkc ELSE 0 END) AS 'may',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.bfpkc ELSE 0 END) AS 'june',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.bfpkc ELSE 0 END) AS 'july',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.bfpkc ELSE 0 END) AS 'august',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.bfpkc ELSE 0 END) AS 'september',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.bfpkc ELSE 0 END) AS 'october',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.bfpkc ELSE 0 END) AS 'november',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.bfpkc ELSE 0 END) AS 'december',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.bfpkc ELSE 0 END) AS 'total'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	<!-- 获得集体经济增收（万元）数量 -->
+	<select id="getJtjjzcNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.jtjjzc ELSE 0 END) AS 'january1',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.jtjjzc ELSE 0 END) AS 'february1',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.jtjjzc ELSE 0 END) AS 'march1',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.jtjjzc ELSE 0 END) AS 'april1',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.jtjjzc ELSE 0 END) AS 'may1',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.jtjjzc ELSE 0 END) AS 'june1',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.jtjjzc ELSE 0 END) AS 'july1',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.jtjjzc ELSE 0 END) AS 'august1',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.jtjjzc ELSE 0 END) AS 'september1',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.jtjjzc ELSE 0 END) AS 'october1',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.jtjjzc ELSE 0 END) AS 'november1',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.jtjjzc ELSE 0 END) AS 'december1',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.jtjjzc ELSE 0 END) AS 'total1'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得实现产值（万元）数量 -->
+	<select id="getSxczNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.sxcz ELSE 0 END) AS 'january1',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.sxcz ELSE 0 END) AS 'february1',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.sxcz ELSE 0 END) AS 'march1',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.sxcz ELSE 0 END) AS 'april1',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.sxcz ELSE 0 END) AS 'may1',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.sxcz ELSE 0 END) AS 'june1',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.sxcz ELSE 0 END) AS 'july1',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.sxcz ELSE 0 END) AS 'august1',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.sxcz ELSE 0 END) AS 'september1',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.sxcz ELSE 0 END) AS 'october1',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.sxcz ELSE 0 END) AS 'november1',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.sxcz ELSE 0 END) AS 'december1',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.sxcz ELSE 0 END) AS 'total1'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得带动增收（万元）数量 -->
+	<select id="getDdzsNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.ddzs ELSE 0 END) AS 'january1',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.ddzs ELSE 0 END) AS 'february1',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.ddzs ELSE 0 END) AS 'march1',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.ddzs ELSE 0 END) AS 'april1',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.ddzs ELSE 0 END) AS 'may1',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.ddzs ELSE 0 END) AS 'june1',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.ddzs ELSE 0 END) AS 'july1',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.ddzs ELSE 0 END) AS 'august1',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.ddzs ELSE 0 END) AS 'september1',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.ddzs ELSE 0 END) AS 'october1',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.ddzs ELSE 0 END) AS 'november1',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.ddzs ELSE 0 END) AS 'december1',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.ddzs ELSE 0 END) AS 'total1'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得带动增收（万元）数量 -->
+	<select id="getClsNum" resultType="QueryInfoCount">
+		SELECT
+		SUM(CASE WHEN b.create_date LIKE '%-01-%' THEN b.cls ELSE 0 END) AS 'january1',
+		SUM(CASE WHEN b.create_date LIKE '%-02-%' THEN b.cls ELSE 0 END) AS 'february1',
+		SUM(CASE WHEN b.create_date LIKE '%-03-%' THEN b.cls ELSE 0 END) AS 'march1',
+		SUM(CASE WHEN b.create_date LIKE '%-04-%' THEN b.cls ELSE 0 END) AS 'april1',
+		SUM(CASE WHEN b.create_date LIKE '%-05-%' THEN b.cls ELSE 0 END) AS 'may1',
+		SUM(CASE WHEN b.create_date LIKE '%-06-%' THEN b.cls ELSE 0 END) AS 'june1',
+		SUM(CASE WHEN b.create_date LIKE '%-07-%' THEN b.cls ELSE 0 END) AS 'july1',
+		SUM(CASE WHEN b.create_date LIKE '%-08-%' THEN b.cls ELSE 0 END) AS 'august1',
+		SUM(CASE WHEN b.create_date LIKE '%-09-%' THEN b.cls ELSE 0 END) AS 'september1',
+		SUM(CASE WHEN b.create_date LIKE '%-10-%' THEN b.cls ELSE 0 END) AS 'october1',
+		SUM(CASE WHEN b.create_date LIKE '%-11-%' THEN b.cls ELSE 0 END) AS 'november1',   
+		SUM(CASE WHEN b.create_date LIKE '%-12-%' THEN b.cls ELSE 0 END) AS 'december1',
+		SUM(CASE WHEN b.create_date LIKE '%-%' THEN b.cls ELSE 0 END) AS 'total1'
+		FROM sys_user a 
+		<include refid="userJoinsByDr"/>
+		WHERE b.year = #{year}
+		AND b.rec_status = 'pass'
+		${sqlMap.dsf}
+	</select>
+	
+	<!-- 获得日志年份 -->
+	<select id="getDrYear" resultType="QueryInfoCount">
+		SELECT
+		DISTINCT(year)
+		from tpy_dailyrecord
+	</select>
+	
+	<!-- 获得专家回复次数 -->
+	<select id="getzjhfch" resultType="QueryInfoCount">
+		SELECT
+		b.user_id,
+		Count(b.user_id) AS 'count',
+		o.name AS 'user.office.name',
+		a.name AS 'user.name'
+		FROM cms_comment AS b
+		INNER JOIN sys_user AS a ON b.user_id = a.id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		WHERE
+		b.user_id IS NOT NULL
+		GROUP BY
+		b.user_id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY count DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
