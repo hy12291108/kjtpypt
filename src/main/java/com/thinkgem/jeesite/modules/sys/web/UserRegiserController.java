@@ -298,7 +298,7 @@ public class UserRegiserController extends BaseController {
 			user.setOffice(new Office(""));
 		}
 		model.addAttribute("user", user);
-		return "register/tpyRegister";
+		return "register/tpyZrrRegister";
 	}
 	/*
 	 * 特派员法人注册页面
@@ -314,7 +314,7 @@ public class UserRegiserController extends BaseController {
 			user.setOffice(new Office(""));
 		}
 		model.addAttribute("user", user);
-		return "register/tpyCorpRegister";
+		return "register/tpyFrRegister";
 	}
 	
 	/*
