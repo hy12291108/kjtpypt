@@ -10,6 +10,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -62,6 +64,7 @@ public class User extends DataEntity<User> {
 	private Role role;	// 根据角色查询用户条件
 	//特派员参数
 	private String sex;//性别
+
 	private String tpyIdcard;//身份证号
 	private String tpyBirthDate;//出生日期
 	private String tpyTitle;//职称
@@ -112,7 +115,37 @@ public class User extends DataEntity<User> {
 	private String zjFlag;//专家标识   0 否 1是
 	private String xpNd;//下派年度本年一下派，不是本年未下派
 	private String tpyXpFlagName;//下派區域名稱
-	
+
+    /**
+     * 2020-03-06新字段
+     */
+    @Getter@Setter
+    private String tpyNation; //民族
+    @Getter@Setter
+    private String tpyPolitical;//政治面貌
+    @Getter@Setter
+    private String tpyServiceMode;//服务形式
+    @Getter@Setter
+    private String tpyTalentType;//人才类型
+    @Getter@Setter
+    private String tpyNfwAddress;//拟服务地点
+    @Getter@Setter
+    private String tpyNfwContent;//拟服务内容
+    @Getter@Setter
+    private String tpyExperience;//从事科技服务与创业经历
+    @Getter@Setter
+    private String tpyJcSituation;//奖惩情况
+
+    /**
+     * 法人
+     */
+    @Getter@Setter
+	private String tpyCorporateNature;//法人性质
+    @Getter@Setter
+	private String tpyEnterpriseAttribute;//企业属性
+
+
+
 	public String getTpyXpFlagName() {
 		return tpyXpFlagName;
 	}
