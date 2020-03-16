@@ -300,6 +300,22 @@ public class UserRegiserController extends BaseController {
 		model.addAttribute("user", user);
 		return "register/tpyZrrRegister";
 	}
+
+    /*
+     * 特派员自然人注册页面
+     */
+    @RequestMapping(value = "fxForm")
+    public String fxForm(User user, Model model) {
+        if (user.getCompany()==null || user.getCompany().getId()==null){
+            user.setCompany(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
+        }
+        if (user.getOffice()==null || user.getOffice().getId()==null){
+            user.setOffice(new Office(""));
+        }
+        model.addAttribute("user", user);
+        return "register/tpyFxRegister";
+    }
+
 	/*
 	 * 特派员法人注册页面
 	 * @author 刘钢

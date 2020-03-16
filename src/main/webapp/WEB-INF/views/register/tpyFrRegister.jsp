@@ -20,7 +20,7 @@
     <link href="/kjtpypt/static/jquery-select2/3.4/select2.min.css" rel="stylesheet"/>
     <script src="/kjtpypt/static/jquery-select2/3.4/select2.min.js" type="text/javascript"></script>
     <link href="/kjtpypt/static/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/jquery-validation/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="/kjtpypt/static/jquery-validation/1.11.0/jquery.validate.js" type="text/javascript"></script>
     <link href="/kjtpypt/static/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet"/>
     <script src="/kjtpypt/static/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
     <script src="/kjtpypt/static/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
@@ -50,6 +50,13 @@
         s.parentNode.insertBefore(hm, s);
     })();</script>
     <script type="text/javascript">
+
+        function mobileBind() {
+            var mobile=$("#loginName").val();
+            $("#mobile").val(mobile);
+        }
+
+
         $(document).ready(function () {
             var option = null;
             $("#fileUploadContent").initUpload({
@@ -93,12 +100,12 @@
             var corpCorPhone = $.trim($('#corpCorPhone').val());
             var num = /^\d*$/; //全数字
             if (!num.exec(corpCorPhone)) {
-                alert("號碼必须全为数字");
+                alert("号码必须全为数字");
                 $("#corpCorPhone").focus();
                 return false;
             }
             if (corpCorPhone.length != 11) {
-                alert("號碼长度不符,长度为11位");
+                alert("号码长度不符,长度为11位");
                 $("#corpCorPhone").focus();
                 return false;
             }
@@ -128,12 +135,12 @@
             var mobile = $.trim($('#mobile').val());
             var num = /^\d*$/; //全数字
             if (!num.exec(mobile)) {
-                alert("號碼必须全为数字");
+                alert("号码必须全为数字");
                 $("#mobile").focus();
                 return false;
             }
             if (mobile.length != 11) {
-                alert("號碼长度不符,长度为11位");
+                alert("号码长度不符,长度为11位");
                 $("#mobile").focus();
                 return false;
             }
@@ -179,14 +186,16 @@
             <sys:message content="${message}"/>
 
             <table cellpadding="0" cellspacing="0" width="100%">
+
                 <tr>
                     <td>
                         <label>登录名：</label>
                     </td>
                     <td colspan="3">
                         <input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-                        <form:input path="loginName" htmlEscape="false" maxlength="50" class="required mobile"/>
-                        <span class="help-inline"></span><em>*</em>
+                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false" maxlength="50"
+                                    class="required mobile" onkeyup=" mobileBind()"/>
+                        <em>*</em>
                     </td>
 
                 </tr>
@@ -292,7 +301,7 @@
                         <label>代表人职务：</label>
                     </td>
                     <td>
-                        <form:input path="tpyTitle" htmlEscape="false" maxlength="50" class="required"/>
+                        <form:input path="tpyPosition" htmlEscape="false" maxlength="50" class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
                 </tr>
@@ -439,7 +448,7 @@
                     <td><em>*注：营业执照上传</em></td>
                 </tr>
             </table>
-            <form:input path="tjTableImage" id="tjTableImage" htmlEscape="false" type="hidden"/>
+            <form:input path="photo" id="tjTableImage" htmlEscape="false" type="hidden" value=""/>  <%--营业执照--%>
             <form:input path="loginFlag" value="1" htmlEscape="false" type="hidden"/>
             <form:input path="personFlag" value="2" htmlEscape="false" type="hidden"/>
             <form:input path="checkFlag" value="0" htmlEscape="false" type="hidden"/>

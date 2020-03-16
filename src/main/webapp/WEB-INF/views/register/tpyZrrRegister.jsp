@@ -245,19 +245,6 @@
         }
 
         function registerSave() {
-            /* if($("#sex").val()==""||$("#sex").val()==null){
-                alert("性别未填写");
-                $("#sex").focus();
-                return false;
-            }
-            if($("#tpyTitle").val()==""||$("#tpyTitle").val()==null){
-                $("#tpyTitle").focus();
-                return false;
-            }
-            if($("#tpyQulification").val()==""||$("#tpyQulification").val()==null){
-                $("#tpyQulification").focus();
-                return false;
-            } */
             var yjxkdm = $("#yjxkdm").val();
             if (yjxkdm == "" || yjxkdm == null) {
                 alert("请选择专业类别");
@@ -437,7 +424,7 @@
                 <tr>
 
                     <td>
-                        <label>Email：</label>
+                        <label>邮箱：</label>
                     </td>
                     <td>
                         <form:input path="email" htmlEscape="false" maxlength="100" class="required email"/>

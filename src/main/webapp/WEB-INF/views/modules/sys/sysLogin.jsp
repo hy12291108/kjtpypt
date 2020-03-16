@@ -91,6 +91,7 @@
 		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
 		    <li><a href="/kjtpypt/a/UserRegister/form">自然人</a></li>
 		    <li><a href="/kjtpypt/a/UserRegister/tpyCorp">法人</a></li>
+		    <li><a href="/kjtpypt/a/UserRegister/fxForm">反向特派员</a></li>
 		  </ul>
 		</div>
 		</td>
