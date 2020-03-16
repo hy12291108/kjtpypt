@@ -742,7 +742,17 @@
 			check_flag,
 			person_flag,
 			tpyXpFlag,
-			tjTableImage
+			tjTableImage,
+			tpyNation,
+			tpyPolitical,
+			tpyServiceMode,
+			tpyTalentType,
+			tpyNfwAddress,
+			tpyNfwContent,
+			tpyExperience,
+			tpyJcSituation,
+			tpyCorporateNature,
+			tpyEnterpriseAttribute
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -797,7 +807,17 @@
 			#{checkFlag},
 			#{personFlag},
 			#{tpyXpFlag},
-			#{tjTableImage}
+			#{tjTableImage},
+			#{tpyNation},
+			#{tpyPolitical},
+			#{tpyServiceMode},
+			#{tpyTalentType},
+			#{tpyNfwAddress},
+			#{tpyNfwContent},
+			#{tpyExperience},
+			#{tpyJcSituation},
+			#{tpyCorporateNature},
+			#{tpyEnterpriseAttribute}
 		)
 	</insert>
 	<!--临时用户保存  -->
