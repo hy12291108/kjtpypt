@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by bzh
+ * Created by 白子涵
  * 自定义 XWPFDocument，并重写 createPicture()方法
  */
 public class CustomXWPFDocument extends XWPFDocument {

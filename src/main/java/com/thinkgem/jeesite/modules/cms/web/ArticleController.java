@@ -211,7 +211,7 @@ public class ArticleController extends BaseController {
     
     @RequestMapping(value = {"xxydlist"})
 	public String xxydlist(Article article, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<Article> page = articleService.findPagexxydAll(new Page<Article>(request, response), article, true); 
+        Page<Article> page = articleService.findPagexxyd(new Page<Article>(request, response), article, true); 
         model.addAttribute("page", page);
 		return "modules/cms/xxyd/xxydList";
 	}
@@ -307,11 +307,11 @@ public class ArticleController extends BaseController {
 		
 		
 		
+		//1.保存主表
 		articleService.savexxyd(article);
 		//保存视频信息
 		String videoIds = request.getParameter("video");
 		if(StringUtils.isNotBlank(videoIds)){
-			article.setAttachment(Article.HAVEVIDEO);
 			String[] videoArr = videoIds.split(",");
 			if(videoArr.length>0){
 				for(String s1:videoArr){
@@ -336,8 +336,7 @@ public class ArticleController extends BaseController {
 		
 		
 		
-		//1.保存主表
-		articleService.savexxyd(article);
+		
 		addMessage(redirectAttributes, "保存文章'" + StringUtils.abbr(article.getTitle(),50) + "'成功");
 		String categoryId = article.getCategory()!=null?article.getCategory().getId():null;
 		return "redirect:" + adminPath + "/cms/article/xxydlist?repage&category.id="+(categoryId!=null?categoryId:"");
@@ -364,29 +363,28 @@ public class ArticleController extends BaseController {
 			 map.put("stream_name",e.getStreamName());
 			 return map;
 		 }else{
-			 System.out.println(e.getCode());
-//			 switch(e.getCode()){
-//			 	case "auth":
-//					msg = msg.append("密码验证失败或权限不足").append(":").append(msg1);
-//					break;
-//				case "rpc":
-//					msg = msg.append("内部RPC错误").append(":").append(msg1);
-//					break;
-//				case "db":
-//					msg = msg.append("数据库错误 ").append(":").append(msg1);
-//					break;
-//				case "param":
-//					msg = msg.append("参数错误 ").append(":").append(msg1);
-//					break;
-//				case "notexists":
-//					msg = msg.append("流不存在").append(":").append(msg1);
-//					break;
-//				case "internal":
-//					msg = msg.append("内部错误").append(":").append(msg1);
-//					break;
-//				default:
-//					msg = msg.append("未获取到返回值");
-//			}
+			 switch(e.getCode()){
+			 	case "auth":
+					msg = msg.append("密码验证失败或权限不足").append(":").append(msg1);
+					break;
+				case "rpc":
+					msg = msg.append("内部RPC错误").append(":").append(msg1);
+					break;
+				case "db":
+					msg = msg.append("数据库错误 ").append(":").append(msg1);
+					break;
+				case "param":
+					msg = msg.append("参数错误 ").append(":").append(msg1);
+					break;
+				case "notexists":
+					msg = msg.append("流不存在").append(":").append(msg1);
+					break;
+				case "internal":
+					msg = msg.append("内部错误").append(":").append(msg1);
+					break;
+				default:
+					msg = msg.append("未获取到返回值");
+			}
 			map.put("msg", msg.toString());
 		 }
     	

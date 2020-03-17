@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Created by 白子涵
  * POI解析WORD文档
- * @author 4L
- *
  */
 public class PoiParseWord {
 

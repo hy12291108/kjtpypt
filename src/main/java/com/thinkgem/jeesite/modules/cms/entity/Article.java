@@ -26,8 +26,6 @@ import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
 public class Article extends DataEntity<Article> {
 
     public static final String DEFAULT_TEMPLATE = "frontViewArticle";
-    
-    public static final String HAVEVIDEO = "YES";
 	
 	private static final long serialVersionUID = 1L;
 	private Category category;// 分类编号

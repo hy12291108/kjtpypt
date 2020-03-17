@@ -396,17 +396,16 @@ public class ThreeAreaController extends BaseController {
 		//List<ThreeArea> threeArea  = threeAreaService.getXpList();
 		ThreeAreaBaseData threeAreaBaseData = threeAreaService.getXpParameter();
 		if(threeAreaBaseData!=null){
-			if(threeArea.size()>0){
-				model.addAttribute("threeArea", threeArea);
-				model.addAttribute("year",threeAreaBaseData.getYear());
-				model.addAttribute("xpPerson",UserUtils.getUser().getName());
-				return "modules/threeArea/threeAreaXp";
-			}else{
-				model.addAttribute("message", "查无数据");
-				model.addAttribute("threeArea", threeArea);
-				return "modules/threeArea/threeAreaXp";
-			}
+		if(threeArea.size()>0){
+			model.addAttribute("threeArea", threeArea);
+			model.addAttribute("year",threeAreaBaseData.getYear());
+			model.addAttribute("xpPerson",UserUtils.getUser().getName());
+			return "modules/threeArea/threeAreaXp";
 		}else{
+			model.addAttribute("message", "查无数据");
+			model.addAttribute("threeArea", threeArea);
+			return "modules/threeArea/threeAreaXp";
+		}}else{
 			model.addAttribute("message", "下派时间未到或下派时间已过");
 			model.addAttribute("threeArea", threeArea);
 			return "modules/threeArea/threeAreaXp";

@@ -2,8 +2,6 @@ package com.thinkgem.jeesite.modules.app.bean;
 
 import net.sf.json.JSONObject;
 
-
-
 /**
  * APP 分页
  *

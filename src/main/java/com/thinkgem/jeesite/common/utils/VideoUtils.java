@@ -11,13 +11,14 @@ import com.thinkgem.jeesite.modules.eightMile.entity.KjtpyVideoInfo;
 import net.sf.json.JSONObject;
 
 public class VideoUtils {
-	public static final String URLSTR = "http://10.0.248.53:8085/admin.php?c=exapi&a="; //
+
+	public static final String URLSTR = "http://800li.net:8085/admin.php?c=exapi&a="; //
 	public static final String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML,like Gecko) Chrome/29.0.1 547.66 Safari/537.36";
 	public static final String DEF_CHARSE= "UTF-8";
 	public static final int DEF_CONN_TIMEOUT = 3000;
 	public static final int DEF_READ_TIMEOUT = 3000;
 	public static final String USER = "B9C508B5E011A64A5B073669820C6924 "; //八百里超级管理员账号
-	public static final String PASSWORD = "111111";
+	public static final String PASSWORD = "123456";
 	public static final String INLINE_AUTH = "1";
 	private static EightLogin eightLogin;
 	private static KjtpyVideoInfo kjtpyVideoInfo;

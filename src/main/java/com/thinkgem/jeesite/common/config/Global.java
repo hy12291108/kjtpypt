@@ -162,12 +162,12 @@ public class Global {
 			}
 		}
 		//D:\apache-tomcat-8.0.35\webapps\ROOT\/
-//		String newgenpath="D:"+"\\"+"apache-tomcat-8.0.35"+"\\"+"webapps"+"\\"+"kjtpypt"+"\\"+"/";
-//		if(!dir.endsWith("/")) {
-//		//	dir += "/";
-//			dir=newgenpath;
-//		}
-//		System.out.println("userfiles.basedir: " + dir+"575757575757");
+		String newgenpath="D:"+"\\"+"apache-tomcat-8.0.35"+"\\"+"webapps"+"\\"+"kjtpypt"+"\\"+"/";
+		if(!dir.endsWith("/")) {
+		//	dir += "/";
+			dir=newgenpath;
+		}
+		System.out.println("userfiles.basedir: " + dir+"575757575757");
 		return dir;
 	}	
     /**

@@ -24,12 +24,9 @@ import com.thinkgem.jeesite.modules.cms.service.CategoryService;
 import com.thinkgem.jeesite.modules.cms.service.CommunicationService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.service.SiteService;
-import com.thinkgem.jeesite.modules.eightMile.entity.KjtpyVideoInfo;
-import com.thinkgem.jeesite.modules.eightMile.service.KjtpyVideoInfoService;
 
 import javax.servlet.ServletContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 /**
@@ -48,8 +45,6 @@ public class CmsUtils {
     private static CommunicationService communicationService = SpringContextHolder.getBean(CommunicationService.class);
 	
 	private static final String CMS_CACHE = "cmsCache";
-	
-	private static KjtpyVideoInfoService kjtpyVideoInfoService = SpringContextHolder.getBean(KjtpyVideoInfoService.class);;
 	
 	/**
 	 * 获得站点列表
@@ -184,7 +179,6 @@ public class CmsUtils {
 		page = articleService.findPage(page, article, false);
 		return page.getList();
 	}
-	
 	//获得学习园地文章列表
 	public static List<Article> getArticleListByXxyd(String siteId, String categoryId, int number, String param){
 		Page<Article> page = new Page<Article>(1, number, -1);
@@ -360,12 +354,5 @@ public class CmsUtils {
         for(Category ca : categoryList){
         	addViewConfigAttribute(model, ca.getViewConfig());
         }
-    }
-    
-    public static List<KjtpyVideoInfo> getVideoListByArticleId(String articleId){
-        List<KjtpyVideoInfo> videoList = Lists.newArrayList();
-        videoList = kjtpyVideoInfoService.getListByArticleId(articleId);
-//        System.out.println(videoList.size());
-        return videoList;
     }
 }

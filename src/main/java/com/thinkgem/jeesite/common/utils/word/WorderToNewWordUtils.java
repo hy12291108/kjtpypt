@@ -14,8 +14,8 @@ import java.util.*;
 import java.util.List;
 
 /**
+ * Created by 白子涵
  * 根据模板生成新的word文档
- * Created by bzh
  */
 public class WorderToNewWordUtils {
 
@@ -75,6 +75,7 @@ public class WorderToNewWordUtils {
         //获取段落集合
         List<XWPFParagraph> paragraphs = getAllParagraphs(document);
         for (XWPFParagraph paragraph : paragraphs) {
+
             //判断此段落时候需要进行替换
             String text = paragraph.getText();
             if(checkText(text)){
@@ -376,10 +377,29 @@ public class WorderToNewWordUtils {
         data.put("${name}", "白子涵");
         data.put("${sex}", "男");
         data.put("${email}", "972849203@qq.com");
-        data.put("${phone}", "18092448501");
+        data.put("${tpyNation}", "汉族");
+        data.put("${tpyLocation}", "陕西省渭南市");
+        data.put("${company}", "高新区");
+        data.put("${tpyCompany}", "西安市雁塔区高新二路");
+        data.put("${tpyPosition}", "JAVA");
+        data.put("${tpyTitle}", "初级");
+        data.put("${qulification}", "本科");
+        data.put("${tpyPolitical}", "团员");
+        data.put("${mobile}", "18092448501");
+        data.put("${tpyBirthDate}", "1995-05-09");
+        data.put("${tpyIdcard}", "610521199505090974");
+        data.put("${tpyServiceMode}", "服务形式");
+        data.put("${tpyTalentType}", "人才类型");
+        data.put("${yjxkdm}", "专业类别");
+        data.put("${tpyMajor}", "专业名称");
+        data.put("${tpySpecial}", "专业擅长");
+        data.put("${tpyNfwAddress}", "拟服务地点");
+        data.put("${tpyNfwContent}", "拟服务内容");
+        data.put("${tpyExperience}", "从事科技服务与创业经历");
+        data.put("${tpyJcSituation}", "奖惩情况");
 
-        CustomXWPFDocument doc = WorderToNewWordUtils.changWord("D:/2.docx",data);
-        FileOutputStream fopts = new FileOutputStream("D:/呵呵.docx");
+        CustomXWPFDocument doc = WorderToNewWordUtils.changWord("E:/特派员WORD测试/自然人特派员推荐表模板.docx",data);
+        FileOutputStream fopts = new FileOutputStream("E:/特派员WORD测试/自然人特派员推荐表.doc");
         doc.write(fopts);
         fopts.close();
     }

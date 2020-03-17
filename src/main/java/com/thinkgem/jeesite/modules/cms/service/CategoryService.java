@@ -45,7 +45,7 @@ public class CategoryService extends TreeService<CategoryDao, Category> {
 			User user = UserUtils.getUser();
 			Category category = new Category();
 			category.setOffice(new Office());
-			//category.getSqlMap().put("dsf", dataScopeFilter(user, "o", "u"));
+			category.getSqlMap().put("dsf", dataScopeFilter(user, "o", "u"));
 			category.setSite(new Site());
 			category.setParent(new Category());
 			list = dao.findList(category);

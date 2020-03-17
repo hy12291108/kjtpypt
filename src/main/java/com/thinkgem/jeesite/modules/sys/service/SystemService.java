@@ -5,13 +5,10 @@ package com.thinkgem.jeesite.modules.sys.service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
@@ -261,6 +258,12 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	@Transactional(readOnly = false)
 	public String saveUser1(User user) {
+
+        /**
+         * User对象生成EXCEL模板导出
+         */
+        user=this.userChangExcel(user);
+
 		String flag;
 		if (StringUtils.isBlank(user.getId())){
 			flag="0";
@@ -278,12 +281,16 @@ public class SystemService extends BaseService implements InitializingBean {
 			// 更新用户数据
 			user.preUpdate();
 			if(user.getPersonFlag().equals("0")){
-				userDao.updatetpy(user);
+				userDao.updatetpy(user);  //自然人特派员更新
 			}else if(user.getPersonFlag().equals("2")){
-				userDao.updatetpyCorp(user);
+				userDao.updatetpyCorp(user); //法人特派员更新
 			}else if(user.getPersonFlag().equals("1")){
-				userDao.updateServiceObject(user);
-			}
+				userDao.updateServiceObject(user);//需求单位特派员更新
+			}else if(user.getPersonFlag().equals("5")){  //TODO 添加反派特派员更新（目前没写）
+                userDao.updatetpy(user);//反向特派员更新
+            }else if(user.getPersonFlag().equals("6")){ //TODO  添加企业用户更新（目前没写）
+                userDao.updatetpy(user);//企业更新
+            }
 		}
 		if (StringUtils.isNotBlank(user.getId())){
 			// 更新用户与角色关联
@@ -298,8 +305,59 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		return flag;
 	}
-	
-	/*
+
+    /**
+     * 保存用户对象生成Excel
+     * @param user
+     * @return
+     */
+    private User userChangExcel(User user) {
+        boolean flag=false;
+        if(user.getPersonFlag().equals("0")){
+            //自然人特派员生成Excel
+            String sourceFilePath =  "E:/特派员WORD测试/自然人特派员推荐表模板.xls";
+            String targetFilePath = "E:/特派员WORD测试/自然人特派员推荐表test.xls";
+            Map<String, String> data = new HashMap<String, String>();
+            data.put("${name}", user.getName());
+            //data.put("${photo}", "头像");
+            data.put("${sex}", DictUtils.getDictLabel(user.getSex(),"sex",""));
+            data.put("${email}", user.getEmail());
+            data.put("${tpyNation}", user.getTpyNation());
+            data.put("${tpyLocation}", user.getTpyLocation());
+            data.put("${company}","所属区域");
+            data.put("${tpyCompany}", user.getTpyCompany());
+            data.put("${tpyPosition}", user.getTpyPosition());
+            data.put("${tpyTitle}", DictUtils.getDictLabel(user.getTpyTitle(),"tpy_title",""));
+            data.put("${qulification}", DictUtils.getDictLabel(user.getTpyQulification(),"tpy_qulification",""));
+            data.put("${tpyPolitical}", DictUtils.getDictLabel(user.getTpyPolitical(),"political",""));
+            data.put("${mobile}", user.getMobile());
+            data.put("${tpyBirthDate}", user.getTpyBirthDate());
+            data.put("${tpyIdcard}", user.getTpyIdcard());
+            data.put("${tpyServiceMode}", DictUtils.getDictLabel(user.getTpyServiceMode(),"service_mode",""));
+            data.put("${tpyTalentType}", DictUtils.getDictLabel(user.getTpyTalentType(),"talent_type",""));
+            data.put("${yjxkdm}", "专业类别");
+            data.put("${tpyMajor}", user.getTpyMajor());
+            data.put("${tpySpecial}",user.getTpySpecial() );
+            data.put("${tpyNfwAddress}", user.getTpyNfwContent());
+            data.put("${tpyNfwContent}", user.getTpyNfwContent());
+            data.put("${tpyExperience}", user.getTpyExperience());
+            data.put("${tpyJcSituation}", user.getTpyJcSituation());
+            flag = ExcelUtils.replaceModel(data, sourceFilePath, targetFilePath);
+        }else if(user.getPersonFlag().equals("2")){
+            //法人特派员生成Excel
+
+        }else if(user.getPersonFlag().equals("5")){
+            //反向特派员生成Excel
+
+        }
+
+        if(flag){
+            System.out.println("生成成功！");
+        }
+	    return user;
+    }
+
+    /*
 	 * 更新特派员审核结果
 	 * @author 刘钢
 	 * 20170803
@@ -655,7 +713,7 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	/**
 	 * 通过部门ID获取用户列表，仅返回用户id和name（树查询用户时用）
-	 * @param user
+	 * @param
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

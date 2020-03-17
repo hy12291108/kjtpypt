@@ -37,8 +37,6 @@ import com.thinkgem.jeesite.modules.cms.dao.CategoryDao;
 import com.thinkgem.jeesite.modules.cms.entity.Article;
 import com.thinkgem.jeesite.modules.cms.entity.ArticleData;
 import com.thinkgem.jeesite.modules.cms.entity.Category;
-import com.thinkgem.jeesite.modules.eightMile.entity.KjtpyVideoInfo;
-import com.thinkgem.jeesite.modules.eightMile.service.KjtpyVideoInfoService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -64,9 +62,6 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 	private CategoryDao categoryDao;
 	@Autowired
 	private ArticleDao articleDao;
-	
-	@Autowired
-	private KjtpyVideoInfoService kjtpyVideoInfoService;
 	@Transactional(readOnly = false)
 	public Article getXxyd(String id){
 		return articleDao.getxxydArticle(id);
@@ -352,74 +347,14 @@ public class ArticleService extends CrudService<ArticleDao, Article> {
 		article.setPage(page);
 		
 		
-		
-		List<Article> xxydList = articleDao.findList(article);
-		List<Article> aList = Lists.newArrayList();
-//		Article a = new Article();
-//		for(int i=0;i<xxydList.size();i++){
-//			a = xxydList.get(i);
-//			a.setSysAttachmentList(findAttatchments(a.getAttachmentName()));
-//			xxydList.set(i, a);
-//		}
-		if(!xxydList.isEmpty()){
-			for(int i=0;i<xxydList.size();i++){
-				List<KjtpyVideoInfo> as = kjtpyVideoInfoService.getListByArticleId(xxydList.get(i).getId());
-				if(!as.isEmpty()){
-					aList.add(xxydList.get(i));
-					break;
-				}
-			}
-		}
-		page.setList(aList);
-		return page;
-		
-	}
-	
-	//学习园地列表
-	@Transactional(readOnly = false)
-	public Page<Article> findPagexxydAll(Page<Article> page, Article article, boolean isDataScopeFilter) {
-		// 更新过期的权重，间隔为“6”个小时
-		Date updateExpiredWeightDate =  (Date)CacheUtils.get("updateExpiredWeightDateByArticle");
-		if (updateExpiredWeightDate == null || (updateExpiredWeightDate != null 
-				&& updateExpiredWeightDate.getTime() < new Date().getTime())){
-			dao.updateExpiredWeight(article);
-			CacheUtils.put("updateExpiredWeightDateByArticle", DateUtils.addHours(new Date(), 6));
-		}
-//		DetachedCriteria dc = dao.createDetachedCriteria();
-//		dc.createAlias("category", "category");
-//		dc.createAlias("category.site", "category.site");
-		if (article.getCategory()!=null && StringUtils.isNotBlank(article.getCategory().getId()) && !Category.isRoot(article.getCategory().getId())){
-			Category category = categoryDao.getxxyd("1000");
-			if (category==null){
-				category = new Category();
-			}
-			category.setParentIds(category.getId());
-			category.setSite(category.getSite());
-			article.setCategory(category);
-		}
-		else{
-			Category category = categoryDao.getxxyd("1000");
-			category.setParentIds(category.getId());
-			category.setSite(category.getSite());
-			article.setCategory(category);
-		}
-//		if (StringUtils.isBlank(page.getOrderBy())){
-//			page.setOrderBy("a.weight,a.update_date desc");
-//		}
-//		return dao.find(page, dc);
-	//	article.getSqlMap().put("dsf", dataScopeFilter(article.getCurrentUser(), "o", "u"));
-		article.setPage(page);
-		
-		
-		
-		List<Article> xxydList = articleDao.findList(article);
+		List<Article> xxydList = articleDao.findListxxyd(article);
+
 		Article a = new Article();
 		for(int i=0;i<xxydList.size();i++){
 			a = xxydList.get(i);
 			a.setSysAttachmentList(findAttatchments(a.getAttachmentName()));
 			xxydList.set(i, a);
 		}
-		
 		page.setList(xxydList);
 		return page;
 		
