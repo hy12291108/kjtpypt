@@ -237,7 +237,7 @@
 	</div>
 </div>
 
-<div class="path">当前位置：<a href="#">${category.name}</a></div>
+<div class="path">当前位置1234：<a href="#">${category.name}</a></div>
 	<div class="container">
 			<div class="main_sub">
 				<div class="main_sub_article">
@@ -246,10 +246,10 @@
 					<!--  <em><fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em>-->
 					<em></em>
 					<c:forEach items="${kjtpyVideoInfoList}" var="a1">
-		                <div class="article" align="center">
+		                <div class="article">
 			                <c:set var="time" value="<%=System.currentTimeMillis()%>"></c:set>
-			                <script type="text/javascript" src="http://10.0.248.53:8083/assets/player.js"></script>
-							<script type="text/javascript">p2ps_embed("flash", "vod_p2p", "http://10.0.248.53:8083/${a1.virtualPath}", "p2ps_video_${time}", "640", "480", "10.1.0", "${a1.p2psSwfUrl}",{}, {allowFullScreen:true,allowScriptAccess: "always"});</script>
+			                <script type="text/javascript" src="http://camera.800li.net:8083/assets/player.js"></script>
+							<script type="text/javascript">p2ps_embed("flash", "vod_p2p", "http://camera.800li.net:8083/${a1.virtualPath}", "p2ps_video_${time}", "640", "480", "10.1.0", "${a1.p2psSwfUrl}",{}, {allowFullScreen:true,allowScriptAccess: "always"});</script>
 							<div id="p2ps_video_${time}">
 								<h1>我们需要Flash player 10.1或以上版本来播放。</h1>
 								<p>
@@ -365,7 +365,7 @@
 	</div>
 </div>
 
-<div class="path">当前位置：<a href="/kjtpypt/f/list-999.html">${category.name}</a></div>
+<div class="path">当前位置111：<a href="/kjtpypt/f/list-999.html">${category.name}</a></div>
 	<div class="container">
 		<div class="main_sub">
 			<div class="main_sub_article">

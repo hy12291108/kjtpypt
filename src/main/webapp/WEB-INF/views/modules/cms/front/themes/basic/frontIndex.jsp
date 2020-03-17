@@ -218,33 +218,12 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 		<div class="yuandiinfo">
 			<ol>
 				<c:forEach items="${fnc:getArticleListByXxyd(site.id, 1000, 1, '')}" var="article">
-				
-				<c:forEach items="${fnc:getVideoListByArticleId(article.id)}" var="a1">
-	                <div class="article">
-		                <c:set var="time" value="<%=System.currentTimeMillis()%>"></c:set>
-		                <script type="text/javascript" src="http://10.0.248.53:8083/assets/player.js"></script>
-						<script type="text/javascript">p2ps_embed("flash", "vod_p2p", "http://10.0.248.53:8083/${a1.virtualPath}", "p2ps_video_${time}", "450", "255", "10.1.0", "${a1.p2psSwfUrl}",{}, {allowFullScreen:true,allowScriptAccess: "always"});</script>
-						<div id="p2ps_video_${time}">
-							<h1>我们需要Flash player 10.1或以上版本来播放。</h1>
-							<p>
-								<a href="http://www.adobe.com/go/getflashplayer">
-									<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="安装最新的Flash player" />
-								</a>
-							</p>
-						</div>
-	                </div>
-	             </c:forEach>
-	             <%--
-				
-				
-				
-				
 				<c:forEach items="${article.sysAttachmentList}" var="a1">			
                 	<!-- <li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://127.0.0.1:8080/kjtpypt/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li>
                 	<li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://10.0.248.53:8080/kjtpypt/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li> -->
 				    <li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://www.sxkjtpy.cn/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li>
 				</c:forEach>
-				--%><!-- <li><a href="${article.url}"><img src="${article.image}"/><span>${fns:abbr(article.title,25)}</span></a></li> -->
+				<!-- <li><a href="${article.url}"><img src="${article.image}"/><span>${fns:abbr(article.title,25)}</span></a></li> -->
 				</c:forEach>
 			</ol>
 			<ul>		

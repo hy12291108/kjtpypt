@@ -42,8 +42,6 @@
 		<include refid="cmsArticleJoins"/>
 		WHERE a.id = #{id}
 	</select>	
-	
-	
 	<select id="findList" resultType="Article">
 		SELECT 
 			<include refid="cmsArticleColumns"/>
@@ -119,8 +117,6 @@
 		 	<include refid="xxydArticleJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
-	
 	<select id="findListxxyd" resultType="Article">
 		SELECT 
 			<include refid="cmsArticleColumns"/>
@@ -128,41 +124,38 @@
 		<include refid="xxydArticleJoins"/>
 		<where>
 			a.del_flag = #{delFlag}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
+			</if>
+			<if test="posid != null and posid != ''">
+				AND a.posid LIKE 
+					<if test="dbName == 'oracle'">'%'||#{posid}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{posid}+'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{posid}, '%')</if>
+			</if>
+			<if test="category.id != null and category.id != ''">
+				AND (a.category_id = #{category.id}
+				<if test="category.parentIds != null and category.parentIds != ''">
+					or c.parent_ids like 
+						<if test="dbName == 'oracle'">'%'||#{category.id}||'%'</if>
+						<if test="dbName == 'mssql'">'%,'+#{category.id}+',%'</if>
+						<if test="dbName == 'mysql'">CONCAT('%,', #{category.id}, ',%')</if>
+				</if>)
+			</if>
+			<if test="image != null and image != ''">
+				AND a.image  = #{image}
+			</if>
+			<if test='attachmentName == "1"'>
+				AND (a.attachmentName != "" OR a.attachmentName != NULL)
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by  = #{createBy.id}
+			</if>
+			<!-- ${sqlMap.dsf}-->
 		</where>
-<!--		<where>-->
-<!--			a.del_flag = #{delFlag}-->
-<!--			<if test="title != null and title != ''">-->
-<!--				AND a.title LIKE -->
-<!--					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>-->
-<!--					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>-->
-<!--					<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>-->
-<!--			</if>-->
-<!--			<if test="posid != null and posid != ''">-->
-<!--				AND a.posid LIKE -->
-<!--					<if test="dbName == 'oracle'">'%'||#{posid}||'%'</if>-->
-<!--					<if test="dbName == 'mssql'">'%'+#{posid}+'%'</if>-->
-<!--					<if test="dbName == 'mysql'">CONCAT('%', #{posid}, '%')</if>-->
-<!--			</if>-->
-<!--			<if test="category.id != null and category.id != ''">-->
-<!--				AND (a.category_id = #{category.id}-->
-<!--				<if test="category.parentIds != null and category.parentIds != ''">-->
-<!--					or c.parent_ids like -->
-<!--						<if test="dbName == 'oracle'">'%'||#{category.id}||'%'</if>-->
-<!--						<if test="dbName == 'mssql'">'%,'+#{category.id}+',%'</if>-->
-<!--						<if test="dbName == 'mysql'">CONCAT('%,', #{category.id}, ',%')</if>-->
-<!--				</if>)-->
-<!--			</if>-->
-<!--			<if test="image != null and image != ''">-->
-<!--				AND a.image  = #{image}-->
-<!--			</if>-->
-<!--			<if test='attachmentName == "1"'>-->
-<!--				AND (a.attachmentName != "" OR a.attachmentName != NULL)-->
-<!--			</if>-->
-<!--			<if test="createBy != null and createBy.id != null and createBy.id != ''">-->
-<!--				AND a.create_by  = #{createBy.id}-->
-<!--			</if>-->
-<!--			 ${sqlMap.dsf}-->
-<!--		</where>-->
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

@@ -218,7 +218,7 @@
 							
 						
 							<c:choose>
-	  							<c:when test="${fn:length(article.attachment)>0 }">
+	  							<c:when test="${fn:length(article.attachmentName)>0 }">
 								<li><a href="${article.url}" style="color:${article.color}"><img src="/kjtpypt/static/skines/images/shipin.png"></img>${fns:abbr(article.title,96)}</a><span ><fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd"/></span></li>
 								</c:when>
 	

@@ -91,15 +91,6 @@
     <example>${fnc:getArticleListByXxyd(siteId, categoryId, number, param)}</example>  
   </function>
   
-  
-  <function>
-    <description>获取学习园地视频列表</description>
-    <name>getVideoListByArticleId</name>
-    <function-class>com.thinkgem.jeesite.modules.cms.utils.CmsUtils</function-class>
-    <function-signature>java.util.List getVideoListByArticleId(java.lang.String)</function-signature>
-    <example>${fnc:getVideoListByArticleId(articleId)}</example> 
-  </function>
-  
   <function>
     <description>获取发布列表</description>
     <name>getCommunicationList</name>

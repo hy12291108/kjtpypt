@@ -18,7 +18,10 @@
 		a.UPDATE_BY AS "updateBy.id",
 		a.UPDATE_DATE AS "updateDate",
 		a.REMARKS AS "remarks",
-		a.DEL_FLAG AS "delFlag"
+		a.DEL_FLAG AS "delFlag",
+		a.SZSP_FLAG AS "szspFlag",
+		a.SBSP_FLAG AS "sbspFlag",
+		a.EXSP_FLAG AS "exspFlag"
 	</sql>
 	
 	<insert id="insert">
@@ -38,7 +41,10 @@
 			update_by,
 			update_date,
 			remarks,
-			del_flag
+			del_flag,
+			szsp_flag,
+			sbsp_flag,
+			exsp_flag
 		) VALUES (
 			#{id},
 			#{ahtYwlx},
@@ -55,7 +61,10 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{szspFlag},
+			#{sbspFlag},
+			#{exspFlag}
 		)
 	</insert>
 
@@ -72,7 +81,10 @@
 			AHTPATH = #{ahtpath},
 			UPDATE_BY = #{updateBy.id},
 			UPDATE_DATE = #{updateDate},
-			REMARKS = #{remarks}
+			REMARKS = #{remarks},
+			SZSP_FLAG = #{szspFlag},
+			SBSP_FLAG = #{sbspFlag},
+			EXSP_FLAG = #{exspFlag}
 		WHERE id = #{id}
 	</update>
 
