@@ -101,16 +101,6 @@
             });
         });
 
-
-
-        /*  function beforeUploadFun(opt){
-               $("#btnSubmit").attr({"disabled":"disabled"});
-           }
-         function onUploadFun(opt,data){
-               alert(data);
-               uploadTools.uploadError(opt);//显示上传错误
-           }		 */
-
         //加载即可输入又可实现下拉的select
         function corpList() {
             var officeId = $("#officeId").val();
@@ -149,71 +139,6 @@
             });
         }
 
-        /*function validateIdCard(){
-        var idCard = $("#tpyIdcard").val();
-        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-            if (reg.test(idCard) === false) {
-                alert("身份证输入不合法");
-                return false;
-            }
-    }
-
-
-     function validateAccount() {
-      　var bankno = $.trim($('#bankAccount').val());
-      　if (bankno == "") {
-       alert("请填写银行卡号");
-         return false;
-       }
-       if(bankno.length < 16 || bankno.length > 19) {
-         alert("银行卡号长度不符");
-         return false;
-       }
-       var num = /^\d*$/; //全数字
-       if(!num.exec(bankno)) {
-         alert("银行卡号必须全为数字");
-         return false;
-       }
-    } */
-
-        function initZyLb() {
-            $("#yjxkdm").empty();
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "${ctx}/UserRegister/registerList",
-                //data: "id="+yjxkdm,
-                dataType: "json",
-                success: function (json) {
-                    $("<option value=''>--选择专业类别--</option>").appendTo("#yjxkdm");//添加下拉框的option
-                    for (var i = 0; i < json.majorList.length; i++) {
-                        $("<option value='" + json.majorList[i].id + "'>" + json.majorList[i].name + "</option>").appendTo("#yjxkdm");//添加下拉框的option
-                    }
-                }
-            });
-        }
-
-        function initZy() {
-            $("#tpyMajor").empty();
-            var yjxkdm = $("#yjxkdm").val();
-            if (yjxkdm == "") {
-                return;
-            } else {
-                $.ajax({
-                    type: "POST",
-                    async: false,
-                    url: "${ctx}/UserRegister/registerSecondList",
-                    data: "id=" + yjxkdm,
-                    dataType: "json",
-                    success: function (json) {
-                        $("<option value=''>--选择专业--</option>").appendTo("#tpyMajor");//添加下拉框的option
-                        for (var i = 0; i < json.majorList.length; i++) {
-                            $("<option value='" + json.majorList[i].name + "'>" + json.majorList[i].name + "</option>").appendTo("#tpyMajor");//添加下拉框的option
-                        }
-                    }
-                });
-            }
-        }
 
 
         /* 号码校验*/
@@ -245,17 +170,6 @@
         }
 
         function registerSave() {
-            var yjxkdm = $("#yjxkdm").val();
-            if (yjxkdm == "" || yjxkdm == null) {
-                alert("请选择专业类别");
-                $("#yjxkdm").focus();
-                return false;
-            }
-            if ($("#tpyMajor").val() == "" || $("#tpyMajor").val() == null) {
-                alert("请选择专业");
-                $("#tpyMajor").focus();
-                return false;
-            }
             uploadEvent.uploadFileEvent(option, 1);
             $("#inputForm").attr("action","/kjtpypt/a/UserRegister/save1");
         }
@@ -271,7 +185,7 @@
 </div>
 <div class="container">
     <div class="signin001">
-        <h2><span>特派员（自然人）注册</span></h2>
+        <h2><span>反向特派员注册</span></h2>
         <form:form id="inputForm" modelAttribute="user" method="post" class="form-horizontal">
             <form:hidden path="id"/>
             <sys:message content="${message}"/>
@@ -482,37 +396,6 @@
                     </td>
                 </tr>
 
-
-                <tr>
-                    <td>
-                        <label id="xklbstr">专业类别：</label></td>
-                    <td>
-                        <select id="yjxkdm" class="ch-select required" onchange="initZy();">
-                            <option value="" selected>--选择专业类别--</option>
-                        </select>
-                        <span class="help-inline"><font color="red">*</font></span>
-                    </td>
-                    <td><label>专业名称：</label></td>
-                    <td>
-                        <select name="tpyMajor" id="tpyMajor" class="ch-select required">
-                            <option value="" selected>--选择专业名称--</option>
-                        </select>
-                        <span class="help-inline"><font color="red">*</font></span>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <label>专业擅长：</label>
-                    </td>
-                    <td colspan="3">
-
-                        <form:textarea path="tpySpecial" htmlEscape="false" rows="2" maxlength="100" style="width:753px"
-                                       class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <label>拟服务地点：</label>
@@ -574,7 +457,7 @@
 
             <form:input path="photo" id="tjTableImage" htmlEscape="false" type="hidden" value=""/>
             <form:input path="loginFlag" value="1" htmlEscape="false" type="hidden"/>
-            <form:input path="personFlag" value="0" htmlEscape="false" type="hidden"/>
+            <form:input path="personFlag" value="5" htmlEscape="false" type="hidden"/>
             <form:input path="checkFlag" value="0" htmlEscape="false" type="hidden"/>
             <form:input path="roleIdList" value="3bb6453c699d49508b15529670ad9e9b" htmlEscape="false" type="hidden"/>
             <div class="btgroup form-actions">
