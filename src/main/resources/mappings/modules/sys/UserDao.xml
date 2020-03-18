@@ -752,7 +752,10 @@
 			tpyExperience,
 			tpyJcSituation,
 			tpyCorporateNature,
-			tpyEnterpriseAttribute
+			tpyEnterpriseAttribute,
+			tpyMajorType,
+			tpyServiceAdvantages,
+			tpyExcelUrl
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -817,7 +820,10 @@
 			#{tpyExperience},
 			#{tpyJcSituation},
 			#{tpyCorporateNature},
-			#{tpyEnterpriseAttribute}
+			#{tpyEnterpriseAttribute},
+			#{tpyMajorType},
+			#{tpyServiceAdvantages},
+			#{tpyExcelUrl}
 		)
 	</insert>
 	<!--临时用户保存  -->

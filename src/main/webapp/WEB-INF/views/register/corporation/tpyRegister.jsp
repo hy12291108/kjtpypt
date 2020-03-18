@@ -42,17 +42,19 @@
     <script src="${ctxStatic}/centermenu-master/js/centermenu.js" type="text/javascript"></script>
 
     <script type="text/javascript">var ctx = '/kjtpypt/a', ctxStatic = '/kjtpypt/static';</script>
-    <script>var _hmt = _hmt || [];
-    (function () {
-        var hm = document.createElement("script");
-        hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();</script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <script type="text/javascript">
 
         function mobileBind() {
-            var mobile=$("#loginName").val();
+            var mobile = $("#loginName").val();
             $("#mobile").val(mobile);
         }
 
@@ -60,13 +62,7 @@
         $(document).ready(function () {
             var option = null;
             $("#fileUploadContent").initUpload({
-                //"uploadUrl":"http://***/",//上传文件信息地址
                 "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
-                //"size":350,//文件大小限制，单位kb,默认不限制
-                //"maxFileNumber":3,//文件个数限制，为整数
-                //"filelSavePath":"",//文件上传地址，后台设置的根目录
-                //"beforeUpload":beforeUploadFun,//在上传前执行的函数
-                //"onUpload":onUploadFun，//在上传后执行的函数
                 autoCommit: false,//文件是否自动上传
                 "fileType": ['png', 'jpg']//文件类型限制，默认不限制，注意写的是文件后缀
             });
@@ -130,44 +126,6 @@
 
         }
 
-        /* 法定代表人号码校验*/
-        function phoneCheck1() {
-            var mobile = $.trim($('#mobile').val());
-            var num = /^\d*$/; //全数字
-            if (!num.exec(mobile)) {
-                alert("号码必须全为数字");
-                $("#mobile").focus();
-                return false;
-            }
-            if (mobile.length != 11) {
-                alert("号码长度不符,长度为11位");
-                $("#mobile").focus();
-                return false;
-            }
-        }
-
-        /*银行卡号校验*/
-        function bankAccountCheck() {
-            var bankno = $.trim($('#bankAccount').val());
-            if (bankno == "") {
-                alert("请填写银行卡号");
-                $("#bankAccount").focus();
-                return false;
-            }
-            var num = /^\d*$/; //全数字
-            if (!num.exec(bankno)) {
-                alert("银行卡号必须全为数字");
-                $("#bankAccount").focus();
-                return false;
-            }
-            if (bankno.length < 16 || bankno.length > 21) {
-                alert("银行卡号长度不符,长度为16-21");
-                $("#bankAccount").focus();
-                return false;
-            }
-
-        }
-
         function tpyCorpSave() {
             uploadEvent.uploadFileEvent(option, 1);
         }
@@ -193,7 +151,8 @@
                     </td>
                     <td colspan="3">
                         <input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false" maxlength="50"
+                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false"
+                                    maxlength="50"
                                     class="required mobile" onkeyup=" mobileBind()"/>
                         <em>*</em>
                     </td>
@@ -229,7 +188,6 @@
                         <label>单位名称：</label>
                     </td>
                     <td>
-                            <%-- <form:textarea path="name" htmlEscape="false" rows="1" maxlength="200" style="width:769px"/> --%>
                         <form:input path="name" htmlEscape="false" maxlength="100"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -239,7 +197,8 @@
                     </td>
                     <td>
                         <form:select path="tpyCorporateNature">
-                            <form:options items="${fns:getDictList('corporate_nature')}" itemLabel="label" itemValue="value"
+                            <form:options items="${fns:getDictList('corporate_nature')}" itemLabel="label"
+                                          itemValue="value"
                                           htmlEscape="false" class="required"/>
                         </form:select>
                         <span class="help-inline"><font color="red">*</font></span>
@@ -359,7 +318,8 @@
                     </td>
                     <td>
                         <form:select path="tpyEnterpriseAttribute">
-                            <form:options items="${fns:getDictList('enterprise_attribute')}" itemLabel="label" itemValue="value"
+                            <form:options items="${fns:getDictList('enterprise_attribute')}" itemLabel="label"
+                                          itemValue="value"
                                           htmlEscape="false" class="required"/>
                         </form:select>
                         <span class="help-inline"><font color="red">*</font></span>
@@ -420,7 +380,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyNfwContent" htmlEscape="false" rows="2" maxlength="100" style="width:753px"
+                        <form:textarea path="tpyNfwContent" htmlEscape="false" rows="2" maxlength="100"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -432,7 +393,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyExperience" htmlEscape="false" rows="2" maxlength="200" style="width:753px"
+                        <form:textarea path="tpyExperience" htmlEscape="false" rows="2" maxlength="200"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>

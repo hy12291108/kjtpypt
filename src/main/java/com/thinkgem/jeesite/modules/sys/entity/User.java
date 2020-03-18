@@ -135,6 +135,8 @@ public class User extends DataEntity<User> {
     private String tpyExperience;//从事科技服务与创业经历
     @Getter@Setter
     private String tpyJcSituation;//奖惩情况
+    @Getter@Setter
+    private String tpyMajorType;//专业类别
 
     /**
      * 法人
@@ -144,6 +146,13 @@ public class User extends DataEntity<User> {
     @Getter@Setter
 	private String tpyEnterpriseAttribute;//企业属性
 
+    /**
+     * 反向人
+     */
+    @Getter@Setter
+    private String tpyServiceAdvantages; //服务优势
+    @Getter@Setter
+    private String tpyExcelUrl; //excel推荐表位置
 
 
 	public String getTpyXpFlagName() {

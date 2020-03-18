@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -60,6 +61,11 @@ public class ExcelUtils {
                     }
                 }
             }
+
+            //判断本地是否存在当前文件夹，如果没有则创建对应文件夹
+            File dir = new File(targetFilePath.substring(0,targetFilePath.lastIndexOf("/")));
+            if (!dir.isDirectory())dir.mkdirs();
+
             // 输出文件
             FileOutputStream fileOut = new FileOutputStream(targetFilePath);
             wb.write(fileOut);
@@ -83,41 +89,6 @@ public class ExcelUtils {
             check = true;
         }
         return check;
-    }
-
-    // 测试
-    public static void main(String[] args) {
-
-        Map<String, Object> data = new HashMap<String, Object>();
-        data.put("${name}", "白子涵");
-        data.put("${photo}", "头像");
-        data.put("${sex}", "男");
-        data.put("${email}", "972849203@qq.com");
-        data.put("${tpyNation}", "汉族");
-        data.put("${tpyLocation}", "陕西省渭南市");
-        data.put("${company}", "高新区");
-        data.put("${tpyCompany}", "西安市雁塔区高新二路");
-        data.put("${tpyPosition}", "JAVA");
-        data.put("${tpyTitle}", "初级");
-        data.put("${qulification}", "本科");
-        data.put("${tpyPolitical}", "团员");
-        data.put("${mobile}", "18092448501");
-        data.put("${tpyBirthDate}", "1995-05-09");
-        data.put("${tpyIdcard}", "610521199505090974");
-        data.put("${tpyServiceMode}", "服务形式");
-        data.put("${tpyTalentType}", "人才类型");
-        data.put("${yjxkdm}", "专业类别");
-        data.put("${tpyMajor}", "专业名称");
-        data.put("${tpySpecial}", "拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点");
-        data.put("${tpyNfwAddress}", "拟服务地点拟服务地点拟服务地点拟服务地点");
-        data.put("${tpyNfwContent}", "拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点");
-        data.put("${tpyExperience}", "拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点");
-        data.put("${tpyJcSituation}", "拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点拟服务地点");
-
-        String path =  "E:/特派员WORD测试/自然人特派员推荐表模板.xls";
-        String path2 = "E:/特派员WORD测试/自然人特派员推荐表.xls";
-        replaceModel(data, path, path2);
-
     }
 
 }

@@ -43,39 +43,29 @@
     <script src="${ctxStatic}/centermenu-master/js/centermenu.js" type="text/javascript"></script>
 
     <script type="text/javascript">var ctx = '/kjtpypt/a', ctxStatic = '/kjtpypt/static';</script>
-    <script>var _hmt = _hmt || [];
-    (function () {
-        var hm = document.createElement("script");
-        hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-    })();</script>
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <script type="text/javascript">
         function mobileBind() {
-            var mobile=$("#loginName").val();
+            var mobile = $("#loginName").val();
             $("#mobile").val(mobile);
         }
 
         $(document).ready(function () {
             var option = null;
 
-
-
-
-
             $("#fileUploadContent").initUpload({
-                //"uploadUrl":"http://***/",//上传文件信息地址
                 "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
-                //"size":350,//文件大小限制，单位kb,默认不限制
-                //"maxFileNumber":3,//文件个数限制，为整数
-                //"filelSavePath":"",//文件上传地址，后台设置的根目录
-                //"beforeUpload":beforeUploadFun,//在上传前执行的函数
-                //"onUpload":onUploadFun，//在上传后执行的函数
                 autoCommit: false,//文件是否自动上传
                 "fileType": ['png', 'jpg']//文件类型限制，默认不限制，注意写的是文件后缀
             });
-            //$(".uploadFileBt").hide();
-            //$(".cleanFileBt").hide();
             initZyLb();
             $("#inputForm").validate({
                 rules: {
@@ -100,16 +90,6 @@
                 }
             });
         });
-
-
-
-        /*  function beforeUploadFun(opt){
-               $("#btnSubmit").attr({"disabled":"disabled"});
-           }
-         function onUploadFun(opt,data){
-               alert(data);
-               uploadTools.uploadError(opt);//显示上传错误
-           }		 */
 
         //加载即可输入又可实现下拉的select
         function corpList() {
@@ -149,40 +129,13 @@
             });
         }
 
-        /*function validateIdCard(){
-        var idCard = $("#tpyIdcard").val();
-        var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-            if (reg.test(idCard) === false) {
-                alert("身份证输入不合法");
-                return false;
-            }
-    }
-
-
-     function validateAccount() {
-      　var bankno = $.trim($('#bankAccount').val());
-      　if (bankno == "") {
-       alert("请填写银行卡号");
-         return false;
-       }
-       if(bankno.length < 16 || bankno.length > 19) {
-         alert("银行卡号长度不符");
-         return false;
-       }
-       var num = /^\d*$/; //全数字
-       if(!num.exec(bankno)) {
-         alert("银行卡号必须全为数字");
-         return false;
-       }
-    } */
-
+        //专业类别
         function initZyLb() {
             $("#yjxkdm").empty();
             $.ajax({
                 type: "POST",
                 async: false,
                 url: "${ctx}/UserRegister/registerList",
-                //data: "id="+yjxkdm,
                 dataType: "json",
                 success: function (json) {
                     $("<option value=''>--选择专业类别--</option>").appendTo("#yjxkdm");//添加下拉框的option
@@ -257,7 +210,6 @@
                 return false;
             }
             uploadEvent.uploadFileEvent(option, 1);
-            $("#inputForm").attr("action","/kjtpypt/a/UserRegister/save1");
         }
 
     </script>
@@ -283,7 +235,8 @@
                     </td>
                     <td colspan="3">
                         <input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false" maxlength="50"
+                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false"
+                                    maxlength="50"
                                     class="required mobile" onkeyup=" mobileBind()"/>
                         <em>*</em>
                     </td>
@@ -366,12 +319,14 @@
                         <label>工作单位名称：</label>
                     </td>
                     <td>
-                        <div id="tpyCompany">
-                            <select id="editable-select" name="tpyCompany">
-                            </select>
-                            <input type="button" value="选择" onClick="corpList()">
-                            <span class="help-inline"><font color="red">*</font></span>
-                        </div>
+                            <%--<div id="tpyCompany">
+                                <select id="editable-select" name="tpyCompany">
+                                </select>
+                                <input type="button" value="选择" onClick="corpList()">
+                                <span class="help-inline"><font color="red">*</font></span>
+                            </div>--%>
+                        <form:input path="tpyCompany" htmlEscape="false" maxlength="50"/>
+                        <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
 
@@ -414,8 +369,9 @@
                         <label>政治面貌：</label>
                     </td>
                     <td>
-                        <form:select path="tpyPolitical" >
-                            <form:options items="${fns:getDictList('political')}" itemLabel="label" itemValue="value" htmlEscape="false" />
+                        <form:select path="tpyPolitical">
+                            <form:options items="${fns:getDictList('political')}" itemLabel="label" itemValue="value"
+                                          htmlEscape="false"/>
                         </form:select>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -434,7 +390,8 @@
                         <label>手机：</label>
                     </td>
                     <td>
-                        <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" maxlength="50" class="required"/>
+                        <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" maxlength="50"
+                                    class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
                 </tr>
@@ -464,7 +421,7 @@
                         <label>服务形式：</label>
                     </td>
                     <td>
-                        <form:select path="tpyServiceMode" >
+                        <form:select path="tpyServiceMode">
                             <form:options items="${fns:getDictList('service_mode')}" itemLabel="label" itemValue="value"
                                           htmlEscape="false"/>
                         </form:select>
@@ -485,9 +442,9 @@
 
                 <tr>
                     <td>
-                        <label id="xklbstr">专业类别：</label></td>
+                        <label>专业类别：</label></td>
                     <td>
-                        <select id="yjxkdm" class="ch-select required" onchange="initZy();">
+                        <select id="yjxkdm" name="tpyMajorType" class="ch-select required" onchange="initZy();">
                             <option value="" selected>--选择专业类别--</option>
                         </select>
                         <span class="help-inline"><font color="red">*</font></span>
@@ -519,7 +476,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="10" style="width:753px"
+                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="10"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -530,7 +488,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyNfwContent" htmlEscape="false" rows="2" maxlength="100" style="width:753px"
+                        <form:textarea path="tpyNfwContent" htmlEscape="false" rows="2" maxlength="100"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -542,7 +501,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyExperience" htmlEscape="false" rows="2" maxlength="200" style="width:753px"
+                        <form:textarea path="tpyExperience" htmlEscape="false" rows="2" maxlength="200"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -554,7 +514,8 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyJcSituation" htmlEscape="false" rows="2" maxlength="100" style="width:753px"
+                        <form:textarea path="tpyJcSituation" htmlEscape="false" rows="2" maxlength="100"
+                                       style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>

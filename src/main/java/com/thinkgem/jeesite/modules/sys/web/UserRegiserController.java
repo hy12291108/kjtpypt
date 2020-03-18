@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.thinkgem.jeesite.modules.attachment.web.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -216,11 +217,8 @@ public class UserRegiserController extends BaseController {
         User user = UserUtils.getUser();
         List<String> list = new ArrayList<String>();
         String imagePath[] = null;
-        System.out.println("2222222222222222222222222");
-        System.out.println(user.getTjTableImage());
         if (user.getTjTableImage() != null) {
             if (user.getTjTableImage() != "") {
-
                 imagePath = user.getTjTableImage().split("\\|");
                 for (int i = 0; i < imagePath.length; i++) {
                     String path = imagePath[i].substring(12);
@@ -229,15 +227,6 @@ public class UserRegiserController extends BaseController {
             }
 
         }
-//		if(user.getTjTableImage()!=null&&!(user.getTjTableImage().equals(""))){
-//			imagePath = user.getTjTableImage().split("\\|");
-//			for(int i=0;i<imagePath.length;i++){
-//				String path=imagePath[i].substring(12);
-//				System.out.println(path+"111111111111111111111111");
-//				list.add(imagePath[i].substring(12));
-//			}
-//		}
-        System.out.println(user.getPersonFlag());
         //自然人
         if (user.getPersonFlag().equals("0")) {
             model.addAttribute("imagePathList", list);
@@ -357,10 +346,10 @@ public class UserRegiserController extends BaseController {
      * 20170727
      */
     @RequestMapping(value = "save1")
-    public String save1(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+    public String save1(User user, HttpServletRequest request,HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
         // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
-        user.setCompany(new Office(request.getParameter("company.id")));
-        user.setOffice(new Office(request.getParameter("office.id")));
+        user.getCompany().setId(request.getParameter("company.id"));
+        user.getOffice().setId(request.getParameter("office.id"));
         // 如果新密码为空，则不更换密码
         if (StringUtils.isNotBlank(user.getNewPassword())) {
             user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
@@ -440,7 +429,6 @@ public class UserRegiserController extends BaseController {
                 UserUtils.clearCache();
             }
             addMessage(redirectAttributes, "修改'" + user.getName() + "'成功");
-            //return "redirect:"+ adminPath  +"/UserRegister/registerResult";
             return "redirect:" + "/a/UserRegister/registerResult/";
         }
 
