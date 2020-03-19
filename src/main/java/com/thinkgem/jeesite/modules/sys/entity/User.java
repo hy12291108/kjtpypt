@@ -106,7 +106,7 @@ public class User extends DataEntity<User> {
 	private String checkPerson;//审核人
 	private String checkTime;//审核时间	
 	private String checkAdvice;//审核意见	
-	private String personFlag;//0 表示特派员（自然人 ）1 表示需求单位 2法人 3表示管理员 4 临时用户
+	private String personFlag;//0 表示特派员（自然人 ）1 表示需求单位 2法人 3表示管理员 4 临时用户 5反向
 	private int tpyNum;//特派员工作单位的特派员数量
 	private String tpyXpFlag;//特派员下派标识
 	private String xpTime;//下派时间

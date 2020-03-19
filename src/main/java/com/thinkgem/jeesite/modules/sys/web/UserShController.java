@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.modules.sys.web;
 
 
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.thinkgem.jeesite.modules.sys.service.MajorMenuService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +54,8 @@ public class UserShController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private OfficeService officeService;
+    @Autowired
+    private MajorMenuService majorMenuService;
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
@@ -88,6 +97,7 @@ public class UserShController extends BaseController {
         model.addAttribute("page", page);
 		return "modules/check/tpySh";
 	}
+
 	/*
 	 * 特派员审核具体信息
 	 * @author 刘钢
@@ -98,7 +108,9 @@ public class UserShController extends BaseController {
 	public String tpySh(User user, Model model) {
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		List list = new ArrayList();
+        List photoList = new ArrayList();
 		String imagePath[] = null;
+        String photoPath[] = null;
 		user.setCheckPerson(UserUtils.getUser().getName());
 		user.setCheckTime(sf.format(new Date()));
 		if(user.getTjTableImage()!=null&&!(user.getTjTableImage().equals(""))){
@@ -109,13 +121,51 @@ public class UserShController extends BaseController {
 				list.add(imagePath[i].substring(12));
 			}
 		}
+        if(user.getPhoto()!=null&&!(user.getPhoto().equals(""))){
+            photoPath = user.getPhoto().split("\\|");
+            for(int i=0;i<photoPath.length;i++){
+                String path=photoPath[i].substring(12);
+                System.out.println(path);
+                photoList.add(photoPath[i].substring(12));
+            }
+        }
 		model.addAttribute("user", user);
 		model.addAttribute("imagePathList",list);
+        model.addAttribute("photoList",photoList);
 		if(user.getPersonFlag().equals("2")){
 			return "modules/check/tpyCorpInfoSh";
-		}
+		}else if(user.getPersonFlag().equals("5")){
+            return "modules/check/fxTpyInfoSh";
+        }
+        model.addAttribute("majorType",majorMenuService.getMajorMenu(user.getTpyMajorType()).getName());
 		return "modules/check/tpyInfoSh";
 	}
+
+    @RequestMapping(value = {"getPhoto", ""})
+    public void getPhoto(User user, Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 设定输出的类型
+        final String JPG = "image/jpeg;charset=GB2312";
+	    String imagePath = user.getPhoto().substring(0,user.getPhoto().length()-1);//获取真实路径
+        response.reset();
+        OutputStream output = response.getOutputStream();// 得到输出流
+        if (imagePath.toLowerCase().endsWith(".jpg")){ // 使用编码处理文件流的情况：
+            response.setContentType(JPG);// 设定输出的类型
+            // 得到图片的真实路径
+            // 得到图片的文件流
+            InputStream imageIn = new FileInputStream(new File(imagePath));
+            // 得到输入的编码器，将文件流进行jpg格式编码
+            JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
+            // 得到编码后的图片对象
+            BufferedImage image = decoder.decodeAsBufferedImage();
+            // 得到输出的编码器
+            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+            encoder.encode(image);// 对图片进行输出编码
+            imageIn.close();// 关闭文件流
+        }
+        output.close();
+    }
+
+
 	/*
 	 * 特派员审核结果更新
 	 * @author 刘钢

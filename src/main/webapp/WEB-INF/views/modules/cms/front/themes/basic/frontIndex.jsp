@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>陕西省科技特派员</title>
-		
+
 <!-- 201709021加服务平台页面样式 -->
 <link href="/kjtpypt/static/skines/css/lrtk.css" type="text/css" rel="stylesheet" />
 <script src="/kjtpypt/static/skines/js/jquery-1.8.3.min.js" type="text/javascript"></script>
@@ -77,14 +77,14 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 		<ul class="login">
 		<c:if test="${user.name!=''&&user.name!=null}">
 		<li><a href="#" class="bt">${user.name}已登录</a></li>
-		<li><a href="/kjtpypt/a/UserRegister/logOff">退出</a></li>
+		<li><a href="/kjtpypt/a/logout">退出</a></li>
 		</c:if>
 		<c:if test="${user.name==''||user.name==null}">
-			<li><a href="/kjtpypt/a/UserRegister/temporaryLoginIndex" class="bt"> 游客登录</a></li>
-			<li>没有账户？<a href="/kjtpypt/a/UserRegister/temporary">游客注册</a></li>
+			<li><a href="/kjtpypt/a/login" class="bt">登录</a></li>
+			<li>没有账户？<a href="/kjtpypt/a/UserRegister/registerClassify">注册/申报</a></li>
 		</c:if>
 		</ul>
-	</div>	
+	</div>
 	<div class="navbg">
 		<div class="nav">
 			<ul>
@@ -114,7 +114,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 		</div>
 		<div class="slx">
 			<!-- 代码 开始 -->
-			<div id="fsD1" class="focus_news">  
+			<div id="fsD1" class="focus_news">
 				<div id="D1pic1" class="fPic">
 				<c:forEach items="${fnc:getArticleList(site.id, 2, 3, 'image:1')}" var="article">
 				<div class="fcon" style="display: none;">
@@ -123,38 +123,38 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 				</div>
 				</c:forEach>
 				</div>
-				<div class="fbg">  
-				<div class="D1fBt" id="D1fBt">  
-					<a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>1</i></a>  
-					<a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>2</i></a>  
-					<a href="javascript:void(0)" hidefocus="true" target="_self" class="current"><i>3</i></a>  
-				</div>  
-				</div>  
-				<span class="prev"></span>   
-				<span class="next"></span>    
-			</div>  
+				<div class="fbg">
+				<div class="D1fBt" id="D1fBt">
+					<a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>1</i></a>
+					<a href="javascript:void(0)" hidefocus="true" target="_self" class=""><i>2</i></a>
+					<a href="javascript:void(0)" hidefocus="true" target="_self" class="current"><i>3</i></a>
+				</div>
+				</div>
+				<span class="prev"></span>
+				<span class="next"></span>
+			</div>
 			<script type="text/javascript">
-				Qfast.add('widgets', { path: "/kjtpypt/static/skines/js/terminator2.2.min.js", type: "js", requires: ['fx'] });  
+				Qfast.add('widgets', { path: "/kjtpypt/static/skines/js/terminator2.2.min.js", type: "js", requires: ['fx'] });
 				Qfast(false, 'widgets', function () {
 					K.tabs({
-						id: 'fsD1',   //焦点图包裹id  
-						conId: "D1pic1",  //** 大图域包裹id  
-						tabId:"D1fBt",  
+						id: 'fsD1',   //焦点图包裹id
+						conId: "D1pic1",  //** 大图域包裹id
+						tabId:"D1fBt",
 						tabTn:"a",
-						conCn: '.fcon', //** 大图域配置class       
+						conCn: '.fcon', //** 大图域配置class
 						auto: 1,   //自动播放 1或0
 						effect: 'fade',   //效果配置
 						eType: 'click', //** 鼠标事件
 						pageBt:true,//是否有按钮切换页码
-						bns: ['.prev', '.next'],//** 前后按钮配置class                          
-						interval: 3000  //** 停顿时间  
-					}) 
-				})  
+						bns: ['.prev', '.next'],//** 前后按钮配置class
+						interval: 3000  //** 停顿时间
+					})
+				})
 			</script>
 			<!-- 代码 结束 -->
 		</div>
 
-      
+
 	<div class="news">
 		<h2><span>动态新闻</span></h2>
 		<ul class="more">
@@ -168,10 +168,10 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 			</ul>
 		</div>
 	</div>
-	
+
 	<div class="fengcai">
 		<h2><span>特派员风采</span></h2>
-		
+
 		<div class="info">
 			<!-- picrotate_left start  -->
 			<div class="blk_18"> <a class="LeftBotton" onmousedown="ISL_GoUp_1()" onmouseup="ISL_StopUp_1()" onmouseout="ISL_StopUp_1()" href="javascript:void(0);" target="_self"></a>
@@ -202,14 +202,14 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 			picrun_ini()
 			//-->
 			</script>
-			<!-- picrotate_left end -->	      	
-   		 </div>		
-		
-		
-		
-		
+			<!-- picrotate_left end -->
+   		 </div>
+
+
+
+
 	</div>
-	
+
 	<div class="yuandi">
 		<h2><span>学习园地</span></h2>
 		<ul class="more">
@@ -218,7 +218,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 		<div class="yuandiinfo">
 			<ol>
 				<c:forEach items="${fnc:getArticleListByXxyd(site.id, 1000, 1, '')}" var="article">
-				<c:forEach items="${article.sysAttachmentList}" var="a1">			
+				<c:forEach items="${article.sysAttachmentList}" var="a1">
                 	<!-- <li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://127.0.0.1:8080/kjtpypt/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li>
                 	<li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://10.0.248.53:8080/kjtpypt/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li> -->
 				    <li><a href="${article.url}"><video width="100%" height="255" controls="controls" src="http://www.sxkjtpy.cn/a/dailywork/village/vilProtocol/showImage?filename=${a1.attName}&fileType=${a1.attFolder}"></video><span>${fns:abbr(article.title,25)}</span></a></li>
@@ -226,18 +226,18 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 				<!-- <li><a href="${article.url}"><img src="${article.image}"/><span>${fns:abbr(article.title,25)}</span></a></li> -->
 				</c:forEach>
 			</ol>
-			<ul>		
+			<ul>
 				<c:forEach items="${fnc:getArticleList(site.id, 1000, 3, '')}" var="article">
 				<li><a href="${article.url}" style="color:${article.color}">${fns:abbr(article.title,45)}</a><span ><fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd"/></span></li>
 				</c:forEach>
 			</ul>
 		</div>
 	</div>
-		
+
 	<div class="jiaoliu">
 		<h2><span>用户交流</span></h2>
 		<ul class="more">
-		
+
 			<li><a href="/kjtpypt/a/communication/saveIndex">发布</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/kjtpypt/a/communication/listAll">更多>></a></li>
 		</ul>
 		<div class="jiaoliuinfo">
@@ -248,7 +248,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 		</ul>
 		</div>
 	</div>
-	
+
 	<div class="zixun">
 		<h2><span>专家咨询</span></h2>
 		<ul class="tw">
@@ -275,7 +275,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 				</c:forEach>
 			</ul>
 		</div>
-	</div>	
+	</div>
 	<div class="xglj">
 		<h2><span>相关链接|</span></h2>
 		<div class="xgljinfos">
@@ -304,7 +304,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 <div class="footer">陕西省科技特派员服务与管理系统 版权所有     Copyright © 2017 备案信息：陕ICP备***********&nbsp;&nbsp;&nbsp;&nbsp;<a   href="http://www.sxkjtpy.cn/a"><font  style="color: #fff;">进入管理系统>></font></a></div>
 <!-- APP下载框 -->
 <script type="text/javascript" src="/kjtpypt/static/skines/js/jquery.min.js"></script>
-<script type="text/javascript" src="/kjtpypt/static/skines/js/yanue.pop.js"></script>  
+<script type="text/javascript" src="/kjtpypt/static/skines/js/yanue.pop.js"></script>
 <script type="text/javascript" >
 //记得加载jquery
 //使用参数：1.标题，2.链接地址，3.内容简介
@@ -324,7 +324,7 @@ window.onload=function(){
 		</dl>
 		<p id="popMore"><font style='color:#438cce'>IOS:苹果商店搜索“陕西省科技特派员”下载。</font></p>
 	</div>
-	
+
 </div>
 </body>
 </html>

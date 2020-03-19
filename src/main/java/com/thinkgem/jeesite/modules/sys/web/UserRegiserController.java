@@ -23,11 +23,7 @@ import com.thinkgem.jeesite.modules.attachment.web.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -54,9 +50,12 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  * @version 2017-8-7
  */
 @Controller
-@RequestMapping(value = "/a/UserRegister")
+@RequestMapping(value = "${adminPath}/UserRegister")
 public class UserRegiserController extends BaseController {
 
+	
+	//${adminPath}/UserRegister/phoneRegister
+	
     @Autowired
     private SystemService systemService;
     @Autowired
@@ -105,6 +104,28 @@ public class UserRegiserController extends BaseController {
         map.put("majorList", majorList);
         return map;
     }
+    
+    /**
+     * 级联呈现专业菜单
+     * wpf
+     */
+    @ResponseBody
+    @RequestMapping(value = {"registerSecondListNew", ""})
+    public Map<String, Object> registerSecondListNew(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        List<MajorMenu> majorList = majorMenuService.findMajorMenuSecond(majorMenuService.get(request.getParameter("id")));
+        map.put("majorList", majorList);
+        return map;
+    }
+
+    /**
+     * 注册分类导航
+     */
+    @RequestMapping(value = {"registerClassify", ""})
+    public String registerClassify() {
+        return "register/nature/tpyRegister";
+    }
+
 
     /*
      * 临时用户注册页面
@@ -112,23 +133,41 @@ public class UserRegiserController extends BaseController {
      */
     @RequestMapping(value = {"temporary", ""})
     public String temporaryRegister() {
-        return "register/temporaryUserRegister";
+        return "register/temporary/userRegister";
     }
 
-    /*
-     * 临时用户注册保存
+    /**
+     * 企业注册页面
+     */
+    @RequestMapping(value = {"enterpriseForm", ""})
+    public String enterpriseRegister() {
+        return "register/enterprise/userRegister";
+    }
+
+    /**
+     * 临时用户/企业 注册保存
      * 20171031
      */
     @RequestMapping(value = {"tempSave", ""})
-    public String tempSave(User user) {
-        user.setCompany(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
-        user.setOffice(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
-        // 如果新密码为空，则不更换密码
-        if (StringUtils.isNotBlank(user.getNewPassword())) {
-            user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+    public String tempSave(User user, Model model) {
+        try {
+            user.setCompany(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
+            user.setOffice(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
+            // 如果新密码为空，则不更换密码
+            if (StringUtils.isNotBlank(user.getNewPassword())) {
+                user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+            }
+            systemService.tempUserSave(user);
+            model.addAttribute("message",user.getName()+"注册成功");
+            return "modules/sys/sysLogin";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message",user.getName()+"注册失败");
+            if(user.getPersonFlag().equals("4")){
+                return "register/temporary/userRegister";
+            }
+            return "register/enterprise/userRegister";
         }
-        systemService.tempUserSave(user);
-        return "redirect:" + "/f";
     }
 
     /*
@@ -142,7 +181,7 @@ public class UserRegiserController extends BaseController {
 
 
     /*
-     * 临时用户登录页面
+     * 临时用户登录
      * 20171031
      */
     @RequestMapping(value = {"temporaryLogin", ""})
@@ -158,7 +197,8 @@ public class UserRegiserController extends BaseController {
             session.setAttribute("user", user);
             return "redirect:" + "/f";
         } else {
-            return "redirect:" + "/a/UserRegister/temporaryLoginIndex";
+            model.addAttribute("message","登陆失败，请重新登录");
+            return "register/temporaryUserLogin";
         }
 
 
@@ -341,8 +381,8 @@ public class UserRegiserController extends BaseController {
     }
 
 
-    /* 特派员注册
-     * @author 刘钢
+    /** 特派员注册
+     * @author 白子涵
      * 20170727
      */
     @RequestMapping(value = "save1")
@@ -354,19 +394,40 @@ public class UserRegiserController extends BaseController {
         if (StringUtils.isNotBlank(user.getNewPassword())) {
             user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
         }
+        String personFlag=user.getPersonFlag();
         if (!beanValidator(model, user)) {
-            return form(user, model);
+            if(personFlag.equals("0")){
+                return form(user, model);//跳转自然人特派员注册页面
+            }else if(personFlag.equals("2")){
+                return tpyCorp(user, model);//跳转法人特派员注册页面
+            }else if(personFlag.equals("5")){
+                return fxForm(user, model);//跳转反向特派员注册页面
+            }
         }
         if (!"true".equals(checkLoginName(user.getOldLoginName(), user.getLoginName()))) {
             addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
-            return form(user, model);
+            if(personFlag.equals("0")){
+                return form(user, model);//跳转自然人特派员注册页面
+            }else if(personFlag.equals("2")){
+                return tpyCorp(user, model);//跳转法人特派员注册页面
+            }else if(personFlag.equals("5")){
+                return fxForm(user, model);//跳转反向特派员注册页面
+            }
         }
         // 角色数据验证，根据角色设置省份、部门
         List<Role> roleList = Lists.newArrayList();
         List<String> roleIdList = user.getRoleIdList();
-        for (Role r : systemService.findTpyRole()) {
-            if (roleIdList.contains(r.getId())) {
-                roleList.add(r);
+        if(user.getPersonFlag().equals("5")){
+            for (Role r : systemService.findFxRole()) {
+                if (roleIdList.contains(r.getId())) {
+                    roleList.add(r);
+                }
+            }
+        }else{
+            for (Role r : systemService.findTpyRole()) {
+                if (roleIdList.contains(r.getId())) {
+                    roleList.add(r);
+                }
             }
         }
         user.setRoleList(roleList);
@@ -378,12 +439,26 @@ public class UserRegiserController extends BaseController {
         }
         if (flag.equals("0")) {   //新增用户
             addMessage(redirectAttributes, "保存用户'" + user.getName() + "'成功");
-            return "redirect:" + adminPath + "/login";
+            if(user.getTpyExcelUrl()==null||user.getTpyExcelUrl()=="")return "redirect:" + adminPath + "/login";
+            //跳转页面
+            model.addAttribute("tpyExcelUrl", user.getTpyExcelUrl());
+            model.addAttribute("message","保存用户'" + user.getName() + "'成功");
+            return "register/tpyRegisterToLogin";
         } else {  //更新用户
             addMessage(redirectAttributes, "修改'" + user.getName() + "'成功");
             return "redirect:" + "/a/UserRegister/registerResult/";
         }
     }
+
+
+
+    @RequestMapping(value = "/downTpyExcel", method = RequestMethod.POST)
+    public void loginFail(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+        String excelUrl=request.getParameter("tpyExcelUrl");
+        String flag = FileUtils.downFile(new File(excelUrl), request, response);
+        if(flag!=null)addMessage(redirectAttributes, "下载失败，请登陆到管理页面下载对应推荐表");
+    }
+
 
     /* 需求单位注册
      * @author 刘钢
@@ -692,6 +767,17 @@ public class UserRegiserController extends BaseController {
     public String testVideo() {
         return "/modules/test/index";
     }
+    
+    
+    /**
+	 * 手机端注册跳转地址controller
+	 * wpf
+	 */
+	@RequestMapping(value = "phoneRegister")
+	public String phoneResg(User user,HttpServletRequest request, HttpServletResponse response, Model model) {
+		model.addAttribute("user",user);
+		return "modules/nature/tpyRegister";
+	}
 
 
 }

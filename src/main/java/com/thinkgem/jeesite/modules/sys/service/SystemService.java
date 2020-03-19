@@ -230,6 +230,21 @@ public class SystemService extends BaseService implements InitializingBean {
         return role1;
     }
 
+
+    /**
+     * 反向特派员注册获取角色列表
+     */
+    public List<Role> findFxRole() {
+        List<Role> role = UserUtils.getTpyRoleList();
+        List<Role> role1 = new ArrayList<Role>();
+        for (int i = 0; i < role.size(); i++) {
+            if (role.get(i).getId().equals("4d54294fbd694873b19f752cda308f2d")) { //TODO 待修改
+                role1.add(role.get(i));
+            }
+        }
+        return role1;
+    }
+
     /*临时用户登录
      *@author 刘钢
      *20170727
@@ -249,10 +264,12 @@ public class SystemService extends BaseService implements InitializingBean {
     @Transactional(readOnly = false)
     public String tempUserSave(User user) {
         user.preInsert();
-        userDao.insertTempUser(user);
-        // 清除用户缓存
-        UserUtils.clearCache(user);
-        return null;
+        if(userDao.insertTempUser(user)==1){//注册成功
+            // 清除用户缓存
+            UserUtils.clearCache(user);
+            return "1";
+        }
+        return "0";
     }
 
 
@@ -363,11 +380,13 @@ public class SystemService extends BaseService implements InitializingBean {
             String roleId = userDao.findRoleList(id);
             System.out.println(roleId);
             if (roleId != null) {
-                if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) {
+                if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) { //市科技局管理员
                     role.setId("030c92ade0f0452eacc4d395f3d29961");
-                } else if (roleId.equals("2e4e7026dab34efd98caf7cbc6e9020d")) {
+                } else if (roleId.equals("2e4e7026dab34efd98caf7cbc6e9020d")) { //县科技局管理员
                     role.setId("7daf4e3fb95449cfa9d5b6ff53b7e28c");
-                } else {
+                }else if (roleId.equals("236ed64260ef445cb6eaa27944df678b")){ //反向特派员管理员  //TODO 待修改
+                    role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员 //TODO 待修改
+                }else {  //省管理员
                     role.setId("f19d286a9e7c4b7a887823a1d522e504");
                 }
                 user.setRole(role);

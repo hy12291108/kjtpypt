@@ -10,6 +10,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="${ctxStatic}/jingle/css/Jingle.css">
     <link rel="stylesheet" href="${ctxStatic}/jingle/css/app.css">
+
+	<script type="text/javascript">
+		function register(){
+			var url = "${ctx}/UserRegister/phoneRegister";
+			
+			location.replace(url);
+		}
+	
+	
+	</script>    
+
 </head>
 <body>
 <div id="aside_container">
@@ -46,6 +57,7 @@
 	            	<div>&nbsp;</div>
 	            	<input type="hidden" name="mobileLogin" value="true">
 	                <button id="btn" class="submit block" data-icon="key">登录</button>
+	                <button id="btRegist" type="button" class="submit block" onclick="register()">注册</button>
 	            </form>
 	        </div>
 	    </article>

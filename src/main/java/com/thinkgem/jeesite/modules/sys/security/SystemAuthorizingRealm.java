@@ -261,6 +261,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		private String id; // 编号
 		private String loginName; // 登录名
 		private String name; // 姓名
+        private String personFlag;//0 表示特派员（自然人 ）1 表示需求单位 2法人 3表示管理员 4 临时用户 5反向
 		private boolean mobileLogin; // 是否手机登录
 		
 //		private Map<String, Object> cacheMap;
@@ -269,6 +270,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			this.id = user.getId();
 			this.loginName = user.getLoginName();
 			this.name = user.getName();
+			this.personFlag=user.getPersonFlag();
 			this.mobileLogin = mobileLogin;
 		}
 
@@ -283,6 +285,10 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		public String getName() {
 			return name;
 		}
+
+        public String getPersonFlag() {
+            return personFlag;
+        }
 
 		public boolean isMobileLogin() {
 			return mobileLogin;

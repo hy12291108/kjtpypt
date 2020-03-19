@@ -28,8 +28,12 @@
     <link href="/kjtpypt/static/common/jeesite.css" type="text/css" rel="stylesheet"/>
     <link href="/kjtpypt/static/common/Select.css" type="text/css" rel="stylesheet"/>
     <!-- 20170906加注册页面样式 -->
-    <link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>
+    <%--<link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>--%>
+    <!-- 20200319加注册页面样式 -->
+    <link href="/kjtpypt/static/classify/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/kjtpypt/static/classify/css/css.css" rel="stylesheet" type="text/css">
+
     <script src="/kjtpypt/static/common/jeesite.js" type="text/javascript"></script>
     <!-- 上传图片 20171012-->
     <link href="${ctxStatic}/fileUpload/css/iconfont.css" rel="stylesheet" type="text/css"/>
@@ -60,7 +64,6 @@
 
 
         $(document).ready(function () {
-            var option = null;
             $("#fileUploadContent").initUpload({
                 "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
                 autoCommit: false,//文件是否自动上传
@@ -91,40 +94,6 @@
             });
         });
 
-        /* 联系人号码校验*/
-        function phoneCheck() {
-            var corpCorPhone = $.trim($('#corpCorPhone').val());
-            var num = /^\d*$/; //全数字
-            if (!num.exec(corpCorPhone)) {
-                alert("号码必须全为数字");
-                $("#corpCorPhone").focus();
-                return false;
-            }
-            if (corpCorPhone.length != 11) {
-                alert("号码长度不符,长度为11位");
-                $("#corpCorPhone").focus();
-                return false;
-            }
-        }
-
-        function yingyeinfo() {
-            var corpScale = $.trim($('#corpScale').val());
-            if (corpScale.length > 200) {
-                alert("营业范围长度不能大于200");
-                $("#corpScale").focus();
-                return false;
-            }
-        }
-
-        function jsinfo() {
-            var corpMajor = $.trim($('#corpMajor').val());
-            if (corpMajor.length > 200) {
-                alert("科技优势与服务内容长度不能大于200");
-                $("#corpMajor").focus();
-                return false;
-            }
-
-        }
 
         function tpyCorpSave() {
             uploadEvent.uploadFileEvent(option, 1);
@@ -133,12 +102,23 @@
 </head>
 <body>
 <div class="header">
-    <h1><img src="/kjtpypt/static/skin/images/logo.png" width="560" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span>
-    </h1>
+    <div class="top">
+        <h1><img src="/kjtpypt/static/classify/images/logo02.png" width="650" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span></h1>
+    </div>
+    <div class="navbg">
+        <div class="nav">
+            <ul>
+                <li><a href="/kjtpypt/a/UserRegister/form">自然人特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/tpyCorp" class="current">法人特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/fxForm">反向特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/enterpriseForm">企业</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/temporary">普通用户</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="container">
     <div class="signin001">
-        <h2><span>特派员（法人）注册</span></h2>
         <form:form id="inputForm" modelAttribute="user" method="post" class="form-horizontal">
             <form:hidden path="id"/>
             <sys:message content="${message}"/>
@@ -299,8 +279,7 @@
                         <label>联系人手机：</label>
                     </td>
                     <td>
-                        <form:input path="corpCorPhone" htmlEscape="false" maxlength="100" class="required"
-                                    onchange="phoneCheck()"/>
+                        <form:input path="corpCorPhone" htmlEscape="false" maxlength="100" class="required mobile"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
                 </tr>
@@ -331,8 +310,7 @@
                         <label>单位地址：</label>
                     </td>
                     <td colspan="3">
-
-                        <form:textarea path="tpyAddress" htmlEscape="false" rows="2" maxlength="200"
+                        <form:textarea path="tpyAddress" htmlEscape="false" rows="2" maxlength="20"
                                        style="width:769px"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -344,7 +322,7 @@
                     </td>
                     <td colspan="3">
                         <form:textarea path="corpScale" id="corpScale" htmlEscape="false" rows="2" maxlength="20"
-                                       style="width:769px" onchange="yingyeinfo()"/>
+                                       style="width:769px"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
                 </tr>
@@ -354,7 +332,7 @@
                         <label>拟服务地点：</label>
                     </td>
                     <td colspan="3">
-                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="10"
+                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="15"
                                        style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
@@ -367,7 +345,7 @@
                     </td>
                     <td colspan="3">
                         <form:textarea path="corpMajor" id="corpMajor" htmlEscape="false" rows="2" maxlength="200"
-                                       style="width:769px" onchange="jsinfo()"/>
+                                       style="width:769px"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
 

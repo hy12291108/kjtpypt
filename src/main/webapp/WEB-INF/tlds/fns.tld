@@ -244,4 +244,12 @@
     <example>${fns:toJson(object)}</example>  
   </function>
   
+  <function>
+    <description>获取专业类别列表</description>
+    <name>getMajorMenuList</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.ForRegister</function-class>
+    <function-signature>java.util.List getMajorMenuList()</function-signature>
+    <example>${fns:getMajorMenuList()}</example>  
+  </function>
+  
 </taglib>

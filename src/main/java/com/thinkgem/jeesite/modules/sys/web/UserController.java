@@ -48,7 +48,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @Controller
 @RequestMapping(value = "${adminPath}/sys/user")
 public class UserController extends BaseController {
-
+	
 	@Autowired
 	private SystemService systemService;
 	
@@ -413,8 +413,6 @@ public class UserController extends BaseController {
 		return mapList;
 	}
 	
-
-	
     
 //	@InitBinder
 //	public void initBinder(WebDataBinder b) {
@@ -476,7 +474,7 @@ public class UserController extends BaseController {
 	
 	
 	
-	/* 
+	/** 
 	 * @author 刘钢
 	 * 专家指定
 	 * 20171113

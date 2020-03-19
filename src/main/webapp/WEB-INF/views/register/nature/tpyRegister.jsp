@@ -28,8 +28,11 @@
     <link href="/kjtpypt/static/common/jeesite.css" type="text/css" rel="stylesheet"/>
     <link href="/kjtpypt/static/common/Select.css" type="text/css" rel="stylesheet"/>
     <!-- 20170906加注册页面样式 -->
-    <link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>
+    <%--<link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>--%>
+    <!-- 20200319加注册页面样式 -->
+    <link href="/kjtpypt/static/classify/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/kjtpypt/static/classify/css/css.css" rel="stylesheet" type="text/css">
 
     <script src="/kjtpypt/static/common/jeesite.js" type="text/javascript"></script>
     <!-- 上传图片 20171011-->
@@ -42,16 +45,29 @@
     <script src="${ctxStatic}/centermenu-master/js/toast.js" type="text/javascript"></script>
     <script src="${ctxStatic}/centermenu-master/js/centermenu.js" type="text/javascript"></script>
 
+
     <script type="text/javascript">var ctx = '/kjtpypt/a', ctxStatic = '/kjtpypt/static';</script>
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
+    <script>var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();</script>
+
+    <script type="text/javascript">
+    	var ctx = '/kjtpypt/a', 
+    	ctxStatic = '/kjtpypt/static';
     </script>
+    <script>
+    	var _hmt = _hmt || [];
+    	(function () {
+        	var hm = document.createElement("script");
+	        hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
+	        var s = document.getElementsByTagName("script")[0];
+	        s.parentNode.insertBefore(hm, s);
+ 		})();
+ 	</script>
     <script type="text/javascript">
         function mobileBind() {
             var mobile = $("#loginName").val();
@@ -59,7 +75,6 @@
         }
 
         $(document).ready(function () {
-            var option = null;
 
             $("#fileUploadContent").initUpload({
                 "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
@@ -91,43 +106,6 @@
             });
         });
 
-        //加载即可输入又可实现下拉的select
-        function corpList() {
-            var officeId = $("#officeId").val();
-            if (officeId == "") {
-                alert("请先输入所属部门");
-                $("#officeName").focus();
-                return;
-            } else if ($("#tpyCompany .es-list").length > 0) {
-                $("#editable-select").remove();
-                $(".es-list").remove();
-                $("#tpyCompany").prepend("<select id='editable-select' name='tpyCompany'></select>");
-            }
-            $.ajax({
-                type: "post",
-                contentType: "application/json",
-                url: "${ctx}/UserRegister/corpList?officeId=" + officeId,
-                dataType: "json",
-                success: function (data) {
-                    var append1 = "<option value='";
-                    var append2 = "'>";
-                    var append3 = "</option>";
-                    if (data.corpList[0] != "查无数据") {
-                        for (var i = 0; i < data.corpList.length; i++) {
-                            var append = append1 + data.corpList[i] + append2 + data.corpList[i] + append3;
-                            $("#editable-select").empty();
-                            $("#editable-select").append(append);
-                        }
-                    }
-                    $("#editable-select").editableSelect({
-                        effects: 'slide'
-                    });
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        }
 
         //专业类别
         function initZyLb() {
@@ -169,33 +147,6 @@
         }
 
 
-        /* 号码校验*/
-        function phoneCheck1() {
-            var mobile = $.trim($('#mobile').val());
-            var num = /^\d*$/; //全数字
-            if (!num.exec(mobile)) {
-                alert("号码必须全为数字");
-                $("#mobile").focus();
-                return false;
-            }
-            if (mobile.length != 11) {
-                alert("号码长度不符,长度为11位");
-                $("#mobile").focus();
-                return false;
-            }
-        }
-
-
-        /*身份证校验*/
-        function idCardCheck() {
-            var idCard = $("#tpyIdcard").val();
-            var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-            if (reg.test(idCard) === false) {
-                alert("身份证输入不合法");
-                $("#tpyIdcard").focus();
-                return false;
-            }
-        }
 
         function registerSave() {
             var yjxkdm = $("#yjxkdm").val();
@@ -218,12 +169,23 @@
 </head>
 <body>
 <div class="header">
-    <h1><img src="/kjtpypt/static/skin/images/logo.png" width="560" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span>
-    </h1>
+    <div class="top">
+        <h1><img src="/kjtpypt/static/classify/images/logo02.png" width="650" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span></h1>
+    </div>
+    <div class="navbg">
+        <div class="nav">
+            <ul>
+                <li><a href="/kjtpypt/a/UserRegister/form" class="current">自然人特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/tpyCorp">法人特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/fxForm">反向特派员</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/enterpriseForm">企业</a></li>
+                <li><a href="/kjtpypt/a/UserRegister/temporary">普通用户</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="container">
     <div class="signin001">
-        <h2><span>特派员（自然人）注册</span></h2>
         <form:form id="inputForm" modelAttribute="user" method="post" class="form-horizontal">
             <form:hidden path="id"/>
             <sys:message content="${message}"/>
@@ -233,20 +195,37 @@
                     <td>
                         <label>登录名：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
                         <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false"
-                                    maxlength="50"
-                                    class="required mobile" onkeyup=" mobileBind()"/>
+                                    maxlength="50" class="required mobile" onkeyup=" mobileBind()"/>
                         <em>*</em>
                     </td>
-
+                    <td rowspan="5"><label>头像：</label></td>
+                    <td rowspan="5">
+                        <table class="uploadheadimg">
+                            <tr><td rowspan="2"><div id="fileUploadContent" class="required fileUploadContent"></div></td><td valign="bottom"><input type="button" class="btn btn-primary" value="上传头像" id="tit"></td></tr>
+                        </table>
+                    </td>
                 </tr>
+
+
+                <%--<tr>
+                    <td class="tit">
+                        <button type="button" class="btn btn-primary" id="tit">选择图片</button>
+                    </td>
+                    <td colspan="2">
+                        <div id="fileUploadContent" class="fileUploadContent" class="required"></div>
+                    </td>
+                    <td><em>*注：头像上传</em></td>
+                </tr>--%>
+
+
                 <tr>
                     <td>
                         <label>密码：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3"
                                class="${empty user.id?'required':''}"/><span class="help-inline"><font
                             color="red">*</font> </span>
@@ -257,7 +236,7 @@
                     <td>
                         <label>确认密码：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50"
                                minlength="3" equalTo="#newPassword"/>
                         <c:if test="${empty user.id}"><span class="help-inline"><font
@@ -274,6 +253,9 @@
                         <form:input path="name" htmlEscape="false" maxlength="50" class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
+                </tr>
+
+                <tr>
                     <td>
                         <label>性别：</label>
                     </td>
@@ -319,24 +301,12 @@
                         <label>工作单位名称：</label>
                     </td>
                     <td>
-                            <%--<div id="tpyCompany">
-                                <select id="editable-select" name="tpyCompany">
-                                </select>
-                                <input type="button" value="选择" onClick="corpList()">
-                                <span class="help-inline"><font color="red">*</font></span>
-                            </div>--%>
                         <form:input path="tpyCompany" htmlEscape="false" maxlength="50"/>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
 
                 <tr>
-                        <%--<td>
-                            <label>工作部门：</label>
-                        </td>
-                        <td>
-                            <form:input path="tpyDept" htmlEscape="false" maxlength="50"/>
-                        </td>--%>
                     <td>
                         <label>职务：</label>
                     </td>
@@ -410,7 +380,6 @@
                         <label>身份证号/护照：</label>
                     </td>
                     <td>
-                        <!--校验身份证<form:input path="tpyIdcard" id="tpyIdcard" htmlEscape="false" maxlength="20" class="required" onChange="idCardCheck()"/>-->
                         <form:input path="tpyIdcard" id="tpyIdcard" htmlEscape="false" maxlength="20" class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
                     </td>
@@ -476,7 +445,7 @@
                     </td>
                     <td colspan="3">
 
-                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="10"
+                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="15"
                                        style="width:753px"
                                        class="required"/>
                         <span class="help-inline"><font color="red">*</font> </span>
@@ -521,7 +490,7 @@
                     </td>
                 </tr>
 
-                <tr>
+               <%-- <tr>
                     <td class="tit">
                         <button type="button" class="btn btn-primary" id="tit">选择图片</button>
                     </td>
@@ -529,7 +498,7 @@
                         <div id="fileUploadContent" class="fileUploadContent" class="required"></div>
                     </td>
                     <td><em>*注：头像上传</em></td>
-                </tr>
+                </tr>--%>
             </table>
 
 

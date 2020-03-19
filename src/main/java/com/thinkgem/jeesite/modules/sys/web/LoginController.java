@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.web.util.WebUtils;
@@ -186,6 +187,10 @@ public class LoginController extends BaseController{
 ////			request.getSession().setAttribute("aaa", "aa");
 ////		}
 //		System.out.println("==========================b");
+        if(principal.getPersonFlag().equals("4")||principal.getPersonFlag().equals("6")){
+		    request.getSession().setAttribute("user",UserUtils.getByLoginName(principal.getLoginName()));
+            return "redirect:" + "/f";
+        }
 		return "modules/sys/sysIndex";
 	}
 	
