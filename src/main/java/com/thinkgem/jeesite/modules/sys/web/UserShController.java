@@ -4,23 +4,19 @@
 package com.thinkgem.jeesite.modules.sys.web;
 
 
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.TpyInfo;
+import com.thinkgem.jeesite.modules.sys.entity.TpyWorkExperience;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.MajorMenuService;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,15 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.sys.entity.TpyInfo;
-import com.thinkgem.jeesite.modules.sys.entity.TpyWorkExperience;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.OfficeService;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 用户Controller
@@ -141,11 +135,16 @@ public class UserShController extends BaseController {
 		return "modules/check/tpyInfoSh";
 	}
 
-    @RequestMapping(value = {"getPhoto", ""})
-    public void getPhoto(User user, Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value = {"getImage", ""})
+    public void getImage(User user,int type, Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 设定输出的类型
         final String JPG = "image/jpeg;charset=GB2312";
-	    String imagePath = user.getPhoto().substring(0,user.getPhoto().length()-1);//获取真实路径
+	    String imagePath = null;
+        if(type==0){ //头像
+            imagePath = user.getPhoto().substring(0,user.getPhoto().length()-1);//获取真实路径
+        }else if(type==1){  //推荐表
+            imagePath = user.getTjTableImage().substring(0,user.getTjTableImage().length()-1);//获取真实路径
+        }
         response.reset();
         OutputStream output = response.getOutputStream();// 得到输出流
         if (imagePath.toLowerCase().endsWith(".jpg")){ // 使用编码处理文件流的情况：
@@ -462,6 +461,27 @@ public class UserShController extends BaseController {
 		return "redirect:"+adminPath+"/UserSh/tpyXp";
 	}
 
-	
+    /**
+     * 跳转上传推荐表页面
+     */
+    @RequestMapping(value = "uploadTjTableForm")
+    public String uploadTjTableForm(Model model) {
+        model.addAttribute("user", UserUtils.getUser());
+        return "register/uploadTjTableForm";
+    }
+
+    /**
+     * 上传推荐表,修改用户状态字段
+     */
+    @RequestMapping(value = "uploadTjTable")
+    public String uploadTjTable(User user,  Model model) {
+        if(user.getCheckFlag().equals("3")&&user.getTjTableImage()!=""&&user.getTjTableImage()!=null&&systemService.uploadTjTable(user)){
+            model.addAttribute("message", "上传成功！");
+        }else{
+            model.addAttribute("message", "上传失败！");
+        }
+        model.addAttribute("user", UserUtils.getUser());
+        return "register/uploadTjTableForm";
+    }
 	
 }

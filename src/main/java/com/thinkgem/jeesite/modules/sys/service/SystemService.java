@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
+import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
 import com.thinkgem.jeesite.modules.sys.dao.*;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.wrap.UserToMap;
@@ -264,7 +265,7 @@ public class SystemService extends BaseService implements InitializingBean {
     @Transactional(readOnly = false)
     public String tempUserSave(User user) {
         user.preInsert();
-        if(userDao.insertTempUser(user)==1){//注册成功
+        if (userDao.insertTempUser(user) == 1) {//注册成功
             // 清除用户缓存
             UserUtils.clearCache(user);
             return "1";
@@ -380,14 +381,35 @@ public class SystemService extends BaseService implements InitializingBean {
             String roleId = userDao.findRoleList(id);
             System.out.println(roleId);
             if (roleId != null) {
-                if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) { //市科技局管理员
-                    role.setId("030c92ade0f0452eacc4d395f3d29961");
+                /*if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) { //市科技局管理员
+                    if(user.getPersonFlag().equals("5")){
+                        role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员//TODO 待修改
+                    }else{
+                        role.setId("030c92ade0f0452eacc4d395f3d29961");//市科技局特派员
+                    }
                 } else if (roleId.equals("2e4e7026dab34efd98caf7cbc6e9020d")) { //县科技局管理员
-                    role.setId("7daf4e3fb95449cfa9d5b6ff53b7e28c");
-                }else if (roleId.equals("236ed64260ef445cb6eaa27944df678b")){ //反向特派员管理员  //TODO 待修改
-                    role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员 //TODO 待修改
+                    if(user.getPersonFlag().equals("5")){
+                        role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员//TODO 待修改
+                    }else{
+                        role.setId("7daf4e3fb95449cfa9d5b6ff53b7e28c");//县科技局特派员
+                    }
                 }else {  //省管理员
                     role.setId("f19d286a9e7c4b7a887823a1d522e504");
+                }*/
+                if (roleId.equals(TpyInfoConfig.CITY_SCIENCE_ADMIN)) { //市科技局管理员
+                    if (user.getPersonFlag().equals(TpyInfoConfig.REVERSE_PERSON_FLAG)) {
+                        role.setId(TpyInfoConfig.FX_TPY);//反向特派员//TODO 待修改
+                    } else {
+                        role.setId(TpyInfoConfig.CITY_SCIENCE_TPY);//市科技局特派员
+                    }
+                } else if (roleId.equals(TpyInfoConfig.COUNTY_SCIENCE_ADMIN)) { //县科技局管理员
+                    if (user.getPersonFlag().equals(TpyInfoConfig.REVERSE_PERSON_FLAG)){
+                        role.setId(TpyInfoConfig.FX_TPY);//反向特派员//TODO 待修改
+                    }else{
+                        role.setId(TpyInfoConfig.COUNTY_SCIENCE_TPY);//县科技局特派员
+                    }
+                } else {  //省管理员
+                    role.setId(TpyInfoConfig.PROVINCE_SCIENCE_ADMIN);
                 }
                 user.setRole(role);
                 List<Role> roleList = new ArrayList<Role>();
@@ -418,11 +440,11 @@ public class SystemService extends BaseService implements InitializingBean {
             String roleId = userDao.findRoleList(id);
             if (roleId != null) {
                 //判断是否为市管理员
-                if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) {
+                if (roleId.equals(TpyInfoConfig.CITY_SCIENCE_ADMIN)) {
                     //設置需求單位（省、市、縣）角色
                     role.setId("e98ce06c8b154a1f86d7157b2516bd03");
                     //判断是否为县管理员
-                } else if (roleId.equals("2e4e7026dab34efd98caf7cbc6e9020d")) {
+                } else if (roleId.equals(TpyInfoConfig.COUNTY_SCIENCE_ADMIN)) {
                     role.setId("3861d5290ef249558419d928d1f2657b");
                 } else {
                     role.setId("de3b6c4b0ae4492c8772da19376b586c");
@@ -1162,6 +1184,27 @@ public class SystemService extends BaseService implements InitializingBean {
             String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
             identityService.deleteUser(userId);
         }
+    }
+
+    /**
+     * 上传推荐表,修改用户状态字段
+     *
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public boolean uploadTjTable(User user) {
+        try {
+            int i = userDao.uploadTjTable(user);
+            if (userDao.uploadTjTable(user) == 1) {
+                // 清除用户缓存
+                UserUtils.clearCache(user);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
 
     ///////////////// Synchronized to the Activiti end //////////////////

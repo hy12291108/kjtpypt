@@ -383,8 +383,8 @@
             <form:input path="photo" id="tjTableImage" htmlEscape="false" type="hidden" value=""/>
             <form:input path="loginFlag" value="1" htmlEscape="false" type="hidden"/>
             <form:input path="personFlag" value="5" htmlEscape="false" type="hidden"/>
-            <form:input path="checkFlag" value="0" htmlEscape="false" type="hidden"/>
-            <form:input path="roleIdList" value="4d54294fbd694873b19f752cda308f2d" htmlEscape="false" type="hidden"/> <%--TODO 待修改--%>
+            <form:input path="checkFlag" value="3" htmlEscape="false" type="hidden"/>
+            <form:input path="roleIdList" value="3bb6453c699d49508b15529670ad9e9b" htmlEscape="false" type="hidden"/> <%--TODO 待修改--%>
             <div class="btgroup form-actions">
                 <input id="btnSubmit" type="submit" class="btn btn-primary" value="申报" onclick="registerSave()">
                 <input id="btnCancel" type="button" class="btn btn-default" value="返回" onclick="history.go(-1)"/>

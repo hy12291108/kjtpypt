@@ -60,7 +60,7 @@
             <td>性别：</td>
             <td>${fns:getDictLabel(user.sex,'sex',user.sex)}</td>
             <td rowspan="6" >头像：</td>
-            <td rowspan="6"><img src="${ctx}/UserSh/getPhoto?id=${user.id}" style="width: 140px;height: 200px"></td>
+            <td rowspan="6"><img src="${ctx}/UserSh/getImage?id=${user.id}&type=0" style="width: 140px;height: 200px"></td>
         </tr>
         <tr>
             <td>民族：</td>
@@ -150,19 +150,25 @@
         <%--<tr>
             <td>推荐表图片:</td>
             <td colspan="5">
-            <c:if test="${empty photoList}">
+            <c:if test="${empty imagePathList}">
             <img alt="暂无图片" src="" /> <br/>
             </c:if>
-            <c:if test="${photoList==null}">
+            <c:if test="${imagePathList==null}">
             <img alt="暂无图片" src="" /> <br/>
             </c:if>
-            <c:if test="${!empty photoList}">
-            <c:forEach items="${photoList}" var="imagename">
+            <c:if test="${!empty imagePathList}">
+            <c:forEach items="${imagePathList}" var="imagename">
             <img alt="暂无图片" src="/tjImage${imagename}" style="width:500px;height:600px"/>
             </c:forEach>
             </c:if>
             </td>
         </tr>--%>
+        <tr>
+            <td>推荐表图片:</td>
+            <td colspan="5">
+                <img src="${ctx}/UserSh/getImage?id=${user.id}&type=1" style="width:500px;height:600px"/>
+            </td>
+        </tr>
         <tr>
             <td>
                 <lable>审核结果:</lable>

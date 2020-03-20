@@ -391,7 +391,7 @@
             <form:input path="photo" id="tjTableImage" htmlEscape="false" type="hidden" value=""/>  <%--营业执照--%>
             <form:input path="loginFlag" value="1" htmlEscape="false" type="hidden"/>
             <form:input path="personFlag" value="2" htmlEscape="false" type="hidden"/>
-            <form:input path="checkFlag" value="0" htmlEscape="false" type="hidden"/>
+            <form:input path="checkFlag" value="3" htmlEscape="false" type="hidden"/>
             <form:input path="roleIdList" value="3bb6453c699d49508b15529670ad9e9b" htmlEscape="false" type="hidden"/>
             <div class="btgroup form-actions">
                 <input id="btnSubmit" type="submit" class="btn btn-primary" value="申报" onclick="tpyCorpSave()">

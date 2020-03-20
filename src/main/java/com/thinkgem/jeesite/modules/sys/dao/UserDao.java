@@ -173,5 +173,7 @@ public interface UserDao extends CrudDao<User> {
 	 * 刘钢
 	 * 20170926
 	 */
-	public List<User> findXpList(User user);	
+	public List<User> findXpList(User user);
+
+    int uploadTjTable(User user);
 }

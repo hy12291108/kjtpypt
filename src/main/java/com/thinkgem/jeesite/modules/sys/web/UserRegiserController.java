@@ -270,7 +270,7 @@ public class UserRegiserController extends BaseController {
         //自然人
         if (user.getPersonFlag().equals("0")) {
             model.addAttribute("imagePathList", list);
-            if (user.getTpyBeginWorkDate() != null) {
+            if (user.getTpyBeginWorkDate() != null && user.getTpyBeginWorkDate() != "") {
                 user.setTpyBeginWorkDate(user.getTpyBeginWorkDate().substring(0, 10));
             } else {
                 user.setTpyBeginWorkDate("");
@@ -383,7 +383,6 @@ public class UserRegiserController extends BaseController {
 
     /** 特派员注册
      * @author 白子涵
-     * 20170727
      */
     @RequestMapping(value = "save1")
     public String save1(User user, HttpServletRequest request,HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
@@ -449,7 +448,6 @@ public class UserRegiserController extends BaseController {
             return "redirect:" + "/a/UserRegister/registerResult/";
         }
     }
-
 
 
     @RequestMapping(value = "/downTpyExcel", method = RequestMethod.POST)

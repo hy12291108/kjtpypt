@@ -143,7 +143,13 @@
         </tr>
         <tr>
             <td  >营业执照：</td>
-            <td colspan="5"><img src="${ctx}/UserSh/getPhoto?id=${user.id}" style="width: 400px;height: 300px"></td>
+            <td colspan="5"><img src="${ctx}/UserSh/getImage?id=${user.id}&type=0" style="width: 400px;height: 300px"></td>
+        </tr>
+        <tr>
+            <td>推荐表图片:</td>
+            <td colspan="5">
+                <img src="${ctx}/UserSh/getImage?id=${user.id}&type=1" style="width:500px;height:600px"/>
+            </td>
         </tr>
         <%--<tr>
             <td>推荐表图片:</td>
