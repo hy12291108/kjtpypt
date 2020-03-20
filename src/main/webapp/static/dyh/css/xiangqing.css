@@ -1,0 +1,424 @@
+﻿body{
+	background:#f0f0f0;
+}
+.zhuangtailan{
+	width:100%;
+	min-height:20px;
+	background:#0064de;
+	
+}
+.nav{
+	width:100%;
+	min-height:44px;
+	background: -webkit-linear-gradient(left, #1f84ff , #0064de); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #1f84ff, #0064de); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #1f84ff, #0064de); /* Firefox 3.6 - 15 */
+	background: linear-gradient(to right, #1f84ff , #0064de); /* 标准的语法 */
+}
+.nav h1{
+	min-height:44px;
+	line-height:44px;
+	margin:0 auto;
+	font-weight: normal;
+	font-size:1.3em;
+	color:white;	
+}
+.nav a{
+	float:left;
+	line-height:44px;
+	color:white;
+	padding:0px 10px;
+	font-size:1em;
+	
+}
+.nav a i{
+	display: inline-block;
+	width:8px;
+	min-height:16px;
+	background:url(../img/back.png);
+	background-size: cover;
+	margin-right:10px;
+	
+	
+}
+
+/*特派员风采详情*/
+.tpy_xq{
+	width:100%;
+	min-height: auto;
+}
+.tpy_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_tpyfc_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_tpyfc_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_tpyfc_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+.content_tpyfc_xq>img{
+	display:block;
+	margin:5px auto;
+}
+/*通知通告详情*/
+.notice_xq{
+	width:100%;
+	min-height: auto;
+}
+.notice_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_notice_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_notice_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_notice_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+/*新闻公告详情*/
+.news_xq{
+	width:100%;
+	min-height: auto;
+}
+.news_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_news_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_news_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_news_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+.content_news_xq>img{
+	display:block;
+	margin:5px auto;
+}
+/*学习园地详情*/
+.learning_xq{
+	width:100%;
+	min-height: auto;
+}
+.learning_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_learning_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_learning_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_learning_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+.content_learning_xq>vedio{
+	display:block;
+	margin:5px auto;
+}
+/*用户交流详情*/
+.user_xq{
+	width:100%;
+	min-height: auto;
+}
+.user_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_user_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_user_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_user_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+.content_user_xq>img{
+	display:block;
+	margin:5px auto;
+}
+.user_xq_answer{
+	width:100%;
+	min-height:60px;
+	
+	float:left;
+	margin-top:10px;
+	
+	border-top:1px solid #f0f0f0;
+}
+.user_xq_answer>li{
+	width:100%;
+	min-height:40px;
+	margin:5px 0px;
+	
+}
+.user_xq_answer>li>img{
+	width:30px;
+	display:block;
+	float:left;
+	
+}
+.liuyan_xq{
+	
+	float:left;
+}
+.liuyan_xq>p{
+	color: #2d2d2d;
+    font-size: 0.8em;
+    width: 100%;
+    line-height: 2em;
+    text-indent: 1.6em;
+}
+.liuyan_xq>h3{
+	color: #2d2d2d;
+    font-size: 1em;
+  width:200%;
+    line-height: 2em;
+    text-indent: 1.6em;
+    font-weight: normal;
+}
+.liuyan_xq>h3>span{
+	    float: right;
+    color: #6e6e6e;
+    font-size: 0.6em;
+    display: block;
+   
+}
+.user_answer_xq{
+	width: 100%;
+    min-height: 28px;
+    background: white;
+    border-top:1px solid #e6e6e6;
+    position: absolute;
+    bottom: 0px;
+}
+.user_answer_xq input{
+	background:#e6e6e6;
+	border:0px;
+	width:64%;
+	min-height:21px;
+	border-radius:10px;
+	text-indent: 1em;
+	margin:7px 20px;
+}
+.user_answer_xq button{
+	color:white;
+	width:50px;
+	min-height:21px;
+	margin-top:8px;
+	background:#1766c5;
+	border:0px;
+	border-radius: 21px;
+	float:right;
+	margin-right: 20px;
+}
+/*专家咨询详情*/
+.expert_xq{
+	width:100%;
+	min-height: auto;
+}
+.expert_xq>li{
+	width:84%;
+	/*min-height:75px;*/
+	background:white;
+	border-radius: 5px;
+	margin-left:6%;
+	margin-top:10px;
+	padding:20px 10px 10px;
+}
+.content_expert_xq>h2{
+	font-weight:normal;
+	font-size:1.2em;
+	color:#2d2d2d;
+	text-align: center;
+}
+.content_expert_xq>span{
+	float:right;
+	color:#6e6e6e;
+	font-size: 0.6em;
+	display: block;
+
+}
+.content_expert_xq>p{
+	
+	color:#2d2d2d;
+	font-size:0.9em;
+	width: 100%;
+	text-indent:0.8em;
+	float:right;
+}
+.content_expert_xq>img{
+	display:block;
+	margin:5px auto;
+}
+.expert_xq_answer{
+	width:100%;
+	min-height:60px;
+	
+	float:left;
+	margin-top:10px;
+	
+	border-top:1px solid #f0f0f0;
+}
+.expert_xq_answer>li{
+	width:100%;
+	min-height:40px;
+	margin:5px 0px;
+	
+}
+.expert_xq_answer>li>img{
+	width:30px;
+	display:block;
+	float:left;
+	
+}
+.liuyan_xq{
+	
+	float:left;
+}
+.liuyan_xq>p{
+	color: #2d2d2d;
+    font-size: 0.8em;
+    width: 100%;
+    line-height: 2em;
+    text-indent: 1.6em;
+}
+.liuyan_xq>h3{
+	color: #2d2d2d;
+    font-size: 1em;
+  width:200%;
+    line-height: 2em;
+    text-indent: 1.6em;
+    font-weight: normal;
+}
+.liuyan_xq>h3>span{
+	    float: right;
+    color: #6e6e6e;
+    font-size: 0.6em;
+    display: block;
+   
+}
+.expert_answer_xq{
+	width: 100%;
+    min-height: 28px;
+    background: white;
+    border-top:1px solid #e6e6e6;
+    position: absolute;
+    bottom: 0px;
+}
+.expert_answer_xq input{
+	background:#e6e6e6;
+	border:0px;
+	width:64%;
+	min-height:21px;
+	border-radius:10px;
+	text-indent: 1em;
+	margin:7px 20px;
+}
+.expert_answer_xq button{
+	color:white;
+	width:50px;
+	min-height:21px;
+	margin-top:8px;
+	background:#1766c5;
+	border:0px;
+	border-radius: 21px;
+	float:right;
+	margin-right: 20px;
+}

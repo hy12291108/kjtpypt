@@ -1,0 +1,35 @@
+/* CSS Document */
+*{ margin:0;padding:0px;}
+li{ list-style:none;}
+img{ border:none;}
+a{ text-decoration:none;color:#393939; font-size:1em;}
+a:hover{color:#0072bb;}
+body{ font:0.875em/1.8 "Microsoft Yahei";color:#393939; background:#f7f7fb url(../images/bg.jpg) top center repeat-x;}
+.header{ width: 1100px; padding-top: 20px; padding-bottom: 20px; margin: 0 auto;}
+.header h1 span{ visibility: hidden;font-size: 16px;}
+.container{ width: 1100px;margin: 0 auto 30px; border: 1px solid #e9e9e9; background: #fff;}
+.container h2{border-bottom: 1px solid #e9e9e9; height: 55px; margin: 0;}
+.container .signin001,.container .signin002{ position: relative;}
+.container .signin001 h2 span,.container .signin002 h2 span{ width:215px; line-height:40px; height:47px;padding-top:0px; display: block; position: absolute; top:15px; left:20px; background:#438dce url(../images/tab001.png) left top no-repeat; font-size:20px; text-align: center; color: #fff; font-weight: normal;}
+.container .signin002 h2 span{width: 158px;background-image: url(../images/tab002.png);}
+.container  table{}
+.container  .form-horizontal{ margin: 20px !important;}
+.container  table td{ border-bottom: 1px solid #e3e3e3; height: 40px; line-height: 40px;}
+.container  table td label{ text-align: right; display: block;}
+.container table td em{color: #ff2f5f;}
+.container .btgroup{ margin:20px 0px 30px; padding: 20px; background: #f5f5f5; border-top:1px solid #e3e3e3; text-align: center;}
+
+.btn-primary{background: #247acb !important; border: none !important;}
+.btn-default{background: #fff !important;}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled]{background: #2884db !important;}
+.btn:hover, .btn:focus, .btn:active, .btn.active, .btn.disabled, .btn[disabled]{border-top: 1px solid #cfcfcf;border-left: 1px solid #cfcfcf;border-right: 1px solid #cfcfcf;}
+.form-search input, .form-inline input, .form-horizontal input, .form-search textarea, .form-inline textarea, .form-horizontal textarea, .form-search select, .form-inline select, .form-horizontal select, .form-search .help-inline, .form-inline .help-inline, .form-horizontal .help-inline, .form-search .uneditable-input, .form-inline .uneditable-input, .form-horizontal .uneditable-input, .form-search .input-prepend, .form-inline .input-prepend, .form-horizontal .input-prepend, .form-search .input-append, .form-inline .input-append{ margin-bottom: 4px;}
+.form-horizontal .input-append .btn{ margin-top: 3px;}
+.form-horizontal textarea{ margin-top: 4px;}
+.dropdown-toggle{ background: none !important;}
+
+
+
+
+
+.footer{width: 100%; background: #438cce; height: 120px; line-height: 120px; color: #fff; text-align: center;}

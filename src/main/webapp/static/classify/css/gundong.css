@@ -1,0 +1,61 @@
+/* CSS Document */
+.blk_18 {
+ overflow:hidden;
+ zoom:1;
+ width:1080px;
+ margin-top:20px;
+ margin-left:15px;
+ margin-bottom:25px;
+}
+.blk_18 .pcont {
+ width:984px;
+ float:left;
+ overflow:hidden;
+ padding-left:5px;
+}
+.blk_18 .ScrCont {
+ width:32766px;
+ zoom:1;
+ margin-left:-5px;
+}
+.blk_18 #List1_1, .blk_18 #List2_1 {
+ float:left;
+}
+.blk_18 .LeftBotton, .blk_18 .RightBotton {
+ width:34px;
+ height:34px;
+ float:left;
+ background:url(../images/icon.png) -250px -196px no-repeat;
+}
+.blk_18 .LeftBotton {
+ background:url(../images/icon.png) -250px -196px no-repeat;
+ margin:70px 10px 0 0px;
+}
+.blk_18 .RightBotton {
+ background:url(../images/icon.png) -398px -196px no-repeat;
+ margin:70px 1px 10px 5px;
+}
+.blk_18 .LeftBotton:hover {
+ background:url(../images/icon.png) -250px -230px no-repeat;
+}
+.blk_18 .RightBotton:hover {
+ background:url(../images/icon.png) -398px -230px no-repeat;
+}
+.blk_18 .pl img {
+ display:block;
+ cursor:pointer;
+ border:none;
+ margin:6px auto 1px auto;
+}
+.blk_18 .pl {
+ width:230px;
+ margin:0 8px;
+ float:left;
+ float:left;
+ text-align:center;
+ line-height:24px;
+ position:relative;
+/* box-shadow: 0 0 5px -1px #999;*/
+}
+.blk_18 .pl span{ display:block; width:100%; height:28px; line-height:28px; background:url(../images/textbg.png) center bottom repeat-x; position:absolute; top:146px; left:0px; color:#fff;}
+

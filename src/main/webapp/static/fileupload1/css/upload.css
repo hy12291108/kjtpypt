@@ -1,0 +1,176 @@
+ body {
+            font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+            background-color: #ffffff; 
+            width:330px;
+            overflow: hidden;
+            font-size: 12px !important;
+        }
+        * {
+            margin: 0;
+        }
+        html, body {
+        	width:330px;
+        	color:#555;
+        }
+        .navbar-custom {
+            background-color: #4fb3eb;
+        }
+        .navbar-brand,
+        .navbar-nav li a {
+            line-height: 40px;
+            height: 40px;
+            padding-top: 0px;
+            font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        }
+        .navbar-default .navbar-nav > li > a {
+            color: #ffffff;
+        }
+        .navbar-default .navbar-nav > li > a:hover {
+            color: #175A94;
+        }
+        .page-header {
+            font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        }
+        hr {
+            border-bottom: 1px solid #bbb;
+        }
+        .img_border {
+            border: 1px solid #bbb;
+        }
+        @media screen and (min-width: 330px) {
+            .container {
+                width: 330px;
+            }
+        }
+        @media screen and (min-width:330px) {
+            .center_toaster {
+                right: 35%;
+                width: 30%;
+            }
+        }
+        @media screen and (min-width: 330px) and (max-width: 330px) {
+            .center_toaster {
+                right: 25%;
+                width: 50%;
+            }
+        }
+        @media screen and (min-width: 330px ) and (max-width: 330px) {
+            .center_toaster {
+                right: 10%;
+                width: 80%;
+            }
+        }
+        .row a {
+            text-decoration: none;
+        }
+        .row a:hover {
+            text-decoration: none;
+        }
+        .addMaigin {
+            margin-bottom: 30px;
+        }
+        .change_font {
+            font-size: 1.5em;
+        }
+        .button_width {
+            width: 4em;
+        }
+        .button_width2 {
+            width: 4em;
+        }
+        .wrapper {
+            min-height: 100%;
+            height: auto !important;
+            height: 100%;
+            margin: 0 auto -6em;
+        }
+        .footer, {
+            height: 4em;
+        }
+        .color_white {
+            background: #ffffff;
+        }
+        #dropzone {
+            text-align: center;
+            font-weight: bold;
+            vertical-align: middle;
+            border: 2px dotted #A5A5C7;
+            color: #DADCE3;
+            background: #ffffff;
+        }
+        #dropzone.in {
+            width: 600px;
+            height: 200px;
+            line-height: 200px;
+            font-size: larger;
+        }
+        #dropzone.hover {
+            background: lawngreen;
+        }
+        #dropzone.fade {
+            -webkit-transition: all 0.3s ease-out;
+            -moz-transition: all 0.3s ease-out;
+            -ms-transition: all 0.3s ease-out;
+            -o-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+            opacity: 1;
+        }
+        #wj{
+        	font-size:16px;
+        	font-weight:bold;
+        	color:white;
+        	margin-left:100px;
+        	font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+        }
+        #but1{
+        	background:#f5f5f5 !important;;
+       		border: 1px solid #f5f5f5;
+        }
+        #but2{
+       		background:#f5f5f5;
+       		border: 1px solid #f5f5f5;
+        }
+        #but3{
+       		background:#f5f5f5;
+       		border: 1px solid #f5f5f5;
+        }
+        #qxbtn{
+       		background:#f5f5f5;
+       		border: 1px solid #f5f5f5;
+        }
+         #but4{
+        	background:#f5f5f5 !important;;
+       		border: 1px solid #f5f5f5;
+        }
+        .widtn{
+        	width: 45px;
+        	overflow: hidden;
+        	
+        }
+        span{
+        font-size: 12px !important;
+        }
+        #files td{
+        	height:5px;
+        	padding: 3px;
+        vertical-align: middle;
+        } 
+        .fade{
+        	height: 30px;
+        }
+        
+        .files tr{
+        	height:  30px;
+        }
+        a{
+       	 	font-size: 14px !important;
+        }
+        .name{
+        	 font-size: 14px !important;
+        }
+        .name span{
+        	 font-size: 14px !important;
+        }
+        .btn{
+        	border-radius:0px !important;
+        }

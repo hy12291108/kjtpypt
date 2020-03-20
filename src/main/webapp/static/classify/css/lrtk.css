@@ -1,0 +1,26 @@
+/*–¬Œ≈Ωπµ„Õº*/
+.focus_news{ position:relative; width:484px; height:290px; background-color: #000; float: left;}  
+.focus_news img{ width: 484px; height: 290px;} 
+.focus_news .shadow .title{width: 260px; height: 65px;padding-left: 30px;padding-top: 20px;}
+.focus_news .shadow .title a{ text-decoration:none; color:#fff; font-size:14px; font-weight:bolder; overflow:hidden; }
+.focus_news .btn{ position:absolute; bottom:34px; left:510px; overflow:hidden; zoom:1;} 
+.focus_news .btn a{position:relative; display:inline; width:13px; height:13px; border-radius:7px; margin:0 5px;color:#B0B0B0;font:12px/15px "\5B8B\4F53"; text-decoration:none; text-align:center; outline:0; float:left; background:#D9D9D9; }  
+.focus_news .btn a:hover,.focus_news .btn a.current{  cursor:pointer;background:#fc114a;}  
+.focus_news .fPic{ position:absolute; left:0px; top:0px; }  
+.focus_news .D1fBt{ overflow:hidden; zoom:1;  height:16px; z-index:10;  }  
+.focus_news .shadow{ width:100%; position:absolute; bottom:0; left:0px; z-index:10; height:35px; line-height:35px; background:rgba(0,0,0,0.6);    
+filter:progid:DXImageTransform.Microsoft.gradient( GradientType = 0,startColorstr = '#80000000',endColorstr = '#80000000')\9;  display:block;  text-align:left; }  
+.focus_news .shadow a{ text-decoration:none; color:#fff; font-size:14px; overflow:hidden; margin-left:10px; font-family: "\5FAE\8F6F\96C5\9ED1";}  
+.focus_news .fcon{ position:relative; width:100%; float:left;  display:none; background:#000  }  
+.focus_news .fcon img{ display:block; }  
+.focus_news .fbg{bottom:10px; right:10px; position:absolute; height:14px; text-align:center; z-index: 200; }  
+.focus_news .fbg div{margin:4px auto 0;overflow:hidden;zoom:1;height:14px}    
+.focus_news .D1fBt a{position:relative; display:inline; width:18px; height:4px;margin:0 5px;color:#B0B0B0;font:12px/15px "\5B8B\4F53"; text-decoration:none; text-align:center; outline:0; float:left; background:#0072bb; }    
+.focus_news .D1fBt .current,.focus_news .D1fBt a:hover{background:#fc114a;}    
+.focus_news .D1fBt img{display:none}    
+.focus_news .D1fBt i{display:none; font-style:normal; }    
+.focus_news .prev,.focus_news .next{position:absolute;width:40px;height:74px;background: url(../images/focus_news_btn.png) no-repeat;}
+.focus_news .prev{top: 50%;margin-top: -37px; left: 0;background-position:0 -74px; cursor:pointer; }  
+.focus_news .next{top: 50%;margin-top: -37px; right: 0;  background-position:-40px -74px;  cursor:pointer;}  
+.focus_news .prev:hover{  background-position:0 0; }  
+.focus_news .next:hover{  background-position:-40px 0;}  
