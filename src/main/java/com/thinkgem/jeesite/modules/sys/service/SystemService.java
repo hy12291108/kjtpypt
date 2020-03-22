@@ -3,25 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
-import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
-import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
-import com.thinkgem.jeesite.modules.sys.dao.*;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.sys.wrap.UserToMap;
-import org.activiti.engine.IdentityService;
-import org.activiti.engine.identity.Group;
-import org.apache.shiro.session.Session;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.security.Digests;
@@ -32,15 +13,22 @@ import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
-import com.thinkgem.jeesite.modules.sys.entity.Menu;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
-import com.thinkgem.jeesite.modules.sys.entity.TpyInfo;
-import com.thinkgem.jeesite.modules.sys.entity.TpyWorkExperience;
-import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
+import com.thinkgem.jeesite.modules.sys.dao.*;
+import com.thinkgem.jeesite.modules.sys.entity.*;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.identity.Group;
+import org.apache.shiro.session.Session;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单、注册管理.
@@ -56,14 +44,6 @@ public class SystemService extends BaseService implements InitializingBean {
     public static final int HASH_INTERATIONS = 1024;
     public static final int SALT_SIZE = 8;
 
-    //特派人申报推荐表模板路径
-    @Value("${sourceFilePath}")
-    private String sourceFilePath;
-    //特派人申报推荐表Excel生成文件路径
-    @Value("${targetFilePath}")
-    private String targetFilePath;
-    @Autowired
-    private UserToMap userToMap;
 
     @Autowired
     private UserDao userDao;
@@ -239,7 +219,7 @@ public class SystemService extends BaseService implements InitializingBean {
         List<Role> role = UserUtils.getTpyRoleList();
         List<Role> role1 = new ArrayList<Role>();
         for (int i = 0; i < role.size(); i++) {
-            if (role.get(i).getId().equals("4d54294fbd694873b19f752cda308f2d")) { //TODO 待修改
+            if (role.get(i).getId().equals(TpyInfoConfig.ROLE_FX_TPY)) { //TODO 待修改
                 role1.add(role.get(i));
             }
         }
@@ -285,7 +265,7 @@ public class SystemService extends BaseService implements InitializingBean {
          * 注册或者更新用户时生成特派员推荐表Excel
          * 成功将Excel文件目录赋值给user
          */
-        user = this.userChangExcel(user);
+        //user = tpyChangExcelUtil.userChangExcel(user);
 
         String flag;
         if (StringUtils.isBlank(user.getId())) {
@@ -303,15 +283,15 @@ public class SystemService extends BaseService implements InitializingBean {
             }
             // 更新用户数据
             user.preUpdate();
-            if (user.getPersonFlag().equals("0")) {
+            if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_NATURE)) {
                 userDao.updatetpy(user);  //自然人特派员更新
-            } else if (user.getPersonFlag().equals("2")) {
+            } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)) {
                 userDao.updatetpyCorp(user); //法人特派员更新
-            } else if (user.getPersonFlag().equals("1")) {
+            } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_SERVER)) {
                 userDao.updateServiceObject(user);//需求单位特派员更新
-            } else if (user.getPersonFlag().equals("5")) {  //TODO 添加反派特派员更新（目前没写）
+            } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_REVERSE)) {  //TODO 添加反派特派员更新（目前没写）
                 userDao.updatetpy(user);//反向特派员更新
-            } else if (user.getPersonFlag().equals("6")) { //TODO  添加企业用户更新（目前没写）
+            } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_ENTERPRISE)) { //TODO  添加企业用户更新（目前没写）
                 userDao.updatetpy(user);//企业更新
             }
         }
@@ -329,40 +309,6 @@ public class SystemService extends BaseService implements InitializingBean {
         return flag;
     }
 
-    /**
-     * 注册用户时生成特派员推荐表Excel
-     *
-     * @param user
-     * @return
-     */
-    private User userChangExcel(User user) {
-        //生成的Excel文件名
-        String exportExcelName = UUID.randomUUID() + ".xls";
-        //文档数据
-        Map<String, String> data = null;
-        //模板路径
-        String source = null;
-        //生成路径
-        String target = null;
-        if (user.getPersonFlag().equals("0")) {//自然人特派员生成Excel
-            source = String.format(sourceFilePath, "自然人特派员推荐表模板.xls");
-            target = String.format(targetFilePath, "自然人特派员推荐表", new SimpleDateFormat("yyyy/MM/dd").format(new Date()), exportExcelName);
-            data = userToMap.getMapByNatureTpy(user);
-        } else if (user.getPersonFlag().equals("2")) {//法人特派员生成Excel
-            source = String.format(sourceFilePath, "法人特派员推荐表模板.xls");
-            target = String.format(targetFilePath, "法人特派员推荐表", new SimpleDateFormat("yyyy/MM/dd").format(new Date()), exportExcelName);
-            data = userToMap.getMapByCorporationTpy(user);
-        } else if (user.getPersonFlag().equals("5")) { //反向特派员生成Excel
-            source = String.format(sourceFilePath, "反向特派员推荐表模板.xls");
-            target = String.format(targetFilePath, "反向特派员推荐表", new SimpleDateFormat("yyyy/MM/dd").format(new Date()), exportExcelName);
-            data = userToMap.getMapByReverseTpy(user);
-        }
-        //生成EXCEL,成功返回true，失败返回false
-        if (data != null ? ExcelUtils.replaceModel(data, source, target) : false) {
-            user.setTpyExcelUrl(target);//将Excel文件目录赋值给user
-        }
-        return user;
-    }
 
     /*
      * 更新特派员审核结果
@@ -381,35 +327,20 @@ public class SystemService extends BaseService implements InitializingBean {
             String roleId = userDao.findRoleList(id);
             System.out.println(roleId);
             if (roleId != null) {
-                /*if (roleId.equals("a6fa28e8fe4c4e4eb5a541c9b14c6123")) { //市科技局管理员
-                    if(user.getPersonFlag().equals("5")){
-                        role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员//TODO 待修改
-                    }else{
-                        role.setId("030c92ade0f0452eacc4d395f3d29961");//市科技局特派员
-                    }
-                } else if (roleId.equals("2e4e7026dab34efd98caf7cbc6e9020d")) { //县科技局管理员
-                    if(user.getPersonFlag().equals("5")){
-                        role.setId("4d54294fbd694873b19f752cda308f2d");//反向特派员//TODO 待修改
-                    }else{
-                        role.setId("7daf4e3fb95449cfa9d5b6ff53b7e28c");//县科技局特派员
-                    }
-                }else {  //省管理员
-                    role.setId("f19d286a9e7c4b7a887823a1d522e504");
-                }*/
-                if (roleId.equals(TpyInfoConfig.CITY_SCIENCE_ADMIN)) { //市科技局管理员
-                    if (user.getPersonFlag().equals(TpyInfoConfig.REVERSE_PERSON_FLAG)) {
-                        role.setId(TpyInfoConfig.FX_TPY);//反向特派员//TODO 待修改
+                if (roleId.equals(TpyInfoConfig.ROLE_CITY_SCIENCE_ADMIN)) { //市科技局管理员
+                    if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_REVERSE)) {
+                        role.setId(TpyInfoConfig.ROLE_FX_TPY);//反向特派员
                     } else {
-                        role.setId(TpyInfoConfig.CITY_SCIENCE_TPY);//市科技局特派员
+                        role.setId(TpyInfoConfig.ROLE_CITY_SCIENCE_TPY);//市科技局特派员
                     }
-                } else if (roleId.equals(TpyInfoConfig.COUNTY_SCIENCE_ADMIN)) { //县科技局管理员
-                    if (user.getPersonFlag().equals(TpyInfoConfig.REVERSE_PERSON_FLAG)){
-                        role.setId(TpyInfoConfig.FX_TPY);//反向特派员//TODO 待修改
+                } else if (roleId.equals(TpyInfoConfig.ROLE_COUNTY_SCIENCE_ADMIN)) { //县科技局管理员
+                    if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_REVERSE)){
+                        role.setId(TpyInfoConfig.ROLE_FX_TPY);//反向特派员//
                     }else{
-                        role.setId(TpyInfoConfig.COUNTY_SCIENCE_TPY);//县科技局特派员
+                        role.setId(TpyInfoConfig.ROLE_COUNTY_SCIENCE_TPY);//县科技局特派员
                     }
                 } else {  //省管理员
-                    role.setId(TpyInfoConfig.PROVINCE_SCIENCE_ADMIN);
+                    role.setId(TpyInfoConfig.ROLE_PROVINCE_SCIENCE_TPY);
                 }
                 user.setRole(role);
                 List<Role> roleList = new ArrayList<Role>();
@@ -440,11 +371,11 @@ public class SystemService extends BaseService implements InitializingBean {
             String roleId = userDao.findRoleList(id);
             if (roleId != null) {
                 //判断是否为市管理员
-                if (roleId.equals(TpyInfoConfig.CITY_SCIENCE_ADMIN)) {
+                if (roleId.equals(TpyInfoConfig.ROLE_CITY_SCIENCE_ADMIN)) {
                     //設置需求單位（省、市、縣）角色
                     role.setId("e98ce06c8b154a1f86d7157b2516bd03");
                     //判断是否为县管理员
-                } else if (roleId.equals(TpyInfoConfig.COUNTY_SCIENCE_ADMIN)) {
+                } else if (roleId.equals(TpyInfoConfig.ROLE_COUNTY_SCIENCE_ADMIN)) {
                     role.setId("3861d5290ef249558419d928d1f2657b");
                 } else {
                     role.setId("de3b6c4b0ae4492c8772da19376b586c");

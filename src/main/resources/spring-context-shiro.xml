@@ -17,6 +17,7 @@
 				/static/** = anon
 				/userfiles/** = anon
 				${adminPath}/app/** = anon
+                ${adminPath}/register/** = anon
 				${adminPath}/UserRegister/** = anon
 				${adminPath}/communication/** = anon
 				${adminPath}/communicationComment/** = anon

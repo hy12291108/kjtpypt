@@ -1,9 +1,11 @@
+<%@ page import="com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
+<c:set var="company" value="<%=TpyInfoConfig.COMPANY%>" />
+<c:set var="personFlag" value="<%=TpyInfoConfig.PERSON_FLAG_CORPORATION%>" />
 <html style="overflow-x:auto;overflow-y:auto;">
 <head>
     <title>用户管理</title>
-    <!--  <meta name="decorator" content="default"/>-->
     <meta name="decorator" content="blank"/>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta name="author" content="http://jeesite.com/"/>
@@ -28,47 +30,17 @@
     <link href="/kjtpypt/static/common/jeesite.css" type="text/css" rel="stylesheet"/>
     <link href="/kjtpypt/static/common/Select.css" type="text/css" rel="stylesheet"/>
     <!-- 20170906加注册页面样式 -->
-    <%--<link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>--%>
-    <!-- 20200319加注册页面样式 -->
-    <link href="/kjtpypt/static/classify/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="/kjtpypt/static/classify/css/css.css" rel="stylesheet" type="text/css">
-
+    <link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>
     <script src="/kjtpypt/static/common/jeesite.js" type="text/javascript"></script>
-    <!-- 上传图片 20171012-->
-    <link href="${ctxStatic}/fileUpload/css/iconfont.css" rel="stylesheet" type="text/css"/>
-    <link href="${ctxStatic}/fileUpload/css/fileUpload.css" rel="stylesheet" type="text/css">
-    <script src="${ctxStatic}/fileUpload/js/fileUpload.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="${ctxStatic}/centermenu-master/css/animate.css">
-    <link rel="stylesheet" href="${ctxStatic}/centermenu-master/css/toast.css">
-    <link rel="stylesheet" href="${ctxStatic}/centermenu-master/css/centermenu.css">
-    <script src="${ctxStatic}/centermenu-master/js/toast.js" type="text/javascript"></script>
-    <script src="${ctxStatic}/centermenu-master/js/centermenu.js" type="text/javascript"></script>
 
-    <script type="text/javascript">var ctx = '/kjtpypt/a', ctxStatic = '/kjtpypt/static';</script>
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
     <script type="text/javascript">
-
         function mobileBind() {
             var mobile = $("#loginName").val();
             $("#mobile").val(mobile);
         }
 
-
         $(document).ready(function () {
-            $("#fileUploadContent").initUpload({
-                "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
-                autoCommit: false,//文件是否自动上传
-                "fileType": ['png', 'jpg']//文件类型限制，默认不限制，注意写的是文件后缀
-            });
 
             $("#inputForm").validate({
                 rules: {
@@ -93,99 +65,97 @@
                 }
             });
         });
-
-
-        function tpyCorpSave() {
-            uploadEvent.uploadFileEvent(option, 1);
-        }
     </script>
+
+
 </head>
 <body>
 <div class="header">
-    <div class="top">
-        <h1><img src="/kjtpypt/static/classify/images/logo02.png" width="650" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span></h1>
-    </div>
-    <div class="navbg">
-        <div class="nav">
-            <ul>
-                <li><a href="/kjtpypt/a/UserRegister/form">自然人特派员</a></li>
-                <li><a href="/kjtpypt/a/UserRegister/tpyCorp" class="current">法人特派员</a></li>
-                <li><a href="/kjtpypt/a/UserRegister/fxForm">反向特派员</a></li>
-                <li><a href="/kjtpypt/a/UserRegister/enterpriseForm">企业</a></li>
-                <li><a href="/kjtpypt/a/UserRegister/temporary">普通用户</a></li>
-            </ul>
-        </div>
+    <div class="header">
+        <h1><img src="/kjtpypt/static/skin/images/logo.png" width="560" height="42" alt=""/><span>陕西省科技特派员服务与管理系统</span></h1>
     </div>
 </div>
 <div class="container">
     <div class="signin001">
-        <form:form id="inputForm" modelAttribute="user" method="post" class="form-horizontal">
+        <h2><span>特派员（法人）注册</span></h2>
+        <form:form id="inputForm" modelAttribute="user" action="${ctx}/register/tpyRegister" method="post" class="form-horizontal">
             <form:hidden path="id"/>
+            <form:hidden path="personFlag" value="${personFlag}"/><%--特派员类型--%>
+            <form:hidden path="company.id" value="${company}"/><%--归属公司--%>
             <sys:message content="${message}"/>
-
+            <form:errors path="*"></form:errors>
             <table cellpadding="0" cellspacing="0" width="100%">
-
                 <tr>
                     <td>
                         <label>登录名：</label>
                     </td>
-                    <td colspan="3">
-                        <input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
-                        <form:input path="loginName" id="loginName" placeholder="请输入您的手机号码" htmlEscape="false"
-                                    maxlength="50"
-                                    class="required mobile" onkeyup=" mobileBind()"/>
-                        <em>*</em>
+                    <td colspan="1">
+                        <form:input path="loginName" id="loginName" placeholder="请输入手机号码" htmlEscape="false"
+                                    minlength="11" maxlength="11" class="required mobile" onkeyup="mobileBind()"/>
+                        <span class="help-inline"><font color="red">*</font></span>
                     </td>
-
                 </tr>
                 <tr>
                     <td>
                         <label>密码：</label>
                     </td>
-                    <td colspan="3">
-                        <input id="newPassword" name="newPassword" type="password" value="" maxlength="50" minlength="3"
-                               class="${empty user.id?'required':''}"/>
-                        <c:if test="${empty user.id}"><span class="help-inline"><font
-                                color="red">*</font> </span></c:if>
-                        <c:if test="${not empty user.id}"><span class="help-inline">若不修改密码，请留空。</span></c:if>
+                    <td colspan="1">
+                        <input id="password" name="password" placeholder="请输入密码" type="password" value=""
+                               class="required"
+                               maxlength="50" minlength="3"/><em>*</em>
                     </td>
-
                 </tr>
                 <tr>
                     <td>
                         <label>确认密码：</label>
                     </td>
                     <td colspan="3">
-                        <input id="confirmNewPassword" name="confirmNewPassword" type="password" value="" maxlength="50"
-                               minlength="3" equalTo="#newPassword"/>
-                        <c:if test="${empty user.id}"><span class="help-inline"><font
-                                color="red">*</font> </span></c:if>
+                        <input id="confirmNewPassword" name="confirmNewPassword" placeholder="请输入密码" type="password"
+                               class="required"
+                               value="" maxlength="50" minlength="3" equalTo="#password"/>
+                        <c:if test="${empty user.id}"><span class="help-inline"></span></c:if><em>*</em>
                     </td>
-
                 </tr>
                 <tr>
                     <td>
                         <label>单位名称：</label>
                     </td>
-                    <td>
-                        <form:input path="name" htmlEscape="false" maxlength="100"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-
-                    <td>
-                        <label>法人性质：</label>
-                    </td>
-                    <td>
-                        <form:select path="tpyCorporateNature">
-                            <form:options items="${fns:getDictList('corporate_nature')}" itemLabel="label"
-                                          itemValue="value"
-                                          htmlEscape="false" class="required"/>
-                        </form:select>
+                    <td colspan="3">
+                        <input id="name" name="name" placeholder="请输入单位名称" type="text" value="" maxlength="10"
+                               class="required"
+                               minlength="2"/>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
-
-                <form:input path="company.id" htmlEscape="false" type="hidden"/>
+                <tr>
+                    <td>
+                        <label>邮箱：</label>
+                    </td>
+                    <td colspan="3">
+                        <form:input path="email" htmlEscape="false" placeholder="请输入邮箱" maxlength="100" class="required email"/>
+                        <span class="help-inline"><font color="red">*</font></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>法定代表人：</label>
+                    </td>
+                    <td colspan="3">
+                        <form:input path="corpLegRepName"  placeholder="请输入代表人姓名" htmlEscape="false" maxlength="100"
+                                    class="required"/>
+                        <span class="help-inline"><font color="red">*</font></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>代表人手机：</label>
+                    </td>
+                    <td colspan="3">
+                        <form:input path="mobile" id="mobile" readonly="true" placeholder="请输入手机号码" htmlEscape="false" maxlength="100"
+                                    class="required mobile"/>
+                        <span class="help-inline"><font color="red">*</font></span>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <label>所属区域：</label>
@@ -195,206 +165,13 @@
                                         labelValue="${user.office.name}"
                                         title="部门" url="/UserRegister/treeData?type=2" cssClass="required"
                                         notAllowSelectParent="true"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                    <td>
-                        <label>单位类型：</label>
-                    </td>
-                    <td>
-                        <form:select path="corpType">
-                            <form:options items="${fns:getDictList('corp_type')}" itemLabel="label" itemValue="value"
-                                          htmlEscape="false" class="required"/>
-                        </form:select>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <label>邮箱地址：</label>
-                    </td>
-                    <td>
-                        <form:input path="email" htmlEscape="false" maxlength="100" class="required email"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-
-                    <td>
-                        <label>单位成立日期：</label>
-                    </td>
-                    <td>
-                        <form:input path="corpEstDate" htmlEscape="false" maxlength="100" class="Wdate required"
-                                    onclick="WdatePicker({readOnly:true,dateFmt:'yyyy-MM-dd',isShowClear:false,maxDate:'%y-%M-%d'})"/>
-                        <em>*</em>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>法定代表人：</label>
-                    </td>
-                    <td>
-                        <form:input path="corpLegRepName" htmlEscape="false" maxlength="100" class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                    <td>
-                        <label>代表人职务：</label>
-                    </td>
-                    <td>
-                        <form:input path="tpyPosition" htmlEscape="false" maxlength="50" class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <label>代表人手机：</label>
-                    </td>
-                    <td>
-                        <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" maxlength="50"
-                                    class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                    <td>
-                        <label>代表人职称：</label>
-                    </td>
-                    <td>
-                        <form:select path="tpyTitle">
-                            <form:options items="${fns:getDictList('tpy_title')}" itemLabel="label" itemValue="value"
-                                          htmlEscape="false" class="required"/>
-                        </form:select>
-                        <span class="help-inline"><font color="red">*</font></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>联系人姓名：</label>
-                    </td>
-                    <td>
-                        <form:input path="corpCorName" htmlEscape="false" maxlength="100" class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                    <td>
-                        <label>联系人手机：</label>
-                    </td>
-                    <td>
-                        <form:input path="corpCorPhone" htmlEscape="false" maxlength="100" class="required mobile"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <label>统一社会信用代码：</label>
-                    </td>
-                    <td>
-                        <form:input path="corpOrgCode" htmlEscape="false" maxlength="100"/><em>*</em>
-                    </td>
-                    <td>
-                        <label>企业属性：</label>
-                    </td>
-                    <td>
-                        <form:select path="tpyEnterpriseAttribute">
-                            <form:options items="${fns:getDictList('enterprise_attribute')}" itemLabel="label"
-                                          itemValue="value"
-                                          htmlEscape="false" class="required"/>
-                        </form:select>
-                        <span class="help-inline"><font color="red">*</font></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>单位地址：</label>
-                    </td>
-                    <td colspan="3">
-                        <form:textarea path="tpyAddress" htmlEscape="false" rows="2" maxlength="20"
-                                       style="width:769px"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>营业范围：</label>
-                    </td>
-                    <td colspan="3">
-                        <form:textarea path="corpScale" id="corpScale" htmlEscape="false" rows="2" maxlength="20"
-                                       style="width:769px"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>拟服务地点：</label>
-                    </td>
-                    <td colspan="3">
-                        <form:textarea path="tpyNfwAddress" htmlEscape="false" rows="2" maxlength="15"
-                                       style="width:753px"
-                                       class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>科技优势与服务内容：</label>
-                    </td>
-                    <td colspan="3">
-                        <form:textarea path="corpMajor" id="corpMajor" htmlEscape="false" rows="2" maxlength="200"
-                                       style="width:769px"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-
-                </tr>
-
-
-                <tr>
-                    <td>
-                        <label>拟开展的服务内容：</label>
-                    </td>
-                    <td colspan="3">
-
-                        <form:textarea path="tpyNfwContent" htmlEscape="false" rows="2" maxlength="100"
-                                       style="width:753px"
-                                       class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <label>科技服务与创业情况：</label>
-                    </td>
-                    <td colspan="3">
-
-                        <form:textarea path="tpyExperience" htmlEscape="false" rows="2" maxlength="200"
-                                       style="width:753px"
-                                       class="required"/>
-                        <span class="help-inline"><font color="red">*</font> </span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="tit">
-                        <button type="button" class="btn btn-primary" id="tit">选择图片</button>
-                    </td>
-                    <td colspan="2">
-                        <div id="fileUploadContent" class="fileUploadContent" class="required"></div>
-                    </td>
-                    <td><em>*注：营业执照上传</em></td>
-                </tr>
             </table>
-            <form:input path="photo" id="tjTableImage" htmlEscape="false" type="hidden" value=""/>  <%--营业执照--%>
-            <form:input path="loginFlag" value="1" htmlEscape="false" type="hidden"/>
-            <form:input path="personFlag" value="2" htmlEscape="false" type="hidden"/>
-            <form:input path="checkFlag" value="3" htmlEscape="false" type="hidden"/>
-            <form:input path="roleIdList" value="3bb6453c699d49508b15529670ad9e9b" htmlEscape="false" type="hidden"/>
             <div class="btgroup form-actions">
-                <input id="btnSubmit" type="submit" class="btn btn-primary" value="申报" onclick="tpyCorpSave()">
+                <input id="btnSubmit" type="submit" class="btn btn-primary" value="注册"/>
                 <input id="btnCancel" type="button" class="btn btn-default" value="返回" onclick="history.go(-1)"/>
             </div>
         </form:form>

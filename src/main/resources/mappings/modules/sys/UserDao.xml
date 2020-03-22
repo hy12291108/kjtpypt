@@ -550,11 +550,11 @@
 
     <!-- 指派专家 -->
     <update id="updateZjFlag">
-		update sys_user
-		set 
-		zjFlag=#{zjFlag}
-		where id = #{id}
-	</update>
+        update sys_user
+        set
+        zjFlag=#{zjFlag}
+        where id = #{id}
+    </update>
 
     <!-- 分页查询用户信息 -->
     <!-- <select id="findList" resultType="User">
@@ -670,13 +670,13 @@
 
     <!-- 根据OfficeId获取用户（树查询用户时用） -->
     <select id="findUserByOfficeId" resultType="User" useCache="true">
-		SELECT
-			a.id, a.name, a.login_name
-		FROM sys_user a
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-			AND a.office_id = #{office.id}
-		ORDER BY a.name
-	</select>
+        SELECT
+        a.id, a.name, a.login_name
+        FROM sys_user a
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+        AND a.office_id = #{office.id}
+        ORDER BY a.name
+    </select>
 
     <!-- 查询全部用户 -->
     <select id="findAllList" resultType="User">
@@ -690,215 +690,215 @@
 
     <!-- 查询全部用户数目 -->
     <select id="findAllCount" resultType="long">
-		SELECT
-			COUNT(1)
-		FROM sys_user a
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
-	</select>
+        SELECT
+        COUNT(1)
+        FROM sys_user a
+        WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+    </select>
     <!-- 插入用户 -->
     <insert id="insert">
-		INSERT INTO sys_user(
-			id, 
-			company_id, 
-			office_id, 
-			login_name, 
-			password, 
-			no, 
-			name, 
-			email, 
-			phone, 
-			mobile, 
-			user_type, 
-			create_by, 
-			create_date, 
-			update_by, 
-			update_date, 
-			remarks, 
-			login_flag, 
-			photo, 
-			del_flag,
-			sex,
-	 		tpy_idcard,
-			tpy_birthDate,
-	 		tpy_title,
-	 		tpy_qulification,
-	 		tpy_company,
-	 		tpy_dept,
-	 		tpy_position,
-	 		tpy_beginWorkDate,
-	 		tpy_major,
-	 		tpy_special,
-	 		tpy_postCode,
-			tpy_address,
-			tpy_location,
-			bank_account,
-			bank_name,
-			bank_open,
-			corp_type,
-			corp_orgCode,
-			corp_zczb,
- 			corp_estDate,
-			corp_legRepName,
-			corp_corName,
-			corp_CorPhone,
-	        corp_exIncome,
-			corp_invest,
-			corp_numWorker,
-	  		corp_major,
-			corp_scale,
-			corp_needs,
-			corp_dwyyzzhfrdmfyj,
-			check_flag,
-			person_flag,
-			tpyXpFlag,
-			tjTableImage,
-			tpyNation,
-			tpyPolitical,
-			tpyServiceMode,
-			tpyTalentType,
-			tpyNfwAddress,
-			tpyNfwContent,
-			tpyExperience,
-			tpyJcSituation,
-			tpyCorporateNature,
-			tpyEnterpriseAttribute,
-			tpyMajorType,
-			tpyServiceAdvantages,
-			tpyExcelUrl
-		) VALUES (
-			#{id}, 
-			#{company.id}, 
-			#{office.id}, 
-			#{loginName}, 
-			#{password}, 
-			#{no}, 
-			#{name}, 
-			#{email}, 
-			#{phone}, 
-			#{mobile}, 
-			#{userType}, 
-			#{createBy.id}, 
-			#{createDate}, 
-			#{updateBy.id}, 
-			#{updateDate}, 
-			#{remarks}, 
-			#{loginFlag}, 
-			#{photo}, 
-			#{delFlag},
-			#{sex},
-	 		#{tpyIdcard},
-			#{tpyBirthDate},
-	 		#{tpyTitle},
-	 		#{tpyQulification},
-	 		#{tpyCompany},
-	 		#{tpyDept},
-	 		#{tpyPosition},
-	 		#{tpyBeginWorkDate},
-	 		#{tpyMajor},
-	 		#{tpySpecial},
-	 		#{tpyPostCode},
-			#{tpyAddress},
-			#{tpyLocation},
-			#{bankAccount},
-			#{bankName},
-			#{bankOpen},
-			#{corpType},
-			#{corpOrgCode},
-			#{corpZczb},
- 			#{corpEstDate},
-			#{corpLegRepName},
-			#{corpCorName},
-			#{corpCorPhone},
-	        #{corpExIncome},
-			#{corpInvest},
-			#{corpNumWorker},
-	  		#{corpMajor},
-			#{corpScale},
-			#{corpNeeds},
-			#{corpDwyyzzhfrdmfyj},
-			#{checkFlag},
-			#{personFlag},
-			#{tpyXpFlag},
-			#{tjTableImage},
-			#{tpyNation},
-			#{tpyPolitical},
-			#{tpyServiceMode},
-			#{tpyTalentType},
-			#{tpyNfwAddress},
-			#{tpyNfwContent},
-			#{tpyExperience},
-			#{tpyJcSituation},
-			#{tpyCorporateNature},
-			#{tpyEnterpriseAttribute},
-			#{tpyMajorType},
-			#{tpyServiceAdvantages},
-			#{tpyExcelUrl}
-		)
-	</insert>
+        INSERT INTO sys_user(
+        id,
+        company_id,
+        office_id,
+        login_name,
+        password,
+        no,
+        name,
+        email,
+        phone,
+        mobile,
+        user_type,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        remarks,
+        login_flag,
+        photo,
+        del_flag,
+        sex,
+        tpy_idcard,
+        tpy_birthDate,
+        tpy_title,
+        tpy_qulification,
+        tpy_company,
+        tpy_dept,
+        tpy_position,
+        tpy_beginWorkDate,
+        tpy_major,
+        tpy_special,
+        tpy_postCode,
+        tpy_address,
+        tpy_location,
+        bank_account,
+        bank_name,
+        bank_open,
+        corp_type,
+        corp_orgCode,
+        corp_zczb,
+        corp_estDate,
+        corp_legRepName,
+        corp_corName,
+        corp_CorPhone,
+        corp_exIncome,
+        corp_invest,
+        corp_numWorker,
+        corp_major,
+        corp_scale,
+        corp_needs,
+        corp_dwyyzzhfrdmfyj,
+        check_flag,
+        person_flag,
+        tpyXpFlag,
+        tjTableImage,
+        tpyNation,
+        tpyPolitical,
+        tpyServiceMode,
+        tpyTalentType,
+        tpyNfwAddress,
+        tpyNfwContent,
+        tpyExperience,
+        tpyJcSituation,
+        tpyCorporateNature,
+        tpyEnterpriseAttribute,
+        tpyMajorType,
+        tpyServiceAdvantages,
+        tpyExcelUrl
+        ) VALUES (
+        #{id},
+        #{company.id},
+        #{office.id},
+        #{loginName},
+        #{password},
+        #{no},
+        #{name},
+        #{email},
+        #{phone},
+        #{mobile},
+        #{userType},
+        #{createBy.id},
+        #{createDate},
+        #{updateBy.id},
+        #{updateDate},
+        #{remarks},
+        #{loginFlag},
+        #{photo},
+        #{delFlag},
+        #{sex},
+        #{tpyIdcard},
+        #{tpyBirthDate},
+        #{tpyTitle},
+        #{tpyQulification},
+        #{tpyCompany},
+        #{tpyDept},
+        #{tpyPosition},
+        #{tpyBeginWorkDate},
+        #{tpyMajor},
+        #{tpySpecial},
+        #{tpyPostCode},
+        #{tpyAddress},
+        #{tpyLocation},
+        #{bankAccount},
+        #{bankName},
+        #{bankOpen},
+        #{corpType},
+        #{corpOrgCode},
+        #{corpZczb},
+        #{corpEstDate},
+        #{corpLegRepName},
+        #{corpCorName},
+        #{corpCorPhone},
+        #{corpExIncome},
+        #{corpInvest},
+        #{corpNumWorker},
+        #{corpMajor},
+        #{corpScale},
+        #{corpNeeds},
+        #{corpDwyyzzhfrdmfyj},
+        #{checkFlag},
+        #{personFlag},
+        #{tpyXpFlag},
+        #{tjTableImage},
+        #{tpyNation},
+        #{tpyPolitical},
+        #{tpyServiceMode},
+        #{tpyTalentType},
+        #{tpyNfwAddress},
+        #{tpyNfwContent},
+        #{tpyExperience},
+        #{tpyJcSituation},
+        #{tpyCorporateNature},
+        #{tpyEnterpriseAttribute},
+        #{tpyMajorType},
+        #{tpyServiceAdvantages},
+        #{tpyExcelUrl}
+        )
+    </insert>
     <!--临时用户保存  -->
     <insert id="insertTempUser">
-	INSERT INTO sys_user(
-			id, 
-			login_name, 
-			password, 
-			company_id, 
-			office_id, 
-			name,
-			mobile,
-			create_by, 
-			create_date, 
-			update_by, 
-			update_date, 
-			login_flag, 
-			del_flag,
-			check_flag,
-			person_flag
-		) VALUES (
-			#{id}, 
-			#{loginName}, 
-			#{password}, 
-			#{company.id}, 
-			#{office.id}, 
-			#{name},
-			#{mobile},
-			#{createBy.id}, 
-			#{createDate}, 
-			#{updateBy.id}, 
-			#{updateDate}, 
-			#{loginFlag}, 
-			#{delFlag},
-			#{checkFlag},
-			#{personFlag}
-		)
-	</insert>
+        INSERT INTO sys_user(
+        id,
+        login_name,
+        password,
+        company_id,
+        office_id,
+        name,
+        mobile,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        login_flag,
+        del_flag,
+        check_flag,
+        person_flag
+        ) VALUES (
+        #{id},
+        #{loginName},
+        #{password},
+        #{company.id},
+        #{office.id},
+        #{name},
+        #{mobile},
+        #{createBy.id},
+        #{createDate},
+        #{updateBy.id},
+        #{updateDate},
+        #{loginFlag},
+        #{delFlag},
+        #{checkFlag},
+        #{personFlag}
+        )
+    </insert>
 
     <!-- 更新用户 -->
     <update id="update">
-		UPDATE sys_user SET 
-			company_id = #{company.id}, 
-			office_id = #{office.id}, 
-			login_name = #{loginName}, 
-			password = #{password}, 
-			no = #{no}, 
-			name = #{name}, 
-			email = #{email}, 
-			phone = #{phone}, 
-			mobile = #{mobile}, 
-			user_type = #{userType}, 
-			update_by = #{updateBy.id}, 
-			update_date = #{updateDate}, 
-			remarks = #{remarks},
-			login_flag = #{loginFlag},
-			check_flag = #{checkFlag},
-			tpyXpFlag = #{office.id},
-			photo = #{photo}
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        company_id = #{company.id},
+        office_id = #{office.id},
+        login_name = #{loginName},
+        password = #{password},
+        no = #{no},
+        name = #{name},
+        email = #{email},
+        phone = #{phone},
+        mobile = #{mobile},
+        user_type = #{userType},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        remarks = #{remarks},
+        login_flag = #{loginFlag},
+        check_flag = #{checkFlag},
+        tpyXpFlag = #{office.id},
+        photo = #{photo}
+        WHERE id = #{id}
+    </update>
 
     <!-- 删除用户和角色关联表数据 -->
     <delete id="deleteUserRole">
-		DELETE FROM sys_user_role WHERE user_id = #{id}
-	</delete>
+        DELETE FROM sys_user_role WHERE user_id = #{id}
+    </delete>
 
     <!-- 插入用户和角色关联表数据 -->
     <insert id="insertUserRole">
@@ -913,72 +913,72 @@
 
     <!-- 查询 sys_user_role 表 -->
     <select id="findRoleList" resultType="String">
-		select role_id from 
-		sys_user_role where user_id = #{id}
-	</select>
+        select role_id from
+        sys_user_role where user_id = #{id}
+    </select>
 
 
     <!-- 更新用户信息  -->
     <update id="updateUserInfo">
-		UPDATE sys_user SET 
-			email = #{email}, 
-			phone = #{phone}, 
-			mobile = #{mobile}, 
-			update_by = #{updateBy.id}, 
-			update_date = #{updateDate}, 
-			remarks = #{remarks},
-			photo = #{photo}
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        email = #{email},
+        phone = #{phone},
+        mobile = #{mobile},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        remarks = #{remarks},
+        photo = #{photo}
+        WHERE id = #{id}
+    </update>
 
     <!-- 更新用户密码 -->
     <update id="updatePasswordById">
-		UPDATE sys_user SET 
-			password = #{password} 
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        password = #{password}
+        WHERE id = #{id}
+    </update>
 
     <!-- 更新登录信息，如登录IP、登录时间 -->
     <update id="updateLoginInfo">
-		UPDATE sys_user SET 
-			login_ip = #{loginIp}, 
-			login_Date = #{loginDate} 
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        login_ip = #{loginIp},
+        login_Date = #{loginDate}
+        WHERE id = #{id}
+    </update>
 
     <!-- 更新特派员审核结果信息 -->
     <update id="updateShResultById">
-		UPDATE sys_user SET 
-			check_flag = #{checkFlag},
-			check_person = #{checkPerson},
-			check_time =#{checkTime},
-			check_advice =#{checkAdvice}
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        check_flag = #{checkFlag},
+        check_person = #{checkPerson},
+        check_time =#{checkTime},
+        check_advice =#{checkAdvice}
+        WHERE id = #{id}
+    </update>
 
     <!-- 逻辑删除用户 -->
     <update id="delete">
-		UPDATE sys_user SET 
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
-	</update>
+        UPDATE sys_user SET
+        del_flag = #{DEL_FLAG_DELETE}
+        WHERE id = #{id}
+    </update>
     <!-- 根据officeId，获取单位名称列表 -->
     <select id="getCorpList" resultType="String">
-	select distinct tpy_company from sys_user
-	where office_id = #{officeId} and tpy_company is not null
-	</select>
+        select distinct tpy_company from sys_user
+        where office_id = #{officeId} and tpy_company is not null
+    </select>
     <!-- 更新下派信息 -->
     <update id="updateXp">
-	 update sys_user set 
-	 tpyXpFlag = #{tpyXpFlag},
-	 xpStartTime = #{xpStartTime},
-	 xpTime = #{xpTime},
-	 xpNd = #{xpNd},
-	 tpyXpFlagName = #{tpyXpFlagName},
-	 xpEndTime = #{xpEndTime}
-	 
-	 where id = #{id}
-	</update>
+        update sys_user set
+        tpyXpFlag = #{tpyXpFlag},
+        xpStartTime = #{xpStartTime},
+        xpTime = #{xpTime},
+        xpNd = #{xpNd},
+        tpyXpFlagName = #{tpyXpFlagName},
+        xpEndTime = #{xpEndTime}
+
+        where id = #{id}
+    </update>
     <update id="updatetpy">
         update sys_user set
         company_id = #{company.id},
@@ -1029,68 +1029,111 @@
         where id=#{id}
     </update>
     <update id="updatetpyCorp">
-	update sys_user set 
-	company_id = #{company.id}, 
-	office_id = #{office.id}, 
-	login_name = #{loginName}, 
-	name=#{name}, 
-	corp_type=#{corpType},
-	corp_scale=#{corpScale},
-	corp_major=#{corpMajor},
-	corp_orgCode=#{corpOrgCode},
-	corp_estDate=#{corpEstDate},
-	corp_legRepName=#{corpLegRepName},
-	mobile=#{mobile}, 
-	corp_corName=#{corpCorName},
-	corp_CorPhone=#{corpCorPhone},
-	email=#{email}, 
-	tpy_postCode=#{tpyPostCode},
-	tpy_address=#{tpyAddress},
-	bank_account=#{bankAccount},
-	bank_name=#{bankName},
-	bank_open=#{bankOpen},
-	check_flag=#{checkFlag},
-	person_flag=#{personFlag},
-	tpyXpFlag=#{tpyXpFlag},
-	tjTableImage=#{tjTableImage},	
-	update_by = #{updateBy.id}, 
-	update_date = #{updateDate}, 
-	login_flag = #{loginFlag}
-	where id=#{id}
-	</update>
+        update sys_user set
+        company_id = #{company.id},
+        office_id = #{office.id},
+        login_name = #{loginName},
+        name=#{name},
+        corp_type=#{corpType},
+        corp_scale=#{corpScale},
+        corp_major=#{corpMajor},
+        corp_orgCode=#{corpOrgCode},
+        corp_estDate=#{corpEstDate},
+        corp_legRepName=#{corpLegRepName},
+        mobile=#{mobile},
+        corp_corName=#{corpCorName},
+        corp_CorPhone=#{corpCorPhone},
+        email=#{email},
+        tpy_postCode=#{tpyPostCode},
+        tpy_address=#{tpyAddress},
+        bank_account=#{bankAccount},
+        bank_name=#{bankName},
+        bank_open=#{bankOpen},
+        check_flag=#{checkFlag},
+        person_flag=#{personFlag},
+        tpyXpFlag=#{tpyXpFlag},
+        tjTableImage=#{tjTableImage},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        login_flag = #{loginFlag}
+        where id=#{id}
+    </update>
     <update id="updateServiceObject">
-	update sys_user set 
-	company_id = #{company.id}, 
-	office_id = #{office.id}, 
-	login_name = #{loginName}, 
-	name=#{name}, 
-	corp_type=#{corpType},
-	corp_legRepName=#{corpLegRepName},
-	mobile=#{mobile},
-	corp_orgCode=#{corpOrgCode},
-	corp_CorName=#{corpCorName},
-	corp_CorPhone=#{corpCorPhone},
-	corp_estDate=#{corpEstDate},
-	corp_zczb=#{corpZczb},
-	email=#{email}, 
-	corp_exIncome=#{corpExIncome},
-	corp_numWorker=#{corpNumWorker},
-	corp_scale=#{corpScale},
-	corp_needs=#{corpNeeds},
-	remarks = #{remarks},
-	check_flag=#{checkFlag},
-	person_flag=#{personFlag},
-	tpyXpFlag=#{tpyXpFlag},
-	update_by = #{updateBy.id}, 
-	update_date = #{updateDate}, 
-	login_flag = #{loginFlag}
-	where id=#{id}
-	</update>
+        update sys_user set
+        company_id = #{company.id},
+        office_id = #{office.id},
+        login_name = #{loginName},
+        name=#{name},
+        corp_type=#{corpType},
+        corp_legRepName=#{corpLegRepName},
+        mobile=#{mobile},
+        corp_orgCode=#{corpOrgCode},
+        corp_CorName=#{corpCorName},
+        corp_CorPhone=#{corpCorPhone},
+        corp_estDate=#{corpEstDate},
+        corp_zczb=#{corpZczb},
+        email=#{email},
+        corp_exIncome=#{corpExIncome},
+        corp_numWorker=#{corpNumWorker},
+        corp_scale=#{corpScale},
+        corp_needs=#{corpNeeds},
+        remarks = #{remarks},
+        check_flag=#{checkFlag},
+        person_flag=#{personFlag},
+        tpyXpFlag=#{tpyXpFlag},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        login_flag = #{loginFlag}
+        where id=#{id}
+    </update>
     <!--上传推荐表,修改用户状态字段，checkFlag改为0-->
     <update id="uploadTjTable">
         update sys_user set
-            check_flag='0',
-            tjTableImage=#{tjTableImage}
+        check_flag='0',
+        tjTableImage=#{tjTableImage}
         where id=#{id}
     </update>
+
+    <!--自然人、反向、法人特派员注册方法，注册成功返回1,注册失败返回0-->
+    <insert id="register">
+        INSERT INTO sys_user(
+            id,
+            company_id,
+            office_id,
+            login_name,
+            password,
+            name,
+            email,
+            mobile,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            login_flag,
+            check_flag,
+            person_flag,
+            tpyXpFlag,
+            corp_legRepName,
+            del_flag
+        ) VALUES (
+            #{id},
+            #{company.id},
+            #{office.id},
+            #{loginName},
+            #{password},
+            #{name},
+            #{email},
+            #{mobile},
+            #{createBy.id},
+            #{createDate},
+            #{updateBy.id},
+            #{updateDate},
+            #{loginFlag},
+            #{checkFlag},
+            #{personFlag},
+            #{tpyXpFlag},
+            #{corpLegRepName},
+            #{delFlag}
+        )
+    </insert>
 </mapper>

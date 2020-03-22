@@ -3,37 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.thinkgem.jeesite.modules.attachment.web.FileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
 import com.thinkgem.jeesite.modules.sys.entity.MajorMenu;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -42,6 +18,23 @@ import com.thinkgem.jeesite.modules.sys.service.MajorMenuService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 用户注册Controller
@@ -53,9 +46,8 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @RequestMapping(value = "${adminPath}/UserRegister")
 public class UserRegiserController extends BaseController {
 
-	
-	//${adminPath}/UserRegister/phoneRegister
-	
+
+    //${adminPath}/UserRegister/phoneRegister
     @Autowired
     private SystemService systemService;
     @Autowired
@@ -104,7 +96,7 @@ public class UserRegiserController extends BaseController {
         map.put("majorList", majorList);
         return map;
     }
-    
+
     /**
      * 级联呈现专业菜单
      * wpf
@@ -158,12 +150,12 @@ public class UserRegiserController extends BaseController {
                 user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
             }
             systemService.tempUserSave(user);
-            model.addAttribute("message",user.getName()+"注册成功");
+            model.addAttribute("message", user.getName() + "注册成功");
             return "modules/sys/sysLogin";
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message",user.getName()+"注册失败");
-            if(user.getPersonFlag().equals("4")){
+            model.addAttribute("message", user.getName() + "注册失败");
+            if (user.getPersonFlag().equals("4")) {
                 return "register/temporary/userRegister";
             }
             return "register/enterprise/userRegister";
@@ -197,7 +189,7 @@ public class UserRegiserController extends BaseController {
             session.setAttribute("user", user);
             return "redirect:" + "/f";
         } else {
-            model.addAttribute("message","登陆失败，请重新登录");
+            model.addAttribute("message", "登陆失败，请重新登录");
             return "register/temporaryUserLogin";
         }
 
@@ -224,7 +216,7 @@ public class UserRegiserController extends BaseController {
     public String registerUpdate(Model model) {
         User user = UserUtils.getUser();
         //自然人
-        if (user.getPersonFlag().equals("0")) {
+        if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_NATURE)) {
             //user.getOffice().setId("08bae2518f1646dfa9e0b6cedf904b54");
             //user.setOffice(new Office(request.getParameter("office.id")));
             //	user.setTpyXpFlag();
@@ -234,14 +226,14 @@ public class UserRegiserController extends BaseController {
             model.addAttribute("user", user);
             return "register/tpyRegisterUpdate";
             //法人
-        } else if (user.getPersonFlag().equals("2")) {
+        } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)) {
             if (user.getTpyBeginWorkDate() != null) {
                 user.setTpyBeginWorkDate(user.getTpyBeginWorkDate().substring(0, 10));
             }
             model.addAttribute("user", user);
             return "register/tpyCorpRegisterUpdate";
             //服务对象
-        } else if (user.getPersonFlag().equals("1")) {
+        } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_SERVER)) {
             model.addAttribute("user", user);
             return "register/xdRegisterUpdate";
         }
@@ -268,7 +260,7 @@ public class UserRegiserController extends BaseController {
 
         }
         //自然人
-        if (user.getPersonFlag().equals("0")) {
+        if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_NATURE)) {
             model.addAttribute("imagePathList", list);
             if (user.getTpyBeginWorkDate() != null && user.getTpyBeginWorkDate() != "") {
                 user.setTpyBeginWorkDate(user.getTpyBeginWorkDate().substring(0, 10));
@@ -281,7 +273,7 @@ public class UserRegiserController extends BaseController {
             model.addAttribute("user", user);
             return "modules/check/tpyShResult";
             //法人
-        } else if (user.getPersonFlag().equals("2")) {
+        } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)) {
             model.addAttribute("imagePathList", list);
             if (user.getTpyBeginWorkDate() != null) {
                 user.setTpyBeginWorkDate(user.getTpyBeginWorkDate().substring(0, 10));
@@ -292,7 +284,7 @@ public class UserRegiserController extends BaseController {
             model.addAttribute("user", user);
             return "modules/check/tpyCorpInfoShResult";
             //服务对象
-        } else if (user.getPersonFlag().equals("1")) {
+        } else if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_SERVER)) {
             model.addAttribute("imagePathList", list);
             if (user.getCheckTime() != null) {
                 user.setCheckTime(user.getCheckTime().substring(0, 10));
@@ -381,11 +373,12 @@ public class UserRegiserController extends BaseController {
     }
 
 
-    /** 特派员注册
+    /**
+     * 特派员注册
      * @author 白子涵
      */
     @RequestMapping(value = "save1")
-    public String save1(User user, HttpServletRequest request,HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+    public String save1(User user, HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
         // 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
         user.getCompany().setId(request.getParameter("company.id"));
         user.getOffice().setId(request.getParameter("office.id"));
@@ -393,43 +386,29 @@ public class UserRegiserController extends BaseController {
         if (StringUtils.isNotBlank(user.getNewPassword())) {
             user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
         }
-        String personFlag=user.getPersonFlag();
-        if (!beanValidator(model, user)) {
-            if(personFlag.equals("0")){
+
+        String personFlag = user.getPersonFlag();
+        //校验失败，返回页面                               用户名已存在
+        if (!beanValidator(model, user)||!"true".equals(checkLoginName(user.getOldLoginName(), user.getLoginName()))) {
+            addMessage(model, "保存用户'" + user.getLoginName() + "'失败");
+            if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_NATURE)) {
                 return form(user, model);//跳转自然人特派员注册页面
-            }else if(personFlag.equals("2")){
+            } else if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)) {
                 return tpyCorp(user, model);//跳转法人特派员注册页面
-            }else if(personFlag.equals("5")){
-                return fxForm(user, model);//跳转反向特派员注册页面
-            }
-        }
-        if (!"true".equals(checkLoginName(user.getOldLoginName(), user.getLoginName()))) {
-            addMessage(model, "保存用户'" + user.getLoginName() + "'失败，登录名已存在");
-            if(personFlag.equals("0")){
-                return form(user, model);//跳转自然人特派员注册页面
-            }else if(personFlag.equals("2")){
-                return tpyCorp(user, model);//跳转法人特派员注册页面
-            }else if(personFlag.equals("5")){
+            } else if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_REVERSE)) {
                 return fxForm(user, model);//跳转反向特派员注册页面
             }
         }
         // 角色数据验证，根据角色设置省份、部门
         List<Role> roleList = Lists.newArrayList();
         List<String> roleIdList = user.getRoleIdList();
-        if(user.getPersonFlag().equals("5")){
-            for (Role r : systemService.findFxRole()) {
-                if (roleIdList.contains(r.getId())) {
-                    roleList.add(r);
-                }
-            }
-        }else{
-            for (Role r : systemService.findTpyRole()) {
-                if (roleIdList.contains(r.getId())) {
-                    roleList.add(r);
-                }
+        for (Role r : systemService.findTpyRole()) {
+            if (roleIdList.contains(r.getId())) {
+                roleList.add(r);
             }
         }
         user.setRoleList(roleList);
+
         // 保存用户信息
         String flag = systemService.saveUser1(user);
         // 清除当前用户缓存
@@ -438,10 +417,10 @@ public class UserRegiserController extends BaseController {
         }
         if (flag.equals("0")) {   //新增用户
             addMessage(redirectAttributes, "保存用户'" + user.getName() + "'成功");
-            if(user.getTpyExcelUrl()==null||user.getTpyExcelUrl()=="")return "redirect:" + adminPath + "/login";
+            if (user.getTpyExcelUrl() == null || user.getTpyExcelUrl() == "") return "redirect:" + adminPath + "/login";
             //跳转页面
             model.addAttribute("tpyExcelUrl", user.getTpyExcelUrl());
-            model.addAttribute("message","保存用户'" + user.getName() + "'成功");
+            model.addAttribute("message", "保存用户'" + user.getName() + "'成功");
             return "register/tpyRegisterToLogin";
         } else {  //更新用户
             addMessage(redirectAttributes, "修改'" + user.getName() + "'成功");
@@ -452,9 +431,9 @@ public class UserRegiserController extends BaseController {
 
     @RequestMapping(value = "/downTpyExcel", method = RequestMethod.POST)
     public void loginFail(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-        String excelUrl=request.getParameter("tpyExcelUrl");
+        String excelUrl = request.getParameter("tpyExcelUrl");
         String flag = FileUtils.downFile(new File(excelUrl), request, response);
-        if(flag!=null)addMessage(redirectAttributes, "下载失败，请登陆到管理页面下载对应推荐表");
+        if (flag != null) addMessage(redirectAttributes, "下载失败，请登陆到管理页面下载对应推荐表");
     }
 
 
@@ -765,17 +744,17 @@ public class UserRegiserController extends BaseController {
     public String testVideo() {
         return "/modules/test/index";
     }
-    
-    
+
+
     /**
-	 * 手机端注册跳转地址controller
-	 * wpf
-	 */
-	@RequestMapping(value = "phoneRegister")
-	public String phoneResg(User user,HttpServletRequest request, HttpServletResponse response, Model model) {
-		model.addAttribute("user",user);
-		return "modules/nature/tpyRegister";
-	}
+     * 手机端注册跳转地址controller
+     * wpf
+     */
+    @RequestMapping(value = "phoneRegister")
+    public String phoneResg(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+        model.addAttribute("user", user);
+        return "modules/nature/tpyRegister";
+    }
 
 
 }

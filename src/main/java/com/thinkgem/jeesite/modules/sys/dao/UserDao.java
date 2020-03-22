@@ -175,5 +175,17 @@ public interface UserDao extends CrudDao<User> {
 	 */
 	public List<User> findXpList(User user);
 
+    /**
+     * 上传推荐表、修改审核状态
+     * @param user
+     * @return
+     */
     int uploadTjTable(User user);
+
+    /**
+     * 特派员注册
+     * @param user
+     * @return
+     */
+    int register(User user);
 }
