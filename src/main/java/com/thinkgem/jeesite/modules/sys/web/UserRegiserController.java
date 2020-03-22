@@ -119,9 +119,8 @@ public class UserRegiserController extends BaseController {
     }
 
 
-    /*
+    /**
      * 临时用户注册页面
-     * 20171031
      */
     @RequestMapping(value = {"temporary", ""})
     public String temporaryRegister() {
@@ -143,8 +142,8 @@ public class UserRegiserController extends BaseController {
     @RequestMapping(value = {"tempSave", ""})
     public String tempSave(User user, Model model) {
         try {
-            user.setCompany(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
-            user.setOffice(new Office("08bae2518f1646dfa9e0b6cedf904b54"));
+            user.setCompany(new Office(TpyInfoConfig.COMPANY));
+            user.setOffice(new Office(TpyInfoConfig.COMPANY));
             // 如果新密码为空，则不更换密码
             if (StringUtils.isNotBlank(user.getNewPassword())) {
                 user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
@@ -155,12 +154,13 @@ public class UserRegiserController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("message", user.getName() + "注册失败");
-            if (user.getPersonFlag().equals("4")) {
+            if (user.getPersonFlag().equals(TpyInfoConfig.PERSON_FLAG_TEMPORARY)) {
                 return "register/temporary/userRegister";
             }
             return "register/enterprise/userRegister";
         }
     }
+
 
     /*
      * 临时用户登录页面

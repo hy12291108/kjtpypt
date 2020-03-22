@@ -22,6 +22,11 @@ public class TpyInfoConfig implements InitializingBean {
     public static String SOURCE_FILE_PATH;
     //特派人申报推荐表Excel生成文件路径
     public static String TARGET_FILE_PATH;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        SOURCE_FILE_PATH=sourceFilePath;
+        TARGET_FILE_PATH=targetFilePath;
+    }
 
 
     /**
@@ -81,9 +86,5 @@ public class TpyInfoConfig implements InitializingBean {
 	public final static String ROLE_FX_TPY="4d54294fbd694873b19f752cda308f2d";  //TODO 待修改
 
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        SOURCE_FILE_PATH=sourceFilePath;
-        TARGET_FILE_PATH=targetFilePath;
-    }
+
 }

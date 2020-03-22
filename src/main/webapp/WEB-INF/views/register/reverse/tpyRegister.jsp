@@ -141,7 +141,7 @@
                         <label>手机号码：</label>
                     </td>
                     <td colspan="3">
-                        <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" maxlength="100"
+                        <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" placeholder="请输入手机号码" maxlength="100"
                                     class="required mobile"/>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>

@@ -60,7 +60,7 @@ public class TpyRegisterController extends BaseController {
             //返回企业用户注册页面
             return enterForm(user,model);
         }
-        return "404";
+        return "modules/sys/sysLogin";
     }
 
     /**
@@ -126,6 +126,7 @@ public class TpyRegisterController extends BaseController {
         model.addAttribute("message",  "注册失败");
         return returnForm(user,model);
     }
+
 
 
 
