@@ -4,7 +4,6 @@ package com.thinkgem.jeesite.modules.sys.web;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.TpyRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
- * 特派员注册、申报（控制层）
+ * 个人、企业、特派员注册、申报（控制层）
  * @author 白子涵
  * @version 2020-03-21
  */

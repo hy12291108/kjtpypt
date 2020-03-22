@@ -6,11 +6,9 @@ package com.thinkgem.jeesite.modules.sys.service;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.service.ServiceException;
-import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
 import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -18,8 +16,6 @@ import com.thinkgem.jeesite.modules.sys.wrap.UserToMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 用户注册业务层
+ * 个人、企业、特派员注册、申报（业务层）
  * @author 白子涵
  * @version 2020-03-21
  */
