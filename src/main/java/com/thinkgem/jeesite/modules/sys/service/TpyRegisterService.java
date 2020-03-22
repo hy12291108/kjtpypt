@@ -35,11 +35,9 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private SystemService systemService;
-    @Autowired
-    private MajorMenuService majorMenuService;
-    @Autowired
     private UserToMap userToMap;
+    @Autowired
+    private SystemService systemService;
 
 
 

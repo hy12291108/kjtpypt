@@ -118,8 +118,8 @@ public class TpyRegisterController extends BaseController {
         if (!beanValidator(model, user)){
             return returnForm(user, model);
         }
-        boolean flag=tpyRegisterService.tpyRegister(user);
-        if(flag){//注册成功,跳转到登陆页面
+        if(tpyRegisterService.tpyRegister(user)){//注册成功,跳转到登陆页面
+            model.addAttribute("message",  "注册成功");
             return "modules/sys/sysLogin";  //TODO 登录页面
         }
         //注册失败，返回注册页面
