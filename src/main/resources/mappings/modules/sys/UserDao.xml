@@ -1138,7 +1138,7 @@
     </insert>
 
 
-    <!--====================完善信息保存功能======================-->
+    <!--====================完善信息保存、提交功能======================-->
     <update id="naturePerfectInfoSave">
         update sys_user set
         photo = #{photo},
@@ -1162,11 +1162,11 @@
         tpyTalentType=#{tpyTalentType},
         tpyMajorType=#{tpyMajorType},
         tpy_major=#{tpyMajor},
-        tpy_special=${tpySpecial},
-        tpyNfwAddress=${tpyNfwAddress},
-        tpyNfwContent=${tpyNfwContent},
-        tpyExperience=${tpyExperience},
-        tpyJcSituation=${tpyJcSituation}
+        tpy_special=#{tpySpecial},
+        tpyNfwAddress=#{tpyNfwAddress},
+        tpyNfwContent=#{tpyNfwContent},
+        tpyExperience=#{tpyExperience},
+        tpyJcSituation=#{tpyJcSituation}
         where id=#{id}
     </update>
     <update id="corpPerfectInfoSave">
@@ -1192,11 +1192,11 @@
         tpyTalentType=#{tpyTalentType},
         tpyMajorType=#{tpyMajorType},
         tpy_major=#{tpyMajor},
-        tpy_special=${tpySpecial},
-        tpyNfwAddress=${tpyNfwAddress},
-        tpyNfwContent=${tpyNfwContent},
-        tpyExperience=${tpyExperience},
-        tpyJcSituation=${tpyJcSituation}
+        tpy_special=#{tpySpecial},
+        tpyNfwAddress=#{tpyNfwAddress},
+        tpyNfwContent=#{tpyNfwContent},
+        tpyExperience=#{tpyExperience},
+        tpyJcSituation=#{tpyJcSituation}
         where id=#{id}
     </update>
     <update id="reversePerfectInfoSave">
@@ -1222,12 +1222,20 @@
         tpyTalentType=#{tpyTalentType},
         tpyMajorType=#{tpyMajorType},
         tpy_major=#{tpyMajor},
-        tpy_special=${tpySpecial},
-        tpyNfwAddress=${tpyNfwAddress},
-        tpyNfwContent=${tpyNfwContent},
-        tpyExperience=${tpyExperience},
-        tpyJcSituation=${tpyJcSituation}
+        tpy_special=#{tpySpecial},
+        tpyNfwAddress=#{tpyNfwAddress},
+        tpyNfwContent=#{tpyNfwContent},
+        tpyExperience=#{tpyExperience},
+        tpyJcSituation=#{tpyJcSituation}
         where id=#{id}
     </update>
-    <!--====================完善信息保存功能======================-->
+
+
+    <update id="submitInfo">
+        update sys_user set
+        check_flag=#{checkFlag},
+        tjTableImage=#{tjTableImage}
+        where id=#{id}
+    </update>
+    <!--====================完善信息保存、提交功能======================-->
 </mapper>
