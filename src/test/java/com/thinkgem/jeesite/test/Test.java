@@ -1,18 +1,13 @@
 package com.thinkgem.jeesite.test;
 
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import net.sf.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import com.thinkgem.jeesite.modules.sys.entity.TpyInfo;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
-
-import net.sf.json.JSONObject;
 
 public class Test {
 	

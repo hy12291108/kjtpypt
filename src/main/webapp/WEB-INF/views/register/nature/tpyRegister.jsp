@@ -14,25 +14,8 @@
     <meta http-equiv="Expires" content="0">
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-store">
-    <script src="/kjtpypt/static/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
-    <script src="/kjtpypt/static/jquery/Select.js" type="text/javascript"></script>
-    <link href="/kjtpypt/static/bootstrap/2.3.1/css_cerulean/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
-    <link href="/kjtpypt/static/bootstrap/2.3.1/awesome/font-awesome.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/jquery-select2/3.4/select2.min.css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/jquery-select2/3.4/select2.min.js" type="text/javascript"></script>
-    <link href="/kjtpypt/static/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/jquery-validation/1.11.0/jquery.validate.js" type="text/javascript"></script>
-    <link href="/kjtpypt/static/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
-    <script src="/kjtpypt/static/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
-    <script src="/kjtpypt/static/common/mustache.min.js" type="text/javascript"></script>
-    <link href="/kjtpypt/static/common/jeesite.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/common/Select.css" type="text/css" rel="stylesheet"/>
-    <!-- 20170906加注册页面样式 -->
-    <link href="/kjtpypt/static/skin/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/kjtpypt/static/skin/css/css.css" type="text/css" rel="stylesheet"/>
-    <script src="/kjtpypt/static/common/jeesite.js" type="text/javascript"></script>
+
+    <jsp:include page="/WEB-INF/views/register/common/tpyPublicJsAndCss.jsp" flush="true" ></jsp:include>
 
     <script type="text/javascript">
         function mobileBind() {
@@ -89,7 +72,7 @@
                     <td>
                         <label>登录名：</label>
                     </td>
-                    <td colspan="1">
+                    <td>
                         <form:input path="loginName" id="loginName" placeholder="请输入手机号码" htmlEscape="false"
                                     minlength="11" maxlength="11" class="required mobile" onkeyup="mobileBind()"/>
                         <span class="help-inline"><font color="red">*</font></span>
@@ -99,7 +82,7 @@
                     <td>
                         <label>密码：</label>
                     </td>
-                    <td colspan="1">
+                    <td>
                         <input id="password" name="password" placeholder="请输入密码" type="password" value=""
                                class="required"
                                maxlength="50" minlength="3"/><em>*</em>
@@ -109,7 +92,7 @@
                     <td>
                         <label>确认密码：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <input id="confirmNewPassword" name="confirmNewPassword" placeholder="请输入密码" type="password"
                                class="required"
                                value="" maxlength="50" minlength="3" equalTo="#password"/>
@@ -120,7 +103,7 @@
                     <td>
                         <label>姓名：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <input id="name" name="name" placeholder="请输入姓名" type="text" value="" maxlength="10"
                                class="required"
                                minlength="2"/>
@@ -131,7 +114,7 @@
                     <td>
                         <label>邮箱：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <form:input path="email" htmlEscape="false" maxlength="100" placeholder="请输入邮箱" class="required email"/>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>
@@ -140,25 +123,13 @@
                     <td>
                         <label>手机号码：</label>
                     </td>
-                    <td colspan="3">
+                    <td>
                         <form:input path="mobile" id="mobile" readonly="true" htmlEscape="false" maxlength="100"
                                     class="required mobile"/>
                         <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <label>所属区域：</label>
-                    </td>
-                    <td>
-                        <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name"
-                                        labelValue="${user.office.name}"
-                                        title="部门" url="/UserRegister/treeData?type=2" cssClass="required"
-                                        notAllowSelectParent="true"/>
-                        <span class="help-inline"><font color="red">*</font></span>
-                    </td>
-                </tr>
 
             </table>
             <div class="btgroup form-actions">

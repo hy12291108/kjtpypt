@@ -56,19 +56,6 @@
     })();</script>
 
     <script type="text/javascript">
-    	var ctx = '/kjtpypt/a', 
-    	ctxStatic = '/kjtpypt/static';
-    </script>
-    <script>
-    	var _hmt = _hmt || [];
-    	(function () {
-        	var hm = document.createElement("script");
-	        hm.src = "//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";
-	        var s = document.getElementsByTagName("script")[0];
-	        s.parentNode.insertBefore(hm, s);
- 		})();
- 	</script>
-    <script type="text/javascript">
         function mobileBind() {
             var mobile = $("#loginName").val();
             $("#mobile").val(mobile);

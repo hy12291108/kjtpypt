@@ -188,4 +188,13 @@ public interface UserDao extends CrudDao<User> {
      * @return
      */
     int register(User user);
+
+
+    /**
+     * 特派员完善信息保存
+     */
+    int naturePerfectInfoSave(User user);
+    int corpPerfectInfoSave(User user);
+    int reversePerfectInfoSave(User user);
+
 }

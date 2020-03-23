@@ -119,43 +119,134 @@ public class User extends DataEntity<User> {
     /**
      * 2020-03-06新字段
      */
-    @Getter@Setter
     private String tpyNation; //民族
-    @Getter@Setter
     private String tpyPolitical;//政治面貌
-    @Getter@Setter
     private String tpyServiceMode;//服务形式
-    @Getter@Setter
     private String tpyTalentType;//人才类型
-    @Getter@Setter
     private String tpyNfwAddress;//拟服务地点
-    @Getter@Setter
     private String tpyNfwContent;//拟服务内容
-    @Getter@Setter
     private String tpyExperience;//从事科技服务与创业经历
-    @Getter@Setter
     private String tpyJcSituation;//奖惩情况
-    @Getter@Setter
     private String tpyMajorType;//专业类别
 
     /**
      * 法人
      */
-    @Getter@Setter
 	private String tpyCorporateNature;//法人性质
-    @Getter@Setter
 	private String tpyEnterpriseAttribute;//企业属性
 
     /**
      * 反向人
      */
-    @Getter@Setter
     private String tpyServiceAdvantages; //服务优势
-    @Getter@Setter
     private String tpyExcelUrl; //excel推荐表位置
 
+    @Length(min=1, max=100, message="民族长度必须介于 1 和 100 之间")
+    public String getTpyNation() {
+        return tpyNation;
+    }
 
-	public String getTpyXpFlagName() {
+    public void setTpyNation(String tpyNation) {
+        this.tpyNation = tpyNation;
+    }
+
+    public String getTpyPolitical() {
+        return tpyPolitical;
+    }
+
+    public void setTpyPolitical(String tpyPolitical) {
+        this.tpyPolitical = tpyPolitical;
+    }
+
+    public String getTpyServiceMode() {
+        return tpyServiceMode;
+    }
+
+    public void setTpyServiceMode(String tpyServiceMode) {
+        this.tpyServiceMode = tpyServiceMode;
+    }
+
+    public String getTpyTalentType() {
+        return tpyTalentType;
+    }
+
+    public void setTpyTalentType(String tpyTalentType) {
+        this.tpyTalentType = tpyTalentType;
+    }
+
+    public String getTpyNfwAddress() {
+        return tpyNfwAddress;
+    }
+
+    public void setTpyNfwAddress(String tpyNfwAddress) {
+        this.tpyNfwAddress = tpyNfwAddress;
+    }
+
+    public String getTpyNfwContent() {
+        return tpyNfwContent;
+    }
+
+    public void setTpyNfwContent(String tpyNfwContent) {
+        this.tpyNfwContent = tpyNfwContent;
+    }
+
+    public String getTpyExperience() {
+        return tpyExperience;
+    }
+
+    public void setTpyExperience(String tpyExperience) {
+        this.tpyExperience = tpyExperience;
+    }
+
+    public String getTpyJcSituation() {
+        return tpyJcSituation;
+    }
+
+    public void setTpyJcSituation(String tpyJcSituation) {
+        this.tpyJcSituation = tpyJcSituation;
+    }
+
+    public String getTpyMajorType() {
+        return tpyMajorType;
+    }
+
+    public void setTpyMajorType(String tpyMajorType) {
+        this.tpyMajorType = tpyMajorType;
+    }
+
+    public String getTpyCorporateNature() {
+        return tpyCorporateNature;
+    }
+
+    public void setTpyCorporateNature(String tpyCorporateNature) {
+        this.tpyCorporateNature = tpyCorporateNature;
+    }
+
+    public String getTpyEnterpriseAttribute() {
+        return tpyEnterpriseAttribute;
+    }
+
+    public void setTpyEnterpriseAttribute(String tpyEnterpriseAttribute) {
+        this.tpyEnterpriseAttribute = tpyEnterpriseAttribute;
+    }
+
+    public String getTpyServiceAdvantages() {
+        return tpyServiceAdvantages;
+    }
+
+    public void setTpyServiceAdvantages(String tpyServiceAdvantages) {
+        this.tpyServiceAdvantages = tpyServiceAdvantages;
+    }
+
+    public String getTpyExcelUrl() {
+        return tpyExcelUrl;
+    }
+
+    public void setTpyExcelUrl(String tpyExcelUrl) {
+        this.tpyExcelUrl = tpyExcelUrl;
+    }
+
+    public String getTpyXpFlagName() {
 		return tpyXpFlagName;
 	}
 
@@ -535,24 +626,6 @@ public class User extends DataEntity<User> {
 		this.corpDwyyzzhfrdmfyj = corpDwyyzzhfrdmfyj;
 	}
 
-	
-
-	
-	
-	
-	
-	
-	
-	
-
-
-	
-	
-
-
-	
-
-
 	public String getStarTime() {
 		return starTime;
 	}
@@ -576,24 +649,6 @@ public class User extends DataEntity<User> {
 	public void setTpyReason(String tpyReason) {
 		this.tpyReason = tpyReason;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 
@@ -650,7 +705,7 @@ public class User extends DataEntity<User> {
 	}
 	
 	@JsonIgnore
-	@NotNull(message="归属部门不能为空")
+	//@NotNull(message="归属部门不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {
 		return office;
@@ -869,4 +924,9 @@ public class User extends DataEntity<User> {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+
 }

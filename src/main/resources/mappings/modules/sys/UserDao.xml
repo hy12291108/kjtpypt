@@ -1136,4 +1136,98 @@
             #{delFlag}
         )
     </insert>
+
+
+    <!--====================完善信息保存功能======================-->
+    <update id="naturePerfectInfoSave">
+        update sys_user set
+        photo = #{photo},
+        office_id = #{office.id},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        name=#{name},
+        sex=#{sex},
+        tpyNation=#{tpyNation},
+        tpy_location=#{tpyLocation},
+        tpy_company=#{tpyCompany},
+        tpy_position=#{tpyPosition},
+        tpy_title=#{tpyTitle},
+        tpy_qulification=#{tpyQulification},
+        tpyPolitical=#{tpyPolitical},
+        email=#{email},
+        mobile=#{mobile},
+        tpy_birthDate=#{tpyBirthDate},
+        tpy_idcard=#{tpyIdcard},
+        tpyServiceMode=#{tpyServiceMode},
+        tpyTalentType=#{tpyTalentType},
+        tpyMajorType=#{tpyMajorType},
+        tpy_major=#{tpyMajor},
+        tpy_special=${tpySpecial},
+        tpyNfwAddress=${tpyNfwAddress},
+        tpyNfwContent=${tpyNfwContent},
+        tpyExperience=${tpyExperience},
+        tpyJcSituation=${tpyJcSituation}
+        where id=#{id}
+    </update>
+    <update id="corpPerfectInfoSave">
+        update sys_user set
+        photo = #{photo},
+        office_id = #{office.id},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        name=#{name},
+        sex=#{sex},
+        tpyNation=#{tpyNation},
+        tpy_location=#{tpyLocation},
+        tpy_company=#{tpyCompany},
+        tpy_position=#{tpyPosition},
+        tpy_title=#{tpyTitle},
+        tpy_qulification=#{tpyQulification},
+        tpyPolitical=#{tpyPolitical},
+        email=#{email},
+        mobile=#{mobile},
+        tpy_birthDate=#{tpyBirthDate},
+        tpy_idcard=#{tpyIdcard},
+        tpyServiceMode=#{tpyServiceMode},
+        tpyTalentType=#{tpyTalentType},
+        tpyMajorType=#{tpyMajorType},
+        tpy_major=#{tpyMajor},
+        tpy_special=${tpySpecial},
+        tpyNfwAddress=${tpyNfwAddress},
+        tpyNfwContent=${tpyNfwContent},
+        tpyExperience=${tpyExperience},
+        tpyJcSituation=${tpyJcSituation}
+        where id=#{id}
+    </update>
+    <update id="reversePerfectInfoSave">
+        update sys_user set
+        photo = #{photo},
+        office_id = #{office.id},
+        update_by = #{updateBy.id},
+        update_date = #{updateDate},
+        name=#{name},
+        sex=#{sex},
+        tpyNation=#{tpyNation},
+        tpy_location=#{tpyLocation},
+        tpy_company=#{tpyCompany},
+        tpy_position=#{tpyPosition},
+        tpy_title=#{tpyTitle},
+        tpy_qulification=#{tpyQulification},
+        tpyPolitical=#{tpyPolitical},
+        email=#{email},
+        mobile=#{mobile},
+        tpy_birthDate=#{tpyBirthDate},
+        tpy_idcard=#{tpyIdcard},
+        tpyServiceMode=#{tpyServiceMode},
+        tpyTalentType=#{tpyTalentType},
+        tpyMajorType=#{tpyMajorType},
+        tpy_major=#{tpyMajor},
+        tpy_special=${tpySpecial},
+        tpyNfwAddress=${tpyNfwAddress},
+        tpyNfwContent=${tpyNfwContent},
+        tpyExperience=${tpyExperience},
+        tpyJcSituation=${tpyJcSituation}
+        where id=#{id}
+    </update>
+    <!--====================完善信息保存功能======================-->
 </mapper>

@@ -109,9 +109,7 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
             }
             //4.2设置角色列表
             user.setRoleList(roleList);
-            //5、设置下派标识
-            user.setTpyXpFlag(user.getOffice().getId());
-            //6、保存用户信息
+            //5、保存用户信息
             int i = userDao.register(user);
             if(i==1){  //注册成功
                 // 更新用户与角色关联
@@ -132,6 +130,39 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
         return false;
     }
 
+    /**
+     *  完善信息页面保存功能
+     * @param user
+     * @return
+     */
+    public boolean perfectInfoSave(User user) {
+        try {
+            user.preUpdate();
+            String personFlag=user.getPersonFlag();
+            int i;
+            if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_NATURE)){  //自然人
+                i=userDao.naturePerfectInfoSave(user);
+            }else if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)){ //法人
+                i=userDao.corpPerfectInfoSave(user);
+            }else{ //反向特派员
+                i=userDao.reversePerfectInfoSave(user);
+            }
+            if(i==1){ //保存成功
+                UserUtils.clearCache(); //清除缓存
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
+    //================================================================================//
 
     /**
      * 更新用户信息时，验证登录名是否有效
@@ -145,5 +176,7 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
         }
         return false;
     }
+
+
 
 }
