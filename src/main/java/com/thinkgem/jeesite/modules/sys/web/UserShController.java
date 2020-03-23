@@ -8,9 +8,11 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.ImageUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
+import com.thinkgem.jeesite.modules.sys.entity.MajorMenu;
 import com.thinkgem.jeesite.modules.sys.entity.TpyInfo;
 import com.thinkgem.jeesite.modules.sys.entity.TpyWorkExperience;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -23,12 +25,12 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
@@ -515,18 +517,28 @@ public class UserShController extends BaseController {
     public String perfectInfo( Model model) {
         User user=UserUtils.getUser();
         model.addAttribute("user", user);
-        return returnPerfectInfo(user);
+        return returnPerfectInfo(user,model);
     }
     @RequestMapping(value = "returnPerfectInfo")
-    public String returnPerfectInfo(User user) {
+    public String returnPerfectInfo(User user,Model model) {
+        //根绝角色跳转对应页面
         String personFlag=user.getPersonFlag();
         if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_NATURE)){
+            //专业类别菜单
+            List<MajorMenu> tpyMajorTypeList = majorMenuService.findAllMajorMenu();
+            model.addAttribute("tpyMajorTypeList", tpyMajorTypeList);
+            //专业名称菜单
+            MajorMenu majorMenu = majorMenuService.getMajorMenu(user.getTpyMajorType());
+            List<MajorMenu> tpyMajorList = majorMenuService.findMajorMenuSecond(majorMenu);
+            model.addAttribute("tpyMajorList", tpyMajorList);
             return "register/nature/tpyPerfectInfo";
         }else if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)){
             return "register/nature/tpyPerfectInfo";
         }else if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_REVERSE)){
             return "register/nature/tpyPerfectInfo";
         }
+
+
         return "error";  //没有对应角色
     }
 
@@ -534,8 +546,9 @@ public class UserShController extends BaseController {
     /**
      * 完善信息保存
      */
-    @RequestMapping(value = "perfectInfoSave")
+    @RequestMapping(value = "perfectInfoSave",method = RequestMethod.POST)
     public String perfectInfoSave(User user, Model model) {
+        //将数据提交到数据库（包含文件和普通表单数据）
         boolean flag=tpyRegisterService.perfectInfoSave(user);
         user=UserUtils.getUser();
         model.addAttribute("user",user);
@@ -544,9 +557,26 @@ public class UserShController extends BaseController {
         }else{
             model.addAttribute("message","保存失败");
         }
-        return returnPerfectInfo(user);
+        return returnPerfectInfo(user,model);
     }
 
+
+    /**
+     * 特派员推荐表上传功能
+     */
+    @RequestMapping(value = "submitInfo",method = RequestMethod.POST)
+    public String submitInfo(User user, Model model) {
+        //将数据提交到数据库（包含文件和普通表单数据）
+        boolean flag=tpyRegisterService.submitInfo(user);
+        user=UserUtils.getUser();
+        model.addAttribute("user",user);
+        if(flag){
+            model.addAttribute("message","提交成功,请等待你的审核结果！");
+        }else{
+            model.addAttribute("message","提交失败");
+        }
+        return returnPerfectInfo(user,model);
+    }
     //===========================================================================//
     //=============================完善信息业务END================================//
     //===========================================================================//

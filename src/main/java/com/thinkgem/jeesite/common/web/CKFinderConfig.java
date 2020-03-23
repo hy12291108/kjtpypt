@@ -23,9 +23,9 @@ import com.ckfinder.connector.utils.AccessControlUtil;
 public class CKFinderConfig extends Configuration {
 
 	public CKFinderConfig(ServletConfig servletConfig) {
-        super(servletConfig);  
+        super(servletConfig);
     }
-	
+
 	@Override
     protected Configuration createConfigurationInstance() {
 		Principal principal = (Principal) UserUtils.getPrincipal();
@@ -61,7 +61,7 @@ public class CKFinderConfig extends Configuration {
 		return new CKFinderConfig(this.servletConf);
     }
 
-    @Override  
+    @Override
     public boolean checkAuthentication(final HttpServletRequest request) {
         return UserUtils.getPrincipal()!=null;
     }

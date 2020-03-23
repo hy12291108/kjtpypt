@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.sys.service;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.service.ServiceException;
+import com.thinkgem.jeesite.common.utils.ImageUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
 import com.thinkgem.jeesite.modules.sys.config.TpyInfoConfig;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
@@ -16,7 +17,10 @@ import com.thinkgem.jeesite.modules.sys.wrap.UserToMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.UUID;
 
 /**
  * 个人、企业、特派员注册、申报（业务层）
+ *
  * @author 白子涵
  * @version 2020-03-21
  */
@@ -40,9 +45,9 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
     private SystemService systemService;
 
 
-
     /**
      * 生成特派员推荐表Excel,成功将URL赋值给User
+     *
      * @param user
      * @return
      */
@@ -80,12 +85,10 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
     }
 
 
-
-
-
     /**
      * 自然人、法人、反向特派员注册
      * 第一次注册执行此方法
+     *
      * @param user
      * @return true:注册成功 false:注册失败
      */
@@ -104,14 +107,16 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
             //4.1、角色获取
             List<Role> roleList = Lists.newArrayList();
             List<Role> roleList_ = systemService.findTpyRole();
-            for (Role r : roleList_){
-                if (roleIdList.equals(r.getId())){roleList.add(r);}
+            for (Role r : roleList_) {
+                if (roleIdList.equals(r.getId())) {
+                    roleList.add(r);
+                }
             }
             //4.2设置角色列表
             user.setRoleList(roleList);
             //5、保存用户信息
             int i = userDao.register(user);
-            if(i==1){  //注册成功
+            if (i == 1) {  //注册成功
                 // 更新用户与角色关联
                 if (user.getRoleList() != null && user.getRoleList().size() > 0) {
                     userDao.insertUserRole(user);
@@ -131,23 +136,25 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
     }
 
     /**
-     *  完善信息页面保存功能
+     * 完善信息页面【保存】功能
+     *
      * @param user
      * @return
      */
+    @Transactional(readOnly = false)
     public boolean perfectInfoSave(User user) {
         try {
             user.preUpdate();
-            String personFlag=user.getPersonFlag();
+            String personFlag = user.getPersonFlag();
             int i;
-            if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_NATURE)){  //自然人
-                i=userDao.naturePerfectInfoSave(user);
-            }else if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)){ //法人
-                i=userDao.corpPerfectInfoSave(user);
-            }else{ //反向特派员
-                i=userDao.reversePerfectInfoSave(user);
+            if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_NATURE)) {  //自然人特派员
+                i = userDao.naturePerfectInfoSave(user);
+            } else if (personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)) { //法人特派员
+                i = userDao.corpPerfectInfoSave(user);
+            } else { //反向特派员
+                i = userDao.reversePerfectInfoSave(user);
             }
-            if(i==1){ //保存成功
+            if (i == 1) { //保存成功
                 UserUtils.clearCache(); //清除缓存
                 return true;
             }
@@ -158,16 +165,37 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
         }
     }
 
-
-
-
+    /**
+     * 完善信息页面【提交】功能
+     *
+     * @param user
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public boolean submitInfo(User user) {
+        try {
+            if(perfectInfoSave(user)){//保存成功,修改审核状态以及保存推荐表路径
+                //修改审核标识为【未审核】状态
+                user.setCheckFlag(TpyInfoConfig.CHECK_FLAG_NOT_EXAMINE);
+                if (userDao.submitInfo(user) == 1) { //提交成功
+                    UserUtils.clearCache(); //清除缓存
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     //================================================================================//
 
     /**
      * 更新用户信息时，验证登录名是否有效
+     *
      * @param oldLoginName 更新前登录名
-     * @param loginName 更新后登录名
+     * @param loginName    更新后登录名
      * @return true：有效  false:无效
      */
     public boolean checkLoginName(String oldLoginName, String loginName) {
@@ -177,6 +205,19 @@ public class TpyRegisterService extends CrudService<UserDao, User> {
         return false;
     }
 
+
+
+
+    /**
+     * 上传头像功能
+     * @param request
+     * @param pictureFile
+     * @return 返回字符串路径
+     * @throws IOException
+     */
+    public String uploadPhoto(HttpServletRequest request, MultipartFile pictureFile) throws IOException {
+        return ImageUtils.upload(request, pictureFile, TpyInfoConfig.PHOTO_URL);
+    }
 
 
 }

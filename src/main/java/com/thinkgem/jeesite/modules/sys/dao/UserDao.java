@@ -197,4 +197,10 @@ public interface UserDao extends CrudDao<User> {
     int corpPerfectInfoSave(User user);
     int reversePerfectInfoSave(User user);
 
+    /**
+     * 完善信息页面【提交】功能
+     * @param user
+     * @return
+     */
+    int submitInfo(User user);
 }

@@ -22,16 +22,16 @@ import com.ckfinder.connector.ConnectorServlet;
  * @version 2014-06-25
  */
 public class CKFinderConnectorServlet extends ConnectorServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		prepareGetResponse(request, response, false);
 		super.doGet(request, response);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -47,7 +47,7 @@ public class CKFinderConnectorServlet extends ConnectorServlet {
 		}
 		String command = request.getParameter("command");
 		String type = request.getParameter("type");
-		
+
 		if ("Init".equals(command)){// 初始化时，如果startupPath文件夹不存在，则自动创建startupPath文件夹
 			String startupPath = request.getParameter("startupPath");// 当前文件夹可指定为模块名
 			if (startupPath!=null){
@@ -66,7 +66,7 @@ public class CKFinderConnectorServlet extends ConnectorServlet {
 		}
 
 	}
-	
+
 	//新路径配置方法2018-03-21
 //	private void prepareGetResponse(final HttpServletRequest request,
 //			final HttpServletResponse response, final boolean post) throws ServletException {
@@ -92,9 +92,9 @@ public class CKFinderConnectorServlet extends ConnectorServlet {
 //					String ylgenpath = Global.getUserfilesBaseDir().replace("\\", "");
 //					System.out.println(ylgenpath+"00000000000000000000000000000");
 //					System.out.println("Global.USERFILES_BASE_URL="+Global.USERFILES_BASE_URL+"00000000000000000000000000000");
-//					
+//
 //					//if(ylgenpath.equals("D:apache-tomcat-7.0.78webappskjtpypt/")){
-//					
+//
 //					if(ylgenpath.equals("D:apache-tomcat-8.0.35webappskjtpypt/")){
 //						System.out.println("1111111111111111111111111111");
 //						//原来的根路径带项目名称：kjtpypt
@@ -102,7 +102,7 @@ public class CKFinderConnectorServlet extends ConnectorServlet {
 //					//	+ principal + "/" + ss[0] + ss[1];
 //						realPath = newgenpath + Global.USERFILES_BASE_URL
 //						+ principal + "/" + ss[0] + ss[1];
-//						
+//
 //					}else{
 //						System.out.println("222222222222222222222");
 //						//原来的根路径不带项目名称：kjtpypt时采用新拼接的根路径：newgenpath

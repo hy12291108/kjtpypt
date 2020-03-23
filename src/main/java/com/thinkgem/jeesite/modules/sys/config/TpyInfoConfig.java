@@ -18,14 +18,19 @@ public class TpyInfoConfig implements InitializingBean {
     private String sourceFilePath;
     @Value("${targetFilePath}")
     private String targetFilePath;
+    @Value("${imageUrl}")
+    private String photoUrl;
     //特派人申报推荐表模板路径
     public static String SOURCE_FILE_PATH;
     //特派人申报推荐表Excel生成文件路径
     public static String TARGET_FILE_PATH;
+    //头像路径
+    public static String PHOTO_URL;
     @Override
     public void afterPropertiesSet() throws Exception {
         SOURCE_FILE_PATH=sourceFilePath;
         TARGET_FILE_PATH=targetFilePath;
+        PHOTO_URL=photoUrl;
     }
 
 

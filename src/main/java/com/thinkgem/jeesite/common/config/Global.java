@@ -58,9 +58,9 @@ public class Global {
 	 * 上传文件基础虚拟路径
 	 */
 	//原始上传虚拟路径
-//	public static final String USERFILES_BASE_URL = "/userfiles/";
+    public static final String USERFILES_BASE_URL = "/userfiles/";
 	//新调整后上传虚拟路径2018-03-21
-	public static final String USERFILES_BASE_URL = "kjtpypt/userfiles/";
+	//public static final String USERFILES_BASE_URL = "kjtpypt/userfiles/";
 	
 	/**
 	 * 获取当前对象实例
