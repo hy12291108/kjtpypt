@@ -533,12 +533,10 @@ public class UserShController extends BaseController {
             model.addAttribute("tpyMajorList", tpyMajorList);
             return "register/nature/tpyPerfectInfo";
         }else if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_CORPORATION)){
-            return "register/nature/tpyPerfectInfo";
+            return "register/corporation/tpyPerfectInfo";
         }else if(personFlag.equals(TpyInfoConfig.PERSON_FLAG_REVERSE)){
-            return "register/nature/tpyPerfectInfo";
+            return "register/reverse/tpyPerfectInfo";
         }
-
-
         return "error";  //没有对应角色
     }
 

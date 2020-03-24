@@ -243,16 +243,16 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <li><a href="/kjtpypt/a/UserRegister/form">自然人</a></li>
-                            <li><a href="/kjtpypt/a/UserRegister/tpyCorp">法人</a></li>
-                            <li><a href="/kjtpypt/a/UserRegister/fxForm">反向特派员</a></li>
+                            <li><a href="/kjtpypt/a/register/natureForm">自然人</a></li>
+                            <li><a href="/kjtpypt/a/register/corpForm">法人</a></li>
+                            <li><a href="/kjtpypt/a/register/reverseForm">反向特派员</a></li>
                         </ul>
                     </div>
                 </td>
 
             <tr>
-                <td align="left"><a href="/kjtpypt/a/UserRegister/temporary">普通用户注册</a></td>
-                <td align="right"><a href="/kjtpypt/a/UserRegister/enterpriseForm">企业注册</a></td>
+                <td align="left"><a href="/kjtpypt/a/register/tempForm">普通用户注册</a></td>
+                <td align="right"><a href="/kjtpypt/a/register/enterForm">企业注册</a></td>
             </tr>
         </table>
 

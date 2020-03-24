@@ -43,7 +43,7 @@ public class User extends DataEntity<User> {
 	private String loginName;// 登录名
 	private String password;// 密码
 	private String no;		// 工号
-	@NotNull @NotEmpty
+	@NotNull
 	private String name;	// 特派员姓名/需求单位名称
 	@Email
 	private String email;	// 邮箱
@@ -735,7 +735,7 @@ public class User extends DataEntity<User> {
 		this.password = password;
 	}
 
-	@Length(min=1, max=100, message="姓名长度必须介于 1 和 100 之间")
+	//@Length(min=1, max=100, message="姓名长度必须介于 1 和 100 之间")
 	@ExcelField(title="姓名", align=2, sort=40)
 	public String getName() {
 		return name;

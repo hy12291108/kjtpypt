@@ -49,13 +49,6 @@
         }
 
         $(document).ready(function () {
-
-            $("#fileUploadContent").initUpload({
-                "uploadUrl": "/kjtpypt/a/UserRegister/uploadImage",//上传文件信息地址
-                autoCommit: false,//文件是否自动上传
-                "fileType": ['png', 'jpg']//文件类型限制，默认不限制，注意写的是文件后缀
-            });
-            initZyLb();
             $("#inputForm").validate({
                 rules: {
                     loginName: {remote: "/kjtpypt/a/UserRegister/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')}
@@ -176,8 +169,6 @@
                     </td>
                     <td rowspan="4"><label>头像：</label></td>
                     <td rowspan="4">
-                        <%--<img src="${pageContext.request.contextPath}/${user.photo }" style="height: 150px;width:120px"/>
-                        <input type="file" name="pictureFile" id="pictureFile" value="请选择图片" />--%>
                         <form:hidden id="photo" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
                         <sys:ckfinder input="photo" type="thumb" uploadPath="/tpyRegister/photo" selectMultiple="false"  maxHeight="130" maxWidth="100"/>
                     </td>
@@ -189,7 +180,7 @@
                         <label>姓名：</label>
                     </td>
                     <td>
-                        <form:input id="name" path="name" htmlEscape="false" placeholder="请输入您的姓名" maxlength="50" class=""/>
+                        <form:input id="name" path="name" htmlEscape="false" placeholder="请输入您的姓名" maxlength="50" class="required"/>
                     </td>
                 </tr>
 

@@ -63,6 +63,7 @@
         <h2><span>特派员（法人）注册</span></h2>
         <form:form id="inputForm" modelAttribute="user" action="${ctx}/register/tpyRegister" method="post" class="form-horizontal">
             <form:hidden path="id"/>
+            <form:hidden path="name" value=""/>
             <form:hidden path="personFlag" value="${personFlag}"/><%--特派员类型--%>
             <form:hidden path="company.id" value="${company}"/><%--归属公司--%>
             <sys:message content="${message}"/>
@@ -97,17 +98,6 @@
                                class="required"
                                value="" maxlength="50" minlength="3" equalTo="#password"/>
                         <c:if test="${empty user.id}"><span class="help-inline"></span></c:if><em>*</em>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>单位名称：</label>
-                    </td>
-                    <td>
-                        <input id="name" name="name" placeholder="请输入单位名称" type="text" value="" maxlength="10"
-                               class="required"
-                               minlength="2"/>
-                        <span class="help-inline"><font color="red">*</font></span>
                     </td>
                 </tr>
                 <tr>

@@ -60,7 +60,8 @@
             <td>性别：</td>
             <td>${fns:getDictLabel(user.sex,'sex',user.sex)}</td>
             <td rowspan="6" >头像：</td>
-            <td rowspan="6"><img src="${ctx}/UserSh/getImage?id=${user.id}&type=0" style="width: 140px;height: 200px"></td>
+            <%--<td rowspan="6"><img src="${ctx}/UserSh/getImage?id=${user.id}&type=0" style="width: 140px;height: 200px"></td>--%>
+            <td rowspan="6"><img src="${user.photo}" style="width: 140px;height: 200px"></td>
         </tr>
         <tr>
             <td>民族：</td>
@@ -141,7 +142,8 @@
         <tr>
             <td>推荐表图片:</td>
             <td colspan="5">
-                <img src="${ctx}/UserSh/getImage?id=${user.id}&type=1" style="width:500px;height:600px"/>
+                <%--<img src="${ctx}/UserSh/getImage?id=${user.id}&type=1" style="width:500px;height:600px"/>--%>
+                    <img src="${user.tjTableImage}" style="width:500px;height:600px"/>
             </td>
         </tr>
         <%--<tr>
